@@ -111,6 +111,20 @@ app.post('/api/automation/prepare', async (req, res) => {
   }
 });
 
+app.post('/api/automation/revoke', async (req, res) => {
+  if (!automationClient) return res.status(503).json({ error: 'Automation server not ready' });
+  const { approvalToken } = req.body;
+  try {
+    const result = await automationClient.callTool({ 
+      name: 'revoke_approval', 
+      arguments: { approvalToken } 
+    });
+    res.json(result);
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 app.listen(PORT, async () => {
   console.log(`[BFF] Express server running on port ${PORT}`);
   await startMCPClients();

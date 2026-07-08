@@ -354,6 +354,46 @@ export class OCFMcpAutomationServer {
         }
       }
     );
+
+    // Tool: revoke_approval
+    this.server.tool(
+      'revoke_approval',
+      {
+        approvalToken: z.string().describe('The token to revoke'),
+      },
+      async ({ approvalToken }) => {
+        const reqId = crypto.randomUUID();
+        const toolName = 'revoke_approval';
+        const toolVersion = '0.1.0';
+        mcpToolCallsCounter.add(1);
+
+        try {
+          const { data, durationMs } = await withToolTracing(toolName, toolVersion, reqId, async () => {
+            const success = approvalStore.revokeToken(approvalToken);
+            if (!success) {
+              throw new Error('Token not found, already consumed, or expired');
+            }
+            return { revoked: true };
+          });
+
+          return {
+            content: [{
+              type: 'text',
+              text: JSON.stringify(createToolSuccess(data, { requestId: reqId, toolName, toolVersion, durationMs }), null, 2),
+            }],
+          };
+        } catch (err: any) {
+          mcpToolFailuresCounter.add(1);
+          return { 
+            isError: true, 
+            content: [{ 
+              type: 'text', 
+              text: JSON.stringify(createToolFailure(err.message, 'REVOKE_ERROR', { requestId: reqId, toolName, toolVersion, durationMs: 0 }), null, 2) 
+            }] 
+          };
+        }
+      }
+    );
   }
 
   private detectPlatform(url: string): string {

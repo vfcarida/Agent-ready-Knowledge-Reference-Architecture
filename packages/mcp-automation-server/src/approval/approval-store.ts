@@ -13,6 +13,7 @@ export interface ApprovalPayload {
 export interface PendingApproval {
   token: string;
   toolName: string;
+  payloadHash: string;
   expiresAt: number;
   metadata?: Record<string, unknown>;
 }
@@ -68,6 +69,7 @@ export class ApprovalStore {
     return rows.map(row => ({
       token: row.token,
       toolName: row.toolName,
+      payloadHash: row.payloadHash,
       expiresAt: row.expiresAt,
       metadata: row.metadata ? JSON.parse(row.metadata) : undefined
     }));
