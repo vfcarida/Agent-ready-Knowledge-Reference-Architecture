@@ -1,0 +1,19 @@
+{
+  "name": "@ocf/evals",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "lint": "echo 'no lint needed'",
+    "typecheck": "tsc --noEmit",
+    "build": "tsc",
+    "evals": "node dist/index.js"
+  },
+  "dependencies": {
+    "@ocf/core": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "catalog:",
+    "@types/node": "catalog:"
+  }
+}

@@ -48,11 +48,8 @@ export class BrowserOrchestrator {
       throw new PlatformNotSupportedError(url);
     }
 
-    // 2. Launch browser session
-    // In production, users can supply chromeUserDataDir to load persistent sessions/cookies
     const browser = await chromium.launch({
       headless: options.headless ?? true,
-      args: ['--disable-blink-features=AutomationControlled'], // assist bypass simple bot detect
     });
 
     try {

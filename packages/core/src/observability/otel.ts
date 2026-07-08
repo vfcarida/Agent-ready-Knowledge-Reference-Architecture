@@ -72,3 +72,19 @@ export const automationApprovalRequiredCounter = meter.createCounter('ocf_automa
 export const automationSubmissionSuccessCounter = meter.createCounter('ocf_automation_submission_success_total', {
   description: 'Total number of successful job submissions registered in bundle',
 });
+
+export const bundleValidationFailuresCounter = meter.createCounter('ocf_bundle_validation_failures_total', {
+  description: 'Total number of OKF bundle validation errors',
+});
+
+export const automationPreviewsCounter = meter.createCounter('ocf_automation_previews_total', {
+  description: 'Total number of automation job previews requested',
+});
+
+export const automationSubmissionBlockedCounter = meter.createCounter('ocf_automation_submission_blocked_total', {
+  description: 'Total number of job submissions blocked by policy or HITL',
+});
+
+export const mcpToolDurationHistogram = meter.createHistogram('ocf_mcp_tool_duration_ms', {
+  description: 'Duration of MCP tool executions in milliseconds',
+});

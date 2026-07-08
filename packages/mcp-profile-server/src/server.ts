@@ -311,10 +311,12 @@ export class OCFMcpProfileServer {
       mcpToolCallsCounter.add(1);
       bundleMigrationsCounter.add(1);
       try {
+        const fsAdapter = new FileSystemAdapter();
+        const fmParser = new FrontmatterParser();
         const bundlePath = this.docService.bundleRootPath;
-        const logs = await migrateBundle(bundlePath, { write, backup: write });
+        const report = await migrateBundle(fsAdapter, fmParser, bundlePath, { write, backup: write });
         return {
-          content: [{ type: 'text', text: `Migration complete. Active write mode: ${write}.\nLogs:\n${logs.join('\n')}` }],
+          content: [{ type: 'text', text: `Migration complete. Active write mode: ${write}.\nSuccess: ${report.success}\nMigrated files: ${report.filesMigrated}\nChecked files: ${report.filesChecked}\n${report.error ? 'Error: ' + report.error : ''}` }],
         };
       } catch (err: any) {
         mcpToolFailuresCounter.add(1);
