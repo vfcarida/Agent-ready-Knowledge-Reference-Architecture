@@ -57,6 +57,15 @@ OKF avoids vendor lock-in by relying on simple filesystems. A career bundle cont
 ├── experiences/
 │   ├── senior-developer.md
 │   └── index.md
+├── education/
+│   ├── computer-science-usp.md
+│   └── index.md
+├── certificates/
+│   ├── aws-solutions-architect.md
+│   └── index.md
+├── projects/
+│   ├── open-career-format.md
+│   └── index.md
 ├── preferences/
 │   └── job-search.md
 ├── applications/
@@ -109,8 +118,8 @@ Given the probabilistic nature of LLMs, standard unit assertions are supplemente
 - Configure CI/CD linting and determinism tests.
 
 ### Phase 2: Automation & Visual Clients
-- Implement Playwright drivers for LinkedIn, Gupy, and Indeed.
-- Integrate persistent cookie/context handlers for bot-detection bypass.
+- Implement Playwright Human-in-the-Loop workflows.
+- Enforce Sandbox and Approval policies for safety.
 - Build the React + Vite dashboard utilizing Tailwind CSS v4.
 - Implement the interactive D3.js force connection graph client-side.
 

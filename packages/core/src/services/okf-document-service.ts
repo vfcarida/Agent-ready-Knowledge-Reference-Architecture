@@ -60,6 +60,13 @@ export class OKFDocumentService {
   }
 
   /**
+   * Get the root path of the bundle.
+   */
+  get bundleRootPath(): string {
+    return this.bundleRoot;
+  }
+
+  /**
    * Create a new OKF document.
    *
    * Saves the document via the repository, regenerates the parent

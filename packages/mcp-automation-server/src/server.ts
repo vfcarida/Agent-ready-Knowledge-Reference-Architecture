@@ -36,6 +36,7 @@ interface PendingApplication {
 }
 
 const pendingApplications = new Map<string, PendingApplication>();
+const TOKEN_TTL_MS = 15 * 60 * 1000; // 15 minutes
 
 export class OCFMcpAutomationServer {
   private readonly server: McpServer;
@@ -157,6 +158,15 @@ export class OCFMcpAutomationServer {
           if (!pending) {
             throw new Error(`Invalid or expired approval token: ${approvalToken}`);
           }
+          if (Date.now() - pending.createdAt > TOKEN_TTL_MS) {
+            pendingApplications.delete(approvalToken);
+            throw new Error(`Expired approval token: ${approvalToken}`);
+          }
+          
+          const mode = process.env['AUTOMATION_RUNTIME_MODE'] || 'sandbox';
+          if (mode !== 'explicit-authorized-live' && !dryRun) {
+            throw new Error(`Execution Blocked: AUTOMATION_RUNTIME_MODE is set to '${mode}'. Live application submissions are disabled unless mode is 'explicit-authorized-live' or dryRun is true.`);
+          }
 
           // Trigger Playwright browser automation
           const result = await this.orchestrator.orchestrate(pending.jobUrl, pending.context, {
@@ -214,12 +224,8 @@ export class OCFMcpAutomationServer {
     this.server.tool('capture_job_posting', { jobUrl: z.string().url() }, async ({ jobUrl }) => {
       mcpToolCallsCounter.add(1);
       return {
-        content: [
-          {
-            type: 'text',
-            text: `Captured job posting description from ${jobUrl}. (Mocked text representation)`,
-          },
-        ],
+        isError: true,
+        content: [{ type: 'text', text: 'NOT_IMPLEMENTED: Feature deferred.' }],
       };
     });
 
@@ -227,15 +233,8 @@ export class OCFMcpAutomationServer {
     this.server.tool('extract_platform_metadata', { jobUrl: z.string().url() }, async ({ jobUrl }) => {
       mcpToolCallsCounter.add(1);
       return {
-        content: [
-          {
-            type: 'text',
-            text: JSON.stringify({
-              platform: this.detectPlatform(jobUrl),
-              requiresFormSubmit: true,
-            }, null, 2),
-          },
-        ],
+        isError: true,
+        content: [{ type: 'text', text: 'NOT_IMPLEMENTED: Feature deferred.' }],
       };
     });
   }

@@ -19,5 +19,8 @@ export { LogService } from './services/log-service.js';
 // Factories
 export { OKFDocumentFactory } from './factories/okf-document-factory.js';
 
+// Migrations
+export { migrateBundle } from './migrations/migrate-bundle.js';
+
 // Observability
 export * from './observability/otel.js';

@@ -124,6 +124,16 @@ describe('OCFMcpServer Tools', () => {
   });
 
   describe('orchestrate_application tool', () => {
+    const originalEnv = process.env;
+
+    beforeEach(() => {
+      process.env = { ...originalEnv, OCF_LEGACY_ALLOW_SIDE_EFFECTS: 'true' };
+    });
+
+    afterEach(() => {
+      process.env = originalEnv;
+    });
+
     it('should orchestrate application, save document and return success text', async () => {
       const serverInstance = ocfServer.getServerInstance();
       const orchestrateTool = (serverInstance as any)._registeredTools['orchestrate_application'];

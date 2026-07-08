@@ -1,8 +1,8 @@
 {
-  "name": "open-career-format-orchestrator",
+  "name": "agent-ready-knowledge-reference-architecture",
   "version": "0.1.0",
   "private": true,
-  "description": "A Privacy-by-Design career management system combining OKF (Open Knowledge Format) with MCP (Model Context Protocol) and a React dashboard.",
+  "description": "Enterprise-grade reference architecture for building agent-ready knowledge bases using Open Knowledge Format (OKF) and Model Context Protocol (MCP).",
   "author": "Vinicius Carida",
   "license": "MIT",
   "type": "module",
@@ -15,7 +15,13 @@
     "test": "pnpm -r run test",
     "test:watch": "pnpm -r run test:watch",
     "lint": "pnpm -r run lint",
-    "clean": "pnpm -r run clean"
+    "typecheck": "pnpm -r run typecheck",
+    "clean": "pnpm -r run clean",
+    "validate:bundle": "pnpm --filter @ocf/core exec tsx src/cli/validate-bundle.ts",
+    "migrate:bundle": "pnpm --filter @ocf/core exec tsx src/cli/migrate-bundle.ts",
+    "dev:profile-server": "pnpm --filter @ocf/mcp-profile-server dev",
+    "dev:automation-server": "pnpm --filter @ocf/mcp-automation-server dev",
+    "dev:dashboard": "pnpm --filter @ocf/dashboard dev"
   },
   "devDependencies": {
     "typescript": "^5.8.0",

@@ -4,6 +4,7 @@
  */
 
 import { McpServer, ResourceTemplate } from '@modelcontextprotocol/sdk/server/mcp.js';
+import path from 'node:path';
 import { z } from 'zod';
 import {
   OKFDocumentService,
@@ -11,6 +12,12 @@ import {
   mcpToolFailuresCounter,
   bundleMigrationsCounter,
   okfParseFailuresCounter,
+  migrateBundle,
+  FileSystemAdapter,
+  FrontmatterParser,
+  CareerFrontmatterSchema,
+  OKFDocumentType,
+  IndexService
 } from '@ocf/core';
 
 export class OCFMcpProfileServer {
@@ -258,9 +265,41 @@ export class OCFMcpProfileServer {
     this.server.tool('validate_bundle', {}, async () => {
       mcpToolCallsCounter.add(1);
       try {
-        const context = await this.docService.getCareerContext();
-        // Simply querying the context will throw/warn on invalid frontmatter structure
-        return { content: [{ type: 'text', text: `All checked documents conform to structure boundaries. Total skills: ${context.skills.length}` }] };
+        const bundlePath = this.docService.bundleRootPath;
+        const fsAdapter = new FileSystemAdapter();
+        const fmParser = new FrontmatterParser();
+        const relativeFiles = await fsAdapter.listFiles(bundlePath);
+        const RESERVED_FILENAMES = new Set(['index.md', 'log.md']);
+        
+        let validCount = 0;
+        let invalidCount = 0;
+        const errors: string[] = [];
+        
+        for (const relPath of relativeFiles) {
+          if (!relPath.endsWith('.md') || RESERVED_FILENAMES.has(path.basename(relPath))) continue;
+          const fullPath = path.join(bundlePath, relPath);
+          try {
+            const content = await fsAdapter.readFile(fullPath);
+            const doc = fmParser.parse(content, fullPath, bundlePath);
+            const validation = CareerFrontmatterSchema.safeParse(doc.frontmatter);
+            if (validation.success) {
+              validCount++;
+            } else {
+              invalidCount++;
+              errors.push(`[${relPath}] ${validation.error.message}`);
+            }
+          } catch (err: any) {
+            invalidCount++;
+            errors.push(`[${relPath}] Parse error: ${err.message}`);
+          }
+        }
+        
+        return {
+          content: [{
+            type: 'text',
+            text: `Validation complete.\nValid documents: ${validCount}\nInvalid documents: ${invalidCount}\n${errors.length > 0 ? 'Errors:\n' + errors.join('\n') : ''}`
+          }]
+        };
       } catch (err: any) {
         mcpToolFailuresCounter.add(1);
         return { isError: true, content: [{ type: 'text', text: `Validation Error: ${err.message}` }] };
@@ -272,9 +311,10 @@ export class OCFMcpProfileServer {
       mcpToolCallsCounter.add(1);
       bundleMigrationsCounter.add(1);
       try {
-        // Expose migrator flow dynamically
+        const bundlePath = this.docService.bundleRootPath;
+        const logs = await migrateBundle(bundlePath, { write, backup: write });
         return {
-          content: [{ type: 'text', text: `Migration complete. Active write mode: ${write}.` }],
+          content: [{ type: 'text', text: `Migration complete. Active write mode: ${write}.\nLogs:\n${logs.join('\n')}` }],
         };
       } catch (err: any) {
         mcpToolFailuresCounter.add(1);
@@ -286,8 +326,29 @@ export class OCFMcpProfileServer {
     this.server.tool('rebuild_indexes', {}, async () => {
       mcpToolCallsCounter.add(1);
       try {
-        // Rebuild directories
-        return { content: [{ type: 'text', text: 'Directory index.md listings generated successfully.' }] };
+        const bundlePath = this.docService.bundleRootPath;
+        const fsAdapter = new FileSystemAdapter();
+        const fmParser = new FrontmatterParser();
+        const indexService = new IndexService(fsAdapter, fmParser, bundlePath);
+        
+        // Root index + collections
+        const subdirs = ['.'];
+        for (const type of Object.values(OKFDocumentType)) {
+            let plural = type.toLowerCase() + 's';
+            if (plural === 'educations') plural = 'education';
+            subdirs.push(plural);
+        }
+        
+        const generated: string[] = [];
+        for (const dir of subdirs) {
+          const dirPath = path.join(bundlePath, dir);
+          if (await fsAdapter.exists(dirPath)) {
+            await indexService.generate(dirPath);
+            generated.push(dir);
+          }
+        }
+        
+        return { content: [{ type: 'text', text: `Directory index.md listings generated successfully for: ${generated.join(', ')}.` }] };
       } catch (err: any) {
         mcpToolFailuresCounter.add(1);
         return { isError: true, content: [{ type: 'text', text: err.message }] };

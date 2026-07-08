@@ -193,6 +193,18 @@ export class OCFMcpServer {
       },
       async ({ jobUrl, dryRun }) => {
         try {
+          if (process.env['OCF_LEGACY_ALLOW_SIDE_EFFECTS'] !== 'true') {
+            return {
+              isError: true,
+              content: [
+                {
+                  type: 'text',
+                  text: 'Execution Blocked: The legacy orchestrate_application tool is deprecated for safety reasons. Side effects are blocked by default. Please use the human-in-the-loop tools provided by @ocf/mcp-automation-server (prepare_application -> confirm_application_submission) instead.',
+                },
+              ],
+            };
+          }
+
           // Get candidate context
           const context = await this.docService.getCareerContext();
 

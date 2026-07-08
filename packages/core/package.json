@@ -14,9 +14,10 @@
   },
   "scripts": {
     "build": "tsc",
+    "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest watch",
-    "clean": "rm -rf dist *.tsbuildinfo"
+    "clean": "node -e \"fs.rmSync('dist', {recursive:true,force:true}); fs.rmSync('*.tsbuildinfo', {force:true})\""
   },
   "dependencies": {
     "@opentelemetry/api": "^1.9.1",
