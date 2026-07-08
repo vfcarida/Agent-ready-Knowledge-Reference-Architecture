@@ -1,0 +1,117 @@
+import express from 'express';
+import cors from 'cors';
+import { Client } from '@modelcontextprotocol/sdk/client/index.js';
+import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+const PORT = process.env.PORT || 3001;
+
+// Initialize MCP Clients
+let profileClient: Client | null = null;
+let automationClient: Client | null = null;
+
+async function startMCPClients() {
+  try {
+    const profileScript = path.resolve(__dirname, '../../mcp-profile-server/dist/index.js');
+    const automationScript = path.resolve(__dirname, '../../mcp-automation-server/dist/index.js');
+
+    console.log(`[BFF] Starting Profile Server: ${profileScript}`);
+    const profileTransport = new StdioClientTransport({
+      command: 'node',
+      args: [profileScript],
+      env: process.env,
+    });
+    
+    profileClient = new Client({ name: 'dashboard-bff-profile', version: '1.0.0' }, { capabilities: {} });
+    await profileClient.connect(profileTransport);
+    console.log('[BFF] Profile Server connected');
+
+    console.log(`[BFF] Starting Automation Server: ${automationScript}`);
+    const automationTransport = new StdioClientTransport({
+      command: 'node',
+      args: [automationScript],
+      env: process.env,
+    });
+
+    automationClient = new Client({ name: 'dashboard-bff-automation', version: '1.0.0' }, { capabilities: {} });
+    await automationClient.connect(automationTransport);
+    console.log('[BFF] Automation Server connected');
+
+  } catch (error) {
+    console.error('[BFF] Error starting MCP clients:', error);
+  }
+}
+
+// REST Endpoints
+app.post('/api/profile/validate', async (req, res) => {
+  if (!profileClient) return res.status(503).json({ error: 'Profile server not ready' });
+  try {
+    const result = await profileClient.callTool({ name: 'validate_bundle', arguments: {} });
+    res.json(result);
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.post('/api/profile/migrate', async (req, res) => {
+  if (!profileClient) return res.status(503).json({ error: 'Profile server not ready' });
+  const { write } = req.body;
+  try {
+    const result = await profileClient.callTool({ name: 'migrate_bundle', arguments: { write } });
+    res.json(result);
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get('/api/automation/approvals', async (req, res) => {
+  if (!automationClient) return res.status(503).json({ error: 'Automation server not ready' });
+  try {
+    const result = await automationClient.callTool({ name: 'list_pending_approvals', arguments: {} });
+    res.json(result);
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.post('/api/automation/approve', async (req, res) => {
+  if (!automationClient) return res.status(503).json({ error: 'Automation server not ready' });
+  const { approvalToken, jobUrl, dryRun } = req.body;
+  try {
+    const result = await automationClient.callTool({ 
+      name: 'confirm_application_submission', 
+      arguments: { approvalToken, jobUrl, dryRun } 
+    });
+    res.json(result);
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// For testing purposes
+app.post('/api/automation/prepare', async (req, res) => {
+  if (!automationClient) return res.status(503).json({ error: 'Automation server not ready' });
+  const { jobUrl } = req.body;
+  try {
+    const result = await automationClient.callTool({ 
+      name: 'prepare_application', 
+      arguments: { jobUrl } 
+    });
+    res.json(result);
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.listen(PORT, async () => {
+  console.log(`[BFF] Express server running on port ${PORT}`);
+  await startMCPClients();
+});

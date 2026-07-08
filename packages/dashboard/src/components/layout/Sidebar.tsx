@@ -3,7 +3,7 @@
  * @description Sidebar navigation and real-time statistics aggregator.
  */
 
-import { Briefcase, Award, Activity } from 'lucide-react';
+import { Briefcase, Award, Activity, ShieldCheck, ServerCog } from 'lucide-react';
 import type { CareerBundleData } from '../../types/career.js';
 
 interface SidebarProps {
@@ -32,6 +32,8 @@ export function Sidebar({ currentTab, setCurrentTab, data }: SidebarProps) {
     { id: 'kanban', label: 'Kanban Board', icon: Briefcase },
     { id: 'graph', label: 'Knowledge Graph', icon: Award },
     { id: 'logs', label: 'Change History', icon: Activity },
+    { id: 'approvals', label: 'Approval Queue', icon: ShieldCheck },
+    { id: 'system', label: 'System Health', icon: ServerCog },
   ];
 
   return (

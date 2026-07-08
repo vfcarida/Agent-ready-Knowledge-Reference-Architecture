@@ -102,7 +102,8 @@ export class OCFMcpAutomationServer {
           };
 
           const payload = { jobUrl, context, preparedFields };
-          const token = approvalStore.generateToken('confirm_application_submission', payload);
+          const metadata = { jobUrl, platform: this.detectPlatform(jobUrl) };
+          const token = approvalStore.generateToken('confirm_application_submission', payload, metadata);
 
           auditLogger.log({
             requestId: token,
@@ -290,6 +291,32 @@ export class OCFMcpAutomationServer {
         content: [{ type: 'text', text: 'NOT_IMPLEMENTED: Feature deferred.' }],
       };
     });
+
+    // Tool: list_pending_approvals
+    this.server.tool(
+      'list_pending_approvals',
+      {},
+      async () => {
+        mcpToolCallsCounter.add(1);
+        try {
+          const pending = approvalStore.getPendingApprovals();
+          return {
+            content: [
+              {
+                type: 'text',
+                text: JSON.stringify({
+                  ok: true,
+                  pending,
+                }, null, 2),
+              },
+            ],
+          };
+        } catch (err: any) {
+          mcpToolFailuresCounter.add(1);
+          return { isError: true, content: [{ type: 'text', text: err.message }] };
+        }
+      }
+    );
   }
 
   private detectPlatform(url: string): string {

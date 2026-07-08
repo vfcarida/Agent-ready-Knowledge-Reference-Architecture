@@ -4,12 +4,20 @@ export interface ApprovalPayload {
   toolName: string;
   payloadHash: string;
   expiresAt: number;
+  metadata?: Record<string, unknown>;
+}
+
+export interface PendingApproval {
+  token: string;
+  toolName: string;
+  expiresAt: number;
+  metadata?: Record<string, unknown>;
 }
 
 export class ApprovalStore {
   private store: Map<string, ApprovalPayload> = new Map();
 
-  generateToken(toolName: string, payload: unknown, ttlMs = 15 * 60 * 1000): string {
+  generateToken(toolName: string, payload: unknown, metadata?: Record<string, unknown>, ttlMs = 15 * 60 * 1000): string {
     const token = crypto.randomBytes(32).toString('hex');
     const payloadHash = this.hashPayload(payload);
     
@@ -17,9 +25,31 @@ export class ApprovalStore {
       toolName,
       payloadHash,
       expiresAt: Date.now() + ttlMs,
+      metadata,
     });
     
     return token;
+  }
+
+  getPendingApprovals(): PendingApproval[] {
+    const pending: PendingApproval[] = [];
+    const now = Date.now();
+    
+    for (const [token, record] of this.store.entries()) {
+      if (now <= record.expiresAt) {
+        pending.push({
+          token,
+          toolName: record.toolName,
+          expiresAt: record.expiresAt,
+          metadata: record.metadata,
+        });
+      } else {
+        // Clean up expired
+        this.store.delete(token);
+      }
+    }
+    
+    return pending;
   }
 
   validateAndConsume(token: string, toolName: string, payload: unknown): boolean {

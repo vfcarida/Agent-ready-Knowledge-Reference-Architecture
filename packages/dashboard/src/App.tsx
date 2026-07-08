@@ -8,6 +8,8 @@ import { MainLayout } from './components/layout/MainLayout.js';
 import { KanbanBoard } from './components/kanban/KanbanBoard.js';
 import { KnowledgeGraph } from './components/knowledge-graph/KnowledgeGraph.js';
 import { ChangeHistory } from './components/logs/ChangeHistory.js';
+import { ApprovalQueue } from './components/approvals/ApprovalQueue.js';
+import { SystemHealth } from './components/system/SystemHealth.js';
 import { useOKFData } from './hooks/use-okf-data.js';
 import { FolderOpen, ArrowRight, ShieldCheck, Cpu } from 'lucide-react';
 
@@ -38,6 +40,10 @@ export default function App() {
         return <KnowledgeGraph data={data} />;
       case 'logs':
         return <ChangeHistory data={data} />;
+      case 'approvals':
+        return <ApprovalQueue />;
+      case 'system':
+        return <SystemHealth />;
       default:
         return <KanbanBoard applications={data.applications} />;
     }
