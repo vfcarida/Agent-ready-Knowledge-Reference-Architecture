@@ -40,6 +40,7 @@ To demonstrate ContextOps in reality, this repository ships with the **Open Care
 ## 5. Quickstart
 
 ### Installation
+You can install the CLI globally or use it via `npx` from within the repository:
 ```bash
 git clone https://github.com/vfcarida/Agent-ready-Knowledge-Reference-Architecture.git
 cd Agent-ready-Knowledge-Reference-Architecture
@@ -47,28 +48,22 @@ npx pnpm install --frozen-lockfile
 npx pnpm build
 ```
 
-### Validate a Context Bundle
+### The `agent-ready` CLI
+
+The `@ocf/cli` provides a seamless developer experience for maintaining context:
+
 ```bash
-npx pnpm validate:bundle --bundle sample-data/.okf --format json
+# Initialize a new context pack in your current project
+npx agent-ready init ./my-project --profile software
+
+# Validate an existing OKF bundle without an LLM
+npx agent-ready validate sample-data/.okf
+
+# Check your environment readiness
+npx agent-ready doctor
 ```
 
-### Claude Desktop Integration
-Add the following to your `claude_desktop_config.json` to expose your context immediately to Claude:
-```json
-{
-  "mcpServers": {
-    "contextops-profile": {
-      "command": "node",
-      "args": ["C:\\absolute\\path\\to\\repo\\packages\\mcp-profile-server\\dist\\index.js"]
-    },
-    "contextops-automation": {
-      "command": "node",
-      "args": ["C:\\absolute\\path\\to\\repo\\packages\\mcp-automation-server\\dist\\index.js"],
-      "env": { "AUTOMATION_RUNTIME_MODE": "sandbox" }
-    }
-  }
-}
-```
+Read the full [CLI Specification](docs/specs/cli.md) for advanced commands like `scan`, `build`, and `serve:mcp`.
 
 ## 6. Enterprise Maturity Status
 
