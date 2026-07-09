@@ -1,0 +1,22 @@
+[
+  {
+    "id": "ocf.swproj.read_adr",
+    "name": "read_adr",
+    "kind": "tool",
+    "version": "1.0.0",
+    "description": "Reads an Architecture Decision Record.",
+    "riskLevel": "low",
+    "sideEffectLevel": "local-read",
+    "requiredApproval": false
+  },
+  {
+    "id": "ocf.swproj.propose",
+    "name": "propose_architecture",
+    "kind": "tool",
+    "version": "1.0.0",
+    "description": "Proposes a new ADR and writes it to the local workspace.",
+    "riskLevel": "medium",
+    "sideEffectLevel": "local-write",
+    "requiredApproval": true
+  }
+]

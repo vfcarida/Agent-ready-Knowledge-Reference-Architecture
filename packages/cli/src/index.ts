@@ -11,18 +11,35 @@ program
   .description('ContextOps CLI for managing Agent-Ready Knowledge Context Packs')
   .version('0.1.0');
 
+import { fileURLToPath } from 'url';
+
 // COMMAND: init
 program
   .command('init')
   .description('Initialize a new .agent-context structure')
   .argument('[directory]', 'Directory to initialize', '.')
-  .option('-p, --profile <profile>', 'Context profile (e.g., software, career)', 'standard')
+  .option('-p, --profile <profile>', 'Context profile (e.g., software-project, career)', 'standard')
   .action((directory, options) => {
     const targetDir = path.resolve(process.cwd(), directory);
     const contextDir = path.join(targetDir, '.agent-context');
 
     if (!fs.existsSync(contextDir)) {
       fs.mkdirSync(contextDir, { recursive: true });
+    }
+
+    // Attempt to copy from Domain Adapter templates if available
+    try {
+      const cliDir = path.dirname(fileURLToPath(import.meta.url));
+      const templateDir = path.resolve(cliDir, '../../../examples/domains', options.profile);
+      
+      if (fs.existsSync(templateDir)) {
+        fs.cpSync(templateDir, contextDir, { recursive: true });
+        console.log(`[INFO] Copied Domain Adapter template: ${options.profile}`);
+      } else {
+        console.warn(`[WARN] Domain template '${options.profile}' not found in examples/domains/. Initializing empty profile.`);
+      }
+    } catch (e) {
+      console.warn(`[WARN] Could not copy template for '${options.profile}'. Initializing empty profile.`);
     }
 
     const indexContent = `---
@@ -35,11 +52,14 @@ version: 1.0.0
 # Agent Context Pack
 This directory contains agent-ready knowledge bundles.
 `;
-    fs.writeFileSync(path.join(contextDir, 'index.md'), indexContent);
+    // Only write index if it doesn't already exist from the template
+    if (!fs.existsSync(path.join(contextDir, 'index.md'))) {
+      fs.writeFileSync(path.join(contextDir, 'index.md'), indexContent);
+    }
 
     // Bootstrap AGENTS.md injection hint
     const agentsMdContent = `# Agent Instructions
-Always load the local \`.agent-context\` pack before answering architecture questions.
+Always load the local \`.agent-context\` pack before answering questions related to the domain '${options.profile}'.
 `;
     fs.writeFileSync(path.join(targetDir, 'AGENTS.md'), agentsMdContent);
 

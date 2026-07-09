@@ -13,10 +13,12 @@ import {
   mcpToolCallsCounter,
   mcpToolFailuresCounter,
   automationAttemptsCounter,
+  automationSubmissionBlockedCounter,
   automationApprovalRequiredCounter,
   automationSubmissionSuccessCounter,
   createToolSuccess,
   createToolFailure,
+  withToolTracing,
 } from '@ocf/core';
 import { BrowserOrchestrator } from './automation/browser-orchestrator.js';
 import { ApprovalStore } from './approval/approval-store.js';
