@@ -78,6 +78,28 @@ export class OCFMcpProfileServer {
       }
     );
 
+    // Resource: ocf://index
+    this.server.resource(
+      'ocf-index',
+      'ocf://index',
+      {
+        mimeType: 'text/markdown',
+        description: 'Chronological indices catalog listing all folders in the bundle',
+      },
+      async () => {
+        const doc = await this.docService.getDocument('index');
+        return {
+          contents: [
+            {
+              uri: 'ocf://index',
+              mimeType: 'text/markdown',
+              text: doc ? doc.body : '# Bundle Index empty',
+            },
+          ],
+        };
+      }
+    );
+
     // Resource: bundle://log
     this.server.resource(
       'bundle-log',
@@ -100,10 +122,56 @@ export class OCFMcpProfileServer {
       }
     );
 
+    // Resource: ocf://log
+    this.server.resource(
+      'ocf-log',
+      'ocf://log',
+      {
+        mimeType: 'text/markdown',
+        description: 'Audit log tracking bundle modifications',
+      },
+      async () => {
+        const doc = await this.docService.getDocument('log');
+        return {
+          contents: [
+            {
+              uri: 'ocf://log',
+              mimeType: 'text/markdown',
+              text: doc ? doc.body : '# Bundle Log empty',
+            },
+          ],
+        };
+      }
+    );
+
     // Resource template: bundle://documents/{conceptId}
     this.server.resource(
       'bundle-document',
       new ResourceTemplate('bundle://documents/{conceptId}', { list: undefined }),
+      async (uri, { conceptId }) => {
+        if (typeof conceptId !== 'string') {
+          throw new Error('conceptId must be a string');
+        }
+        const doc = await this.docService.getDocument(conceptId);
+        if (!doc) {
+          throw new Error(`Document not found: ${conceptId}`);
+        }
+        return {
+          contents: [
+            {
+              uri: uri.toString(),
+              mimeType: 'text/markdown',
+              text: `---\n${JSON.stringify(doc.frontmatter, null, 2)}\n---\n\n${doc.body}`,
+            },
+          ],
+        };
+      }
+    );
+
+    // Resource template: ocf://documents/{conceptId}
+    this.server.resource(
+      'ocf-document',
+      new ResourceTemplate('ocf://documents/{conceptId}', { list: undefined }),
       async (uri, { conceptId }) => {
         if (typeof conceptId !== 'string') {
           throw new Error('conceptId must be a string');

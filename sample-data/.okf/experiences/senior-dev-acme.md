@@ -2,15 +2,21 @@
 type: Experience
 title: Senior Software Engineer at Acme Corp
 description: Full-stack engineering role focused on platform modernization
+tags:
+  - typescript
+  - react
+  - node
+  - aws
+  - microservices
+timestamp: '2026-07-01T00:00:00Z'
 company: Acme Corp
 role: Senior Software Engineer
-startDate: "2023-01-15"
+startDate: '2023-01-15'
 current: true
 location: Remote
-tags: [typescript, react, node, aws, microservices]
-timestamp: "2026-07-01T00:00:00Z"
+schemaVersion: ocf.profile/v1
+bundleVersion: 1.0.0
 ---
-
 Leading the frontend platform modernization initiative, migrating a legacy AngularJS monolith to a React + TypeScript micro-frontend architecture. Designed and implemented a shared component library consumed by 4 product teams, reducing UI inconsistencies by 60%. Mentoring a team of 3 junior engineers through code reviews, pair programming sessions, and internal tech talks.
 
 **Key achievements:**

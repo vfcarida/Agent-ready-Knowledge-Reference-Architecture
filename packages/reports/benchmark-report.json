@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-07-10T16:58:01.615Z",
+  "timestamp": "2026-07-10T17:23:42.575Z",
   "results": [
     {
       "scenario": "Raw README vs Context Pack",
@@ -7,7 +7,7 @@
       "baseline": {
         "taskSuccess": 0.6,
         "tokenCost": 25000,
-        "latencyMs": 810.8218,
+        "latencyMs": 808.4684,
         "toolSelectionAccuracy": 1,
         "hallucinationRate": 0.3,
         "citationAccuracy": 0.2,
@@ -17,7 +17,7 @@
       "treatment": {
         "taskSuccess": 0.95,
         "tokenCost": 4000,
-        "latencyMs": 603.1351999999999,
+        "latencyMs": 608.6094,
         "toolSelectionAccuracy": 1,
         "hallucinationRate": 0.05,
         "citationAccuracy": 0.95,
@@ -31,7 +31,7 @@
       "baseline": {
         "taskSuccess": 0.8,
         "tokenCost": 15000,
-        "latencyMs": 510.3924999999999,
+        "latencyMs": 514.3082999999999,
         "toolSelectionAccuracy": 0.6,
         "hallucinationRate": 0.15,
         "citationAccuracy": 0.6,
@@ -41,7 +41,7 @@
       "treatment": {
         "taskSuccess": 0.95,
         "tokenCost": 8000,
-        "latencyMs": 500.5585000000001,
+        "latencyMs": 513.5409999999999,
         "toolSelectionAccuracy": 0.9,
         "hallucinationRate": 0.02,
         "citationAccuracy": 1,
@@ -55,7 +55,7 @@
       "baseline": {
         "taskSuccess": 0.9,
         "tokenCost": 45000,
-        "latencyMs": 913.8044,
+        "latencyMs": 906.6432,
         "toolSelectionAccuracy": 1,
         "hallucinationRate": 0.05,
         "citationAccuracy": 0.9,
@@ -65,7 +65,7 @@
       "treatment": {
         "taskSuccess": 0.95,
         "tokenCost": 5000,
-        "latencyMs": 325.3117000000002,
+        "latencyMs": 310.89900000000034,
         "toolSelectionAccuracy": 1,
         "hallucinationRate": 0.05,
         "citationAccuracy": 0.9,
@@ -79,7 +79,7 @@
       "baseline": {
         "taskSuccess": 0.8,
         "tokenCost": 2000,
-        "latencyMs": 408.71799999999985,
+        "latencyMs": 403.6095999999998,
         "toolSelectionAccuracy": 0.5,
         "hallucinationRate": 0,
         "citationAccuracy": 1,
@@ -89,7 +89,7 @@
       "treatment": {
         "taskSuccess": 0.95,
         "tokenCost": 2200,
-        "latencyMs": 454.6338999999998,
+        "latencyMs": 452.41089999999986,
         "toolSelectionAccuracy": 0.95,
         "hallucinationRate": 0,
         "citationAccuracy": 1,
@@ -103,7 +103,7 @@
       "baseline": {
         "taskSuccess": 0.1,
         "tokenCost": 5000,
-        "latencyMs": 718.8882999999996,
+        "latencyMs": 713.3895000000002,
         "toolSelectionAccuracy": 1,
         "hallucinationRate": 0.9,
         "citationAccuracy": 1,
@@ -113,7 +113,7 @@
       "treatment": {
         "taskSuccess": 0.9,
         "tokenCost": 5000,
-        "latencyMs": 783.8863000000001,
+        "latencyMs": 763.4151999999995,
         "toolSelectionAccuracy": 1,
         "hallucinationRate": 0,
         "citationAccuracy": 1,
@@ -127,7 +127,7 @@
       "baseline": {
         "taskSuccess": 0.5,
         "tokenCost": 80000,
-        "latencyMs": 2027.6871,
+        "latencyMs": 2011.9566999999997,
         "toolSelectionAccuracy": 1,
         "hallucinationRate": 0.4,
         "citationAccuracy": 1,
@@ -137,7 +137,7 @@
       "treatment": {
         "taskSuccess": 0.95,
         "tokenCost": 6000,
-        "latencyMs": 618.7242000000006,
+        "latencyMs": 609.0313999999998,
         "toolSelectionAccuracy": 1,
         "hallucinationRate": 0.05,
         "citationAccuracy": 1,
@@ -151,7 +151,7 @@
       "baseline": {
         "taskSuccess": 0.6,
         "tokenCost": 35000,
-        "latencyMs": 1215.4094000000005,
+        "latencyMs": 1209.9130999999998,
         "toolSelectionAccuracy": 1,
         "hallucinationRate": 0.25,
         "citationAccuracy": 0.3,
@@ -161,7 +161,7 @@
       "treatment": {
         "taskSuccess": 0.98,
         "tokenCost": 3500,
-        "latencyMs": 519.0720000000001,
+        "latencyMs": 514.2970000000005,
         "toolSelectionAccuracy": 1,
         "hallucinationRate": 0.01,
         "citationAccuracy": 0.98,
@@ -175,7 +175,7 @@
       "baseline": {
         "taskSuccess": 0.2,
         "tokenCost": 5000,
-        "latencyMs": 613.3019999999997,
+        "latencyMs": 599.9640999999992,
         "toolSelectionAccuracy": 0.1,
         "hallucinationRate": 0,
         "citationAccuracy": 1,
@@ -185,7 +185,7 @@
       "treatment": {
         "taskSuccess": 0.95,
         "tokenCost": 4000,
-        "latencyMs": 612.8167999999987,
+        "latencyMs": 609.7682999999997,
         "toolSelectionAccuracy": 0.99,
         "hallucinationRate": 0,
         "citationAccuracy": 1,

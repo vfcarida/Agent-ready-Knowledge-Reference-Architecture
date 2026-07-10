@@ -122,3 +122,6 @@ export * from './provenance/types.js';
 export * from './provenance/hash.js';
 export * from './provenance/build-manifest.js';
 export * from './provenance/verify.js';
+
+// Scanner
+export * from './scanner/scan.js';

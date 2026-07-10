@@ -7,6 +7,7 @@ timestamp: "2026-07-03T14:00:00Z"
 
 | Timestamp | Action | Concept ID | Details |
 | --- | --- | --- | --- |
+| 2026-07-10T17:23:53.192Z | MIGRATED | bundle | Migrated 6 files to ocf.profile/v1 |
 | 2026-07-03T14:00:00Z | created | applications/2026-07-03-beta-inc | Applied to Senior Frontend Engineer at Beta Inc via Gupy |
 | 2026-07-02T16:45:00Z | updated | applications/2026-07-01-acme-corp | Status changed from Applied to Interview after recruiter screen |
 | 2026-07-01T10:30:00Z | created | applications/2026-07-01-acme-corp | Applied to Staff Engineer at Acme Corp via LinkedIn |

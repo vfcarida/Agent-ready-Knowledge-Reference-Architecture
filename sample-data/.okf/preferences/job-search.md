@@ -2,10 +2,15 @@
 type: Preference
 title: Job Search Preferences
 description: Desired job characteristics and constraints for active job search
-tags: [remote, full-stack, senior, staff]
-timestamp: "2026-07-01T00:00:00Z"
+tags:
+  - remote
+  - full-stack
+  - senior
+  - staff
+timestamp: '2026-07-01T00:00:00Z'
+schemaVersion: ocf.profile/v1
+bundleVersion: 1.0.0
 ---
-
 ## Location Preferences
 - **Primary:** Remote (worldwide)
 - **Secondary:** São Paulo, SP, Brazil (hybrid acceptable)

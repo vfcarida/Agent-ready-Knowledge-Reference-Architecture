@@ -7,8 +7,8 @@ import path from 'path';
 const program = new Command();
 
 program
-  .name('agent-ready')
-  .description('ContextOps CLI for managing Agent-Ready Knowledge Context Packs')
+  .name('akcp')
+  .description('AKCP CLI for managing Agent-Ready Knowledge Context Packs')
   .version('0.1.0');
 
 import { fileURLToPath } from 'url';
@@ -94,17 +94,41 @@ program
     }
   });
 
-// COMMAND: scan (Skeleton)
+// COMMAND: scan
 program
   .command('scan')
   .description('Analyze repository and suggest context document structures')
   .argument('[directory]', 'Directory to scan', '.')
-  .option('-m, --model-provider <provider>', 'LLM Provider', 'none')
-  .option('--dry-run', 'Do not write files')
-  .action((directory, options) => {
-    console.log(`[INFO] Scanning directory ${directory} (Provider: ${options.modelProvider})`);
-    if (options.dryRun) console.log(`[INFO] Dry-run enabled. No files will be written.`);
-    console.log(`[OK] Scan completed. Suggested 3 new context mappings.`);
+  .option('--dry-run', 'Do not write files, just show what would be suggested')
+  .option('-o, --output <dir>', 'Output directory for context pack', '.agent-context')
+  .action(async (directory, options) => {
+    const targetDir = path.resolve(process.cwd(), directory);
+    console.log(`[INFO] Scanning directory ${targetDir}...`);
+    
+    try {
+      const { scanWorkspace, writeScanSuggestions } = await import('@ocf/core');
+      const result = scanWorkspace(targetDir);
+      
+      console.log(`\n=== Scan Results ===`);
+      console.log(`Detected files/directories of interest: ${result.detectedFiles.join(', ') || 'none'}`);
+      console.log(`Generated ${result.suggestions.length} suggested OKF templates:`);
+      
+      result.suggestions.forEach((sug) => {
+        console.log(`- [${sug.type.toUpperCase()}] ${sug.fileName}: ${sug.title}`);
+        console.log(`  Description: ${sug.description}`);
+      });
+      
+      if (options.dryRun) {
+        console.log(`\n[INFO] Dry-run enabled. No files were written.`);
+      } else {
+        const written = writeScanSuggestions(targetDir, result, options.output);
+        console.log(`\n[OK] Scan completed. Successfully wrote ${written.length} template files to ${options.output}:`);
+        written.forEach((f) => console.log(`  - ${path.basename(f)}`));
+      }
+    } catch (err: any) {
+      console.error(`[ERROR] Scan failed: ${err.message}`);
+      process.exit(1);
+    }
   });
 
 // COMMAND: compile
@@ -321,14 +345,39 @@ program
     }
   });
 
-// COMMAND: serve:mcp (Skeleton)
+// COMMAND: serve:mcp
 program
   .command('serve:mcp')
   .description('Locally boot the MCP Profile Server for this context')
   .argument('[directory]', 'Directory to serve', '.')
-  .action((directory) => {
-    console.log(`[INFO] Booting MCP Server for bundle at ${directory}`);
-    console.log(`[OK] Server running on stdio.`);
+  .option('--ir <path>', 'Path to compiled Knowledge IR json', 'dist/knowledge-ir.json')
+  .action(async (directory, options) => {
+    const targetDir = path.resolve(process.cwd(), directory);
+    const irPath = path.resolve(process.cwd(), options.ir);
+    
+    console.error(`[INFO] Booting MCP Server for bundle at ${targetDir}`);
+    
+    try {
+      const require = createRequire(import.meta.url);
+      const serverPath = require.resolve('@ocf/mcp-profile-server');
+      const { spawn } = await import('child_process');
+      
+      const child = spawn('node', [serverPath], {
+        stdio: 'inherit',
+        env: {
+          ...process.env,
+          OCF_BUNDLE_PATH: targetDir,
+          OCF_IR_PATH: irPath
+        }
+      });
+
+      child.on('close', (code) => {
+        process.exit(code ?? 0);
+      });
+    } catch (err: any) {
+      console.error(`[ERROR] Failed to launch MCP server: ${err.message}`);
+      process.exit(1);
+    }
   });
 
 // COMMAND: doctor
@@ -474,19 +523,16 @@ program
   .command('reconcile')
   .description('Reconcile desired state with current environment')
   .option('-f, --file <path>', 'Path to akcp.yaml', 'akcp.yaml')
-  .option('--dry-run', 'Perform a dry run without making destructive changes', true)
+  .option('--no-dry-run', 'Disable dry run and perform the actual changes')
   .action(async (options) => {
-    if (!options.dryRun) {
-      console.error(`[ERROR] Reconcile without --dry-run is not yet implemented safely.`);
-      process.exit(1);
-    }
-    console.log(`[INFO] Reconciling state (dry-run) using ${options.file}...`);
+    const isDryRun = options.dryRun !== false;
+    console.log(`[INFO] Reconciling state (${isDryRun ? 'dry-run' : 'active'}) using ${options.file}...`);
     try {
       const { loadAkcpConfig, reconcile } = await import('@ocf/core');
       const configPath = path.resolve(process.cwd(), options.file);
       const config = loadAkcpConfig(configPath);
       
-      const result = await reconcile(config, { dryRun: options.dryRun });
+      const result = await reconcile(config, { dryRun: isDryRun });
       if (result.status === 'in-sync') {
         console.log(`[OK] ${result.message}`);
       } else {
@@ -759,18 +805,68 @@ conformanceCmd
   .description('Run conformance suite on a target bundle')
   .requiredOption('-b, --bundle <directory>', 'Path to the context bundle')
   .option('-p, --profile <profile>', 'OCF profile to test against', 'career')
+  .option('-f, --format <format>', 'Output format (text or json)', 'text')
   .action(async (options) => {
     try {
       const { ConformanceRunner } = await import('@ocf/conformance');
       const path = await import('path');
       const bundlePath = path.resolve(process.cwd(), options.bundle);
       
-      console.log(`[INFO] Running Conformance Suite on ${bundlePath}`);
-      
       const runner = new ConformanceRunner(bundlePath, options.profile);
       const report = await runner.run();
       
-      console.log(JSON.stringify(report, null, 2));
+      if (options.format === 'json') {
+        console.log(JSON.stringify(report, null, 2));
+      } else {
+        const levels = [
+          { name: 'OKF-compatible', label: 'Level 1: OKF-compatible (Base Spec)' },
+          { name: 'OCF-profile-compatible', label: 'Level 2: OCF-profile-compatible' },
+          { name: 'AKCP-compiler-compatible', label: 'Level 3: AKCP-compiler-compatible' },
+          { name: 'AKCP-control-plane-compatible', label: 'Level 4: AKCP-control-plane-compatible' }
+        ];
+
+        console.log('\n=============================================');
+        console.log('         OCF/AKCP CONFORMANCE REPORT');
+        console.log('=============================================');
+        console.log(`Bundle Path:       ${bundlePath}`);
+        console.log(`Profile:           ${options.profile}`);
+        console.log(`Conformance Level: [${report.conformanceLevel.toUpperCase()}]`);
+        console.log('---------------------------------------------');
+
+        let reachedNone = report.conformanceLevel === 'none';
+        let currentLevelFound = false;
+
+        for (const lvl of levels) {
+          if (reachedNone) {
+            console.log(`[ ] ❌ ${lvl.label} (Not Reached)`);
+            continue;
+          }
+
+          if (lvl.name === report.conformanceLevel) {
+            console.log(`[*] ✅ ${lvl.label} (Current Level)`);
+            currentLevelFound = true;
+          } else if (!currentLevelFound) {
+            console.log(`[x] ✅ ${lvl.label}`);
+          } else {
+            console.log(`[ ] ⚠️  ${lvl.label} (Not Reached)`);
+          }
+        }
+
+        if (report.details.length > 0) {
+          console.log('\n[DETAILS]');
+          report.details.forEach((det: any) => {
+            const fileStr = det.file ? ` (${det.file})` : '';
+            const typeStr = det.type === 'error' ? '❌ ERROR' : '⚠️  WARN';
+            console.log(`  - [${typeStr}] [${det.ruleId}]${fileStr}: ${det.message}`);
+          });
+        }
+
+        console.log('\nSummary:');
+        console.log(`- Passed Checks: ${report.passed}`);
+        console.log(`- Failed Checks: ${report.failed}`);
+        console.log(`- Warnings:      ${report.warnings}`);
+        console.log('=============================================\n');
+      }
       
       if (report.conformanceLevel === 'none') {
         process.exit(1);
@@ -890,6 +986,67 @@ pluginCmd
       console.log(`Permissions: ${manifest.permissions.join(', ') || 'none'}`);
     } catch (err: any) {
       console.error(`[ERROR] Plugin validation failed: ${err.message}`);
+      process.exit(1);
+    }
+  });
+
+// COMMAND: completion
+program
+  .command('completion')
+  .description('Generate shell autocompletion script (bash or zsh)')
+  .argument('<shell>', 'Shell type: bash or zsh')
+  .action((shell) => {
+    if (shell === 'bash') {
+      console.log(`
+# akcp bash completion
+_akcp_completion() {
+  local cur prev opts
+  COMPREPLY=()
+  cur="\${COMP_WORDS[COMP_CWORD]}"
+  prev="\${COMP_WORDS[COMP_CWORD-1]}"
+  opts="init validate scan compile inspect-artifact verify diff import serve:mcp doctor agents config policy plan reconcile graph context lifecycle conformance scorecard plugin"
+  
+  if [[ \${COMP_CWORD} -eq 1 ]] ; then
+    COMPREPLY=( \$(compgen -W "\${opts}" -- \${cur}) )
+    return 0
+  fi
+}
+complete -F _akcp_completion akcp
+      `);
+    } else if (shell === 'zsh') {
+      console.log(`
+#compdef akcp
+_akcp() {
+  local -a commands
+  commands=(
+    'init:Initialize a new .agent-context structure'
+    'validate:Strict offline schema validation of an OKF/Context bundle'
+    'scan:Analyze repository and suggest context document structures'
+    'compile:Compile Context Packs to specified targets'
+    'inspect-artifact:Inspect an AKCP compile manifest'
+    'verify:Verify the cryptographic provenance and integrity of a compiled bundle'
+    'diff:Show semantic context changes since last build'
+    'import:Import from external systems into a Context Pack'
+    'serve:mcp:Locally boot the MCP Profile Server for this context'
+    'doctor:Diagnose environment configuration and readiness'
+    'agents:Manage agent instruction files (sync)'
+    'config:Manage AKCP configuration (validate)'
+    'policy:Manage and validate machine-readable Policy Cards (validate, explain)'
+    'plan:Generate execution plan based on akcp.yaml'
+    'reconcile:Reconcile desired state with current environment'
+    'graph:Semantic Knowledge Graph operations (build, inspect, impacted)'
+    'context:Manage and optimize context economics (plan)'
+    'lifecycle:Manage knowledge lifecycle (report)'
+    'conformance:Run conformance suite to certify OKF/AKCP compatibility (run)'
+    'scorecard:Calculate Agent Knowledge Readiness Scorecard'
+    'plugin:Manage AKCP build-time plugins (list, validate)'
+  )
+  _describe -t commands 'akcp commands' commands
+}
+_akcp "$@"
+      `);
+    } else {
+      console.error('[ERROR] Unsupported shell: ' + shell + '. Supported shells: bash, zsh');
       process.exit(1);
     }
   });

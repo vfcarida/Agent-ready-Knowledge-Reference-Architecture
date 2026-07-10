@@ -18,28 +18,36 @@ export interface ReconcileResult {
  */
 export async function reconcile(config: AkcpConfig, options: ReconcileOptions): Promise<ReconcileResult> {
   const differences: string[] = [];
+  const fixesPerformed: string[] = [];
 
   // 1. Check sources existence
+  const missingSources: string[] = [];
   for (const source of config.compile.sources) {
     if (source.path) {
       const sourcePath = path.resolve(source.path);
       if (!fs.existsSync(sourcePath)) {
-        differences.push(`Source missing: Directory '${source.path}' does not exist.`);
+        if (options.dryRun) {
+          differences.push(`Source missing: Directory '${source.path}' does not exist.`);
+        } else {
+          missingSources.push(sourcePath);
+        }
       }
     }
   }
 
   // 2. Check target output
+  const missingTargets: typeof config.compile.targets = [];
   if (config.compile.targets) {
     for (const targetConf of config.compile.targets) {
       const targetPath = path.resolve(targetConf.out);
       if (!fs.existsSync(targetPath)) {
-        differences.push(`Target missing: Compiled output '${targetConf.out}' does not exist.`);
+        if (options.dryRun) {
+          differences.push(`Target missing: Compiled output '${targetConf.out}' does not exist.`);
+        } else {
+          missingTargets.push(targetConf);
+        }
       }
     }
-  } else {
-    // In a real compiler, we would compare the target's build timestamp with source modified times.
-    // We'll leave that to the actual build command, but note it in dry run if possible.
   }
 
   // 3. Dry run semantics
@@ -59,6 +67,67 @@ export async function reconcile(config: AkcpConfig, options: ReconcileOptions): 
     }
   }
 
-  // Actual mutation logic would go here if not dry-run.
-  throw new Error("reconcile without dry-run is not yet implemented.");
+  // 4. Mutation logic (dryRun = false)
+  // Create missing source directories
+  for (const sourcePath of missingSources) {
+    fs.mkdirSync(sourcePath, { recursive: true });
+    fixesPerformed.push(`Created missing source directory: '${path.relative(process.cwd(), sourcePath)}'`);
+  }
+
+  // Compile missing targets
+  if (missingTargets.length > 0) {
+    const { buildKnowledgeIR } = await import('../ir/build-ir.js');
+    const { IrJsonTarget } = await import('../targets/ir-json.js');
+    const { OkfBundleTarget } = await import('../targets/okf-bundle.js');
+    const { OpenWikiDocsTarget } = await import('../targets/openwiki-docs.js');
+    const { AgentsMdTarget } = await import('../targets/agents-md.js');
+    const { McpResourcesManifestTarget } = await import('../targets/mcp-resources-manifest.js');
+    const { PolicyBundleTarget } = await import('../targets/policy-bundle.js');
+    const { EvalDatasetTarget } = await import('../targets/eval-dataset.js');
+    const { GraphJsonTarget } = await import('../targets/graph-json.js');
+    const { ProvenanceManifestBuilder } = await import('../provenance/build-manifest.js');
+
+    const bundleRoot = path.resolve('.');
+    const ir = await buildKnowledgeIR(bundleRoot, { sources: config.compile.sources });
+    const manifestBuilder = new ProvenanceManifestBuilder();
+    
+    const targetInstances: Record<string, any> = {
+      'ir-json': new IrJsonTarget(),
+      'okf-bundle': new OkfBundleTarget(),
+      'openwiki-docs': new OpenWikiDocsTarget(),
+      'agents-md': new AgentsMdTarget(),
+      'mcp-resources-manifest': new McpResourcesManifestTarget(),
+      'policy-bundle': new PolicyBundleTarget(),
+      'eval-dataset': new EvalDatasetTarget(),
+      'graph-json': new GraphJsonTarget()
+    };
+
+    for (const targetConf of missingTargets) {
+      const targetImpl = targetInstances[targetConf.type];
+      if (targetImpl) {
+        const outPath = path.resolve(targetConf.out);
+        fs.mkdirSync(path.dirname(outPath), { recursive: true });
+        const output = await targetImpl.compile(ir, targetConf);
+        manifestBuilder.addOutput(output);
+        fixesPerformed.push(`Compiled missing target: '${targetConf.type}' -> '${targetConf.out}'`);
+      }
+    }
+
+    // Write build manifest
+    await manifestBuilder.writeManifest(ir, 'dist/akcp-manifest.json', 'none', '0.1.0');
+  }
+
+  if (fixesPerformed.length === 0) {
+    return {
+      status: 'in-sync',
+      differences: [],
+      message: 'System is already in-sync. No fixes needed.'
+    };
+  } else {
+    return {
+      status: 'in-sync',
+      differences: [],
+      message: `Reconciliation complete. Fixed issues:\n${fixesPerformed.map(f => `  - ${f}`).join('\n')}`
+    };
+  }
 }
