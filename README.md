@@ -71,7 +71,18 @@ npx agent-ready doctor
 
 Read the full [CLI Specification](docs/specs/cli.md) for advanced commands like `scan`, `build`, and `serve:mcp`.
 
-## 6. Enterprise Maturity Status
+## 6. Enterprise Adoption Playbooks
+
+AKCP provides practical, step-by-step playbooks to help organizations transition from generic wikis to governed, agent-ready knowledge:
+
+- 🚀 **[Pilot in 2 Weeks](docs/enterprise/playbooks/pilot-in-2-weeks.md):** Launch a focused, high-value pilot quickly.
+- 📚 **[Codebase Docs to Agent Context](docs/enterprise/playbooks/codebase-documentation-to-agent-context.md):** Transform stagnant wikis into dynamic OKF bundles.
+- 🛠️ **[Runbooks to Agent Playbooks](docs/enterprise/playbooks/runbooks-to-agent-playbooks.md):** Evolve human-centric runbooks into testable agent scenarios.
+- 🔌 **[API Catalog to MCP Resources](docs/enterprise/playbooks/api-catalog-to-mcp-resources.md):** Expose existing enterprise APIs securely via MCP.
+- 🛡️ **[Enterprise Governance Rollout](docs/enterprise/playbooks/enterprise-governance-rollout.md):** Scale adoption using Policy Cards and the Zero-Trust Gateway.
+- 🤝 **[Alignment Workshop Template](docs/enterprise/workshop-template.md):** Structure a kick-off meeting with Platform, Security, and SMEs.
+
+## 7. Enterprise Maturity Status
 
 | Component | Status | Evidence |
 |---|---|---|
@@ -81,7 +92,7 @@ Read the full [CLI Specification](docs/specs/cli.md) for advanced commands like 
 | **Security & Evals** | Beta | CI pipeline with adversarial PI scenarios |
 | **Observability** | Beta | OpenTelemetry instrumented spans |
 
-## 7. Roadmap & Governance
+## 8. Roadmap & Governance
 ContextOps evolves as a formal specification. To ensure a stable ecosystem for agent-ready context packs, we maintain strict versioning and compatibility guarantees.
 
 - **[Specification Governance](docs/specs/README.md):** Rules for semantic versioning, breaking changes, and deprecation.
