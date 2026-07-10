@@ -71,12 +71,13 @@ _AKCP is not published to npm yet. Use the local workspace flow above._
 
 For full details on all 22 commands, see [docs/cli/usage.md](docs/cli/usage.md) and [docs/specs/cli.md](docs/specs/cli.md).
 
-## Example domains
+## Flagship demos
 
-To prove the model-independent nature of the compiler, this repository ships with `examples/domains/`.
+To prove the model-independent nature of the compiler and its enterprise value, this repository ships with `examples/domains/`.
 
-- **Career Knowledge Demo** (resumes, skills, applications).
-- **IT Operations** and **Software Projects** are included to prove cross-industry extensibility.
+- **IT Operations Flagship**: The primary enterprise demo. Showcases platform runbooks, incident response, strict policy-controlled actions, and MCP runtime governance with Human-In-The-Loop (HITL) gates.
+- **Career Knowledge Demo**: An individual, approachable onboarding demo.
+- **Software Projects**: Included to prove cross-industry extensibility.
 
 ## MCP integration
 

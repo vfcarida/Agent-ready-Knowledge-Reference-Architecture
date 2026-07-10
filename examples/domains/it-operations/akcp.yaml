@@ -1,17 +1,32 @@
-bundle:
-  name: it-operations-example
-  version: "0.1.0"
-  description: "Example AKCP bundle for an IT operations team."
-  profile: it-operations
+project:
+  name: it-operations-flagship
+  profile: enterprise-it-operations
 
 compile:
+  sources:
+    - type: okf-directory
+      path: ./services
+    - type: okf-directory
+      path: ./runbooks
+    - type: okf-directory
+      path: ./incidents
+    - type: okf-directory
+      path: ./policies
+      
   targets:
-    - ir-json
-    - openwiki-docs
-    - eval-dataset
+    - type: ir-json
+      out: dist/agent-knowledge-ir.json
+    - type: mcp-resources-manifest
+      out: dist/mcp-resources.json
+    - type: eval-dataset
+      out: dist/eval-dataset.jsonl
+    - type: okf-bundle
+      out: dist/okf-bundle
+    - type: policy-bundle
+      out: dist/policies.json
 
-policy:
-  defaultAutonomyLevel: read-only
-  requireApprovalFor:
-    - execute_command
-    - restart_service
+policies:
+  path: ./policies
+
+runtime:
+  mode: sandbox

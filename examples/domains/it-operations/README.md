@@ -1,39 +1,55 @@
-# IT Operations Domain Example
+# IT Operations Flagship Demo
 
-This example demonstrates an AKCP bundle for an IT operations team managing runbooks, incident procedures, and deployment guides.
+## What this demonstrates
+This is the enterprise flagship for AKCP (Agent Knowledge Compiler and Control Plane). It demonstrates how a platform engineering team can use AKCP to securely manage runbooks, incident response procedures, and deployment guides. Crucially, it showcases the **safety model**: using machine-readable Policy Cards to enforce Human-In-The-Loop (HITL) approvals for risky agent actions (like restarting services or deploying code).
 
-## What's Included
+## Scenario
+An on-call AI agent is paged for a High CPU alert on the `payment-service`. The agent:
+1. Consults the service catalog to understand the architecture.
+2. Locates the correct high-CPU runbook.
+3. Proposes an action plan.
+4. Attempts to execute a risky command (`restart_service`).
+5. Is blocked by AKCP's policy engine, which requests human approval.
+6. Only proceeds after explicit authorization, logging all actions to an audit trail.
 
-| File           | OKF Type | Description                                                    |
-| -------------- | -------- | -------------------------------------------------------------- |
-| `sample-data/` | Various  | Runbooks, incident procedures, deployment guides in OKF format |
+## Architecture
+AKCP acts as the compiler and control plane:
+- **Sources**: OpenWiki documents and OKF frontmatter in this directory.
+- **Compiler**: AKCP compiles this into an Agent Knowledge Intermediate Representation (AK-IR).
+- **Runtime**: An MCP (Model Context Protocol) Profile Server exposes this safely to the agent.
+- **Safety Engine**: Evaluates tools against Policy Cards before execution.
 
-## Running This Example
+## Knowledge Sources
+- `services/`: Service catalog entries (Auth, Payment).
+- `runbooks/`: Procedures for common alerts (High CPU, High Memory).
+- `incidents/`: Playbooks for P1/P2 incidents.
+- `policies/`: SLO definitions and governance configurations.
 
-```bash
-# Validate the bundle schema
-pnpm akcp validate ./examples/domains/it-operations/sample-data
+## Compile Pipeline
+1. Run `akcp compile --config examples/domains/it-operations/akcp.yaml`.
+2. Inspect the generated `agent-knowledge-ir.json` and `akcp-manifest.json` in `dist/`.
 
-# Compile to all targets (including eval-dataset for CI testing)
-pnpm akcp compile --bundle ./examples/domains/it-operations
+## MCP Resources, Prompts and Tools
+- **Resources**: `akcp://it-ops/services/payment-service`, `akcp://it-ops/runbooks/high-cpu`
+- **Prompts**: `triage_incident`, `prepare_change_plan`
+- **Tools (Sandboxed)**: `search_runbooks`, `simulate_command`
+- **Tools (Restricted/HITL)**: `restart_service`, `deploy_service`, `execute_command`
 
-# Check policy compliance
-pnpm akcp policy validate ./examples/domains/it-operations/.policy.yaml
-```
+## Policy and Approval Model
+We use `Policy Cards` (YAML) to configure risk constraints. For example, `restart_service` is flagged as `critical` risk and explicitly requires `requiresApproval: true`. 
 
-## Expected Results
+## Running the Demo
+Check the [WALKTHROUGH.md](./WALKTHROUGH.md) for step-by-step CLI commands.
 
-- **Scorecard:** >80/100
-- **Compilation targets:** `ir.json`, `openwiki-docs/`, and `eval-dataset.jsonl` in `dist/`
+## Expected Outputs
+- Compiled Knowledge Graph and IR json files.
+- Evaluation scorecard showing >90% policy compliance.
 
-## Governance
+## Metrics and Scorecard
+See [scorecard.md](./scorecard.md) for the readiness metrics, context budget usage, and safety coverage.
 
-This bundle applies a strict policy for IT operations. Note that `execute_command` and `restart_service` tools require explicit human approval (HITL) — never autonomous execution.
+## Safety Model
+AKCP enforces **Zero-Trust for Agents**. All commands default to dry-run or block unless explicitly allowed by a Policy Card, and high-impact side effects trigger out-of-band human approvals with TTLs.
 
-See `akcp.yaml` for the full configuration.
-
-## Use Cases
-
-- An on-call agent that retrieves the relevant runbook section during an incident.
-- A deployment agent that references the deployment procedure before executing steps.
-- A compliance agent that verifies that all operational procedures are current and approved.
+## Limitations
+- This demo runs entirely locally and uses mock tools for `restart_service` to avoid executing arbitrary shell commands on your machine.
