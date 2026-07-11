@@ -1,5 +1,5 @@
 {
-  "name": "@ocf/mcp-automation-server",
+  "name": "@akcp/mcp-automation-server",
   "version": "0.1.0",
   "private": true,
   "description": "MCP Automation Server executes human-in-the-loop Playwright job application flows.",
@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "catalog:",
-    "@ocf/core": "workspace:*",
+    "@akcp/core": "workspace:*",
     "better-sqlite3": "^12.11.1",
     "ioredis": "^5.11.1",
     "playwright": "^1.49.0",

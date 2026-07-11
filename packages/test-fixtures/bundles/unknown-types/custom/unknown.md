@@ -1,5 +1,5 @@
 ---
-schemaVersion: ocf.profile/v1
+schemaVersion: akcp.profile/v1
 type: UnknownCustomType
 title: Unknown Type Document
 description: Testing how the parser handles unregistered types.

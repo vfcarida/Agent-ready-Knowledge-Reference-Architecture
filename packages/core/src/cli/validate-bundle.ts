@@ -32,7 +32,7 @@ type BundleValidationReport = {
 
 async function main() {
   const args = process.argv.slice(2);
-  let bundlePathEnv = process.env["OCF_BUNDLE_PATH"] || "./.okf";
+  let bundlePathEnv = process.env["AKCP_BUNDLE_PATH"] || "./.okf";
   let format: "text" | "json" | "markdown" = "text";
   let profileName = "career"; // default to legacy behavior
 
@@ -145,18 +145,18 @@ async function main() {
     }
   } else {
     console.log(
-      `[OCF Validator] Scanning bundle at: ${bundlePath} (Profile: ${profileName})`,
+      `[AKCP Validator] Scanning bundle at: ${bundlePath} (Profile: ${profileName})`,
     );
     for (const d of diagnostics) {
       console.error(`  ✗ [Invalid] ${d.file}:`);
       console.error(`    Reason: ${d.message}`);
     }
-    console.log(`\n[OCF Validator] Validation summary:`);
+    console.log(`\n[AKCP Validator] Validation summary:`);
     console.log(`  Valid concepts: ${validCount}`);
     console.log(`  Invalid concepts: ${invalidCount}`);
     if (report.ok) {
       console.log(
-        `[OCF Validator] All checked records are strictly schema compliant!`,
+        `[AKCP Validator] All checked records are strictly schema compliant!`,
       );
     }
   }
@@ -169,6 +169,6 @@ async function main() {
 }
 
 main().catch((err) => {
-  console.error("[OCF Validator] Unhandled exception:", err);
+  console.error("[AKCP Validator] Unhandled exception:", err);
   process.exit(1);
 });

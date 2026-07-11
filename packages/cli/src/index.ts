@@ -109,7 +109,7 @@ program
     try {
       const require = createRequire(import.meta.url);
       const validatorPath =
-        require.resolve("@ocf/core/dist/cli/validate-bundle.js");
+        require.resolve("@akcp/core/dist/cli/validate-bundle.js");
       execSync(
         `node ${validatorPath} --bundle ${targetDir} --format ${options.format} --profile ${options.profile}`,
         { encoding: "utf-8", stdio: "inherit" },
@@ -135,7 +135,7 @@ program
     console.log(`[INFO] Scanning directory ${targetDir}...`);
 
     try {
-      const { scanWorkspace, writeScanSuggestions } = await import("@ocf/core");
+      const { scanWorkspace, writeScanSuggestions } = await import("@akcp/core");
       const result = scanWorkspace(targetDir);
 
       console.log(`\n=== Scan Results ===`);
@@ -205,7 +205,7 @@ program
         GraphJsonTarget,
         ProvenanceManifestBuilder,
         hashConfig,
-      } = await import("@ocf/core");
+      } = await import("@akcp/core");
 
       const targetDir = path.resolve(process.cwd(), options.bundle);
       let config;
@@ -227,16 +227,16 @@ program
 
       // 1. Build IR
       const ir = await buildKnowledgeIR(targetDir, {
-        sources: config.compile.sources,
+        sources: config.compile?.sources,
         generateProvenance: options.provenance,
       });
       const configHashStr = options.provenance ? hashConfig(config) : "none";
 
       // 2. Select targets
-      let targetsToRun = config.compile.targets;
+      let targetsToRun: any[] = config.compile?.targets || [];
       if (options.target !== "all") {
         // filter or force
-        targetsToRun = config.compile.targets.filter(
+        targetsToRun = (config.compile?.targets || []).filter(
           (t: any) => t.type === options.target,
         );
         if (targetsToRun.length === 0) {
@@ -331,7 +331,7 @@ program
   .argument("<manifest>", "Path to akcp-manifest.json")
   .action(async (manifestPath) => {
     try {
-      const { verifyManifest } = await import("@ocf/core");
+      const { verifyManifest } = await import("@akcp/core");
       console.log(`[INFO] Verifying manifest at ${manifestPath}...`);
 
       const report = await verifyManifest(manifestPath);
@@ -399,7 +399,7 @@ program
       `[INFO] Importing from ${source} (${options.input}) to ${options.output}...`,
     );
     try {
-      const { importSource } = await import("@ocf/core");
+      const { importSource } = await import("@akcp/core");
 
       const report = await importSource(
         source.toLowerCase() as "openwiki" | "okf",
@@ -449,15 +449,15 @@ program
 
     try {
       const require = createRequire(import.meta.url);
-      const serverPath = require.resolve("@ocf/mcp-profile-server");
+      const serverPath = require.resolve("@akcp/mcp-profile-server");
       const { spawn } = await import("child_process");
 
       const child = spawn("node", [serverPath], {
         stdio: "inherit",
         env: {
           ...process.env,
-          OCF_BUNDLE_PATH: targetDir,
-          OCF_IR_PATH: irPath,
+          AKCP_BUNDLE_PATH: targetDir,
+          AKCP_IR_PATH: irPath,
         },
       });
 
@@ -501,7 +501,7 @@ program
   .action(async () => {
     console.log(`[INFO] Synchronizing agent instructions...`);
     try {
-      const { syncAgentInstructions } = await import("@ocf/core");
+      const { syncAgentInstructions } = await import("@akcp/core");
       const targetDir = process.cwd();
 
       const filesToSync = [
@@ -549,7 +549,7 @@ program
   .action(async (options) => {
     console.log(`[INFO] Validating config file: ${options.file}`);
     try {
-      const { loadAkcpConfig } = await import("@ocf/core");
+      const { loadAkcpConfig } = await import("@akcp/core");
       const configPath = path.resolve(process.cwd(), options.file);
       loadAkcpConfig(configPath);
       console.log(`[OK] Configuration is valid.`);
@@ -570,7 +570,7 @@ policyCmd
   .argument("<file>", "Path to the .policy.yaml file")
   .action(async (file) => {
     try {
-      const { loadPolicy } = await import("@ocf/core");
+      const { loadPolicy } = await import("@akcp/core");
       const path = await import("path");
       const fullPath = path.resolve(process.cwd(), file);
       loadPolicy(fullPath);
@@ -587,7 +587,7 @@ policyCmd
   .argument("<file>", "Path to the .policy.yaml file")
   .action(async (file) => {
     try {
-      const { loadPolicy, explainPolicy } = await import("@ocf/core");
+      const { loadPolicy, explainPolicy } = await import("@akcp/core");
       const path = await import("path");
       const fullPath = path.resolve(process.cwd(), file);
       const policy = loadPolicy(fullPath);
@@ -606,7 +606,7 @@ program
   .action(async (options) => {
     try {
       const { loadAkcpConfig, generateBuildPlan, printBuildPlan } =
-        await import("@ocf/core");
+        await import("@akcp/core");
       const configPath = path.resolve(process.cwd(), options.file);
       const config = loadAkcpConfig(configPath);
       const plan = generateBuildPlan(config);
@@ -629,7 +629,7 @@ program
       `[INFO] Reconciling state (${isDryRun ? "dry-run" : "active"}) using ${options.file}...`,
     );
     try {
-      const { loadAkcpConfig, reconcile } = await import("@ocf/core");
+      const { loadAkcpConfig, reconcile } = await import("@akcp/core");
       const configPath = path.resolve(process.cwd(), options.file);
       const config = loadAkcpConfig(configPath);
 
@@ -663,7 +663,7 @@ graphCmd
     // Equivalent to akcp compile --target graph-json
     try {
       const { loadAkcpConfig, buildKnowledgeIR, GraphJsonTarget } =
-        await import("@ocf/core");
+        await import("@akcp/core");
       const targetDir = path.resolve(process.cwd(), options.bundle);
 
       let config;
@@ -677,7 +677,7 @@ graphCmd
 
       console.log(`[INFO] Building Knowledge Graph from ${targetDir}`);
       const ir = await buildKnowledgeIR(targetDir, {
-        sources: config.compile.sources,
+        sources: config.compile?.sources,
       });
 
       const targetImpl = new GraphJsonTarget();
@@ -803,7 +803,7 @@ contextCmd
         loadAkcpConfig,
         FileSystemAdapter,
         FrontmatterParser,
-      } = await import("@ocf/core");
+      } = await import("@akcp/core");
       const path = await import("path");
 
       const configPath = path.resolve(process.cwd(), "akcp.yaml");
@@ -887,7 +887,7 @@ lifecycleCmd
   .action(async () => {
     try {
       const { OKFFileRepository, Freshness, loadAkcpConfig } =
-        await import("@ocf/core");
+        await import("@akcp/core");
       const path = await import("path");
 
       const configPath = path.resolve(process.cwd(), "akcp.yaml");
@@ -906,7 +906,7 @@ lifecycleCmd
       }
 
       const { FileSystemAdapter, FrontmatterParser } =
-        await import("@ocf/core");
+        await import("@akcp/core");
       const repo = new OKFFileRepository(
         new FileSystemAdapter(),
         new FrontmatterParser(),
@@ -973,11 +973,11 @@ conformanceCmd
   .command("run")
   .description("Run conformance suite on a target bundle")
   .requiredOption("-b, --bundle <directory>", "Path to the context bundle")
-  .option("-p, --profile <profile>", "OCF profile to test against", "career")
+  .option("-p, --profile <profile>", "AKCP profile to test against", "career")
   .option("-f, --format <format>", "Output format (text or json)", "text")
   .action(async (options) => {
     try {
-      const { ConformanceRunner } = await import("@ocf/conformance");
+      const { ConformanceRunner } = await import("@akcp/conformance");
       const path = await import("path");
       const bundlePath = path.resolve(process.cwd(), options.bundle);
 
@@ -993,8 +993,8 @@ conformanceCmd
             label: "Level 1: OKF-compatible (Base Spec)",
           },
           {
-            name: "OCF-profile-compatible",
-            label: "Level 2: OCF-profile-compatible",
+            name: "AKCP-profile-compatible",
+            label: "Level 2: AKCP-profile-compatible",
           },
           {
             name: "AKCP-compiler-compatible",
@@ -1007,7 +1007,7 @@ conformanceCmd
         ];
 
         console.log("\n=============================================");
-        console.log("         OCF/AKCP CONFORMANCE REPORT");
+        console.log("         AKCP CONFORMANCE REPORT");
         console.log("=============================================");
         console.log(`Bundle Path:       ${bundlePath}`);
         console.log(`Profile:           ${options.profile}`);
@@ -1077,7 +1077,7 @@ program
   .action(async (options) => {
     try {
       const { loadAkcpConfig, buildKnowledgeIR, calculateScorecard } =
-        await import("@ocf/core");
+        await import("@akcp/core");
       const { formatScorecardMarkdown } =
         await import("./formatters/markdown.js");
       const fs = await import("fs");
@@ -1096,11 +1096,11 @@ program
 
       console.log(`[INFO] Building IR for Scorecard from ${targetDir}`);
       const ir = await buildKnowledgeIR(targetDir, {
-        sources: config.compile.sources,
+        sources: config.compile?.sources,
       });
 
       // Collect raw files to pass to scorecard calculation
-      const { FileSystemAdapter } = await import("@ocf/core");
+      const { FileSystemAdapter } = await import("@akcp/core");
       const fsAdapter = new FileSystemAdapter();
       const rawPaths = await fsAdapter.listFiles(targetDir, "");
       const rawFiles = await Promise.all(
@@ -1140,7 +1140,7 @@ pluginCmd
   .option("-d, --dir <directory>", "Directory containing plugins", "./plugins")
   .action(async (options) => {
     try {
-      const { PluginRegistry } = await import("@ocf/core");
+      const { PluginRegistry } = await import("@akcp/core");
       const path = await import("path");
       const pluginsDir = path.resolve(process.cwd(), options.dir);
 
@@ -1180,7 +1180,7 @@ pluginCmd
   .argument("<directory>", "Path to the plugin directory")
   .action(async (directory) => {
     try {
-      const { PluginLoader } = await import("@ocf/core");
+      const { PluginLoader } = await import("@akcp/core");
       const path = await import("path");
       const pluginDir = path.resolve(process.cwd(), directory);
 
@@ -1194,6 +1194,43 @@ pluginCmd
       console.log(`Permissions: ${manifest.permissions.join(", ") || "none"}`);
     } catch (err: any) {
       console.error(`[ERROR] Plugin validation failed: ${err.message}`);
+      process.exit(1);
+    }
+  });
+
+// ==========================================
+// Privacy Subcommands
+// ==========================================
+const privacyCmd = program
+  .command("privacy")
+  .description("Manage PII redaction and privacy compliance");
+
+privacyCmd
+  .command("redact")
+  .description("Redact or tokenize PII from text")
+  .requiredOption("-t, --text <text>", "Text to analyze and redact")
+  .option("-m, --mode <mode>", "Redaction mode (redact, tokenize, detect-only)", "redact")
+  .action(async (options) => {
+    try {
+      const { PiiRedactor } = await import("@akcp/core");
+      const redactor = new PiiRedactor();
+      const result = await redactor.redact(options.text, { mode: options.mode as any });
+      
+      console.log(`\n=== PII Redaction Result ===`);
+      console.log(`Original:  ${options.text}`);
+      console.log(`Redacted:  ${result.redactedText}`);
+      console.log(`Findings:  ${result.findings.length}`);
+      console.log(`Blocked:   ${result.blocked}`);
+      
+      if (result.findings.length > 0) {
+        console.log("\nDetails:");
+        result.findings.forEach((f: any) => {
+          console.log(`  - [${f.type.toUpperCase()}] "${f.value}" (pos: ${f.start}-${f.end})`);
+        });
+      }
+      console.log("============================\n");
+    } catch (err: any) {
+      console.error(`[ERROR] Redaction failed: ${err.message}`);
       process.exit(1);
     }
   });
@@ -1212,7 +1249,7 @@ _akcp_completion() {
   COMPREPLY=()
   cur="\${COMP_WORDS[COMP_CWORD]}"
   prev="\${COMP_WORDS[COMP_CWORD-1]}"
-  opts="init validate scan compile inspect-artifact verify diff import serve:mcp doctor agents config policy plan reconcile graph context lifecycle conformance scorecard plugin"
+  opts="init validate scan compile inspect-artifact verify diff import serve:mcp doctor agents config policy plan reconcile graph context lifecycle conformance scorecard plugin privacy"
   
   if [[ \${COMP_CWORD} -eq 1 ]] ; then
     COMPREPLY=( \$(compgen -W "\${opts}" -- \${cur}) )
@@ -1248,6 +1285,7 @@ _akcp() {
     'conformance:Run conformance suite to certify OKF/AKCP compatibility (run)'
     'scorecard:Calculate Agent Knowledge Readiness Scorecard'
     'plugin:Manage AKCP build-time plugins (list, validate)'
+    'privacy:Manage PII redaction and privacy compliance (redact)'
   )
   _describe -t commands 'akcp commands' commands
 }

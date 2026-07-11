@@ -14,7 +14,7 @@ describe("Policy Loader", () => {
     await fs.writeFile(
       validPolicyPath,
       `
-apiVersion: policy.ocf.dev/v1alpha1
+apiVersion: policy.akcp.dev/v1alpha1
 kind: PolicyCard
 metadata:
   name: Test Policy
@@ -34,7 +34,7 @@ spec:
     await fs.writeFile(
       invalidPolicyPath,
       `
-apiVersion: policy.ocf.dev/v1alpha1
+apiVersion: policy.akcp.dev/v1alpha1
 kind: PolicyCard
 metadata:
   name: Test Policy

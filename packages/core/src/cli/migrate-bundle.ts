@@ -16,10 +16,10 @@ async function main() {
 
   // Filter out flags to get target path
   const targetArg = args.find((a) => !a.startsWith("--"));
-  const bundlePathEnv = targetArg || process.env["OCF_BUNDLE_PATH"] || "./.okf";
+  const bundlePathEnv = targetArg || process.env["AKCP_BUNDLE_PATH"] || "./.okf";
   const bundlePath = path.resolve(bundlePathEnv);
 
-  console.log(`[OCF Migrator] Starting migration pipeline at: ${bundlePath}`);
+  console.log(`[AKCP Migrator] Starting migration pipeline at: ${bundlePath}`);
   console.log(`  Flags: write=${write}, backup=${backup}`);
 
   const fsAdapter = new FileSystemAdapter();
@@ -31,11 +31,11 @@ async function main() {
   });
 
   if (!report.success) {
-    console.error(`[OCF Migrator] Fatal migration failure: ${report.error}`);
+    console.error(`[AKCP Migrator] Fatal migration failure: ${report.error}`);
     process.exit(1);
   }
 
-  console.log(`\n[OCF Migrator] Run summary:`);
+  console.log(`\n[AKCP Migrator] Run summary:`);
   console.log(`  Files checked: ${report.filesChecked}`);
   console.log(`  Files needing migration: ${report.filesNeedingMigration}`);
   console.log(`  Files migrated: ${report.filesMigrated}`);
@@ -46,7 +46,7 @@ async function main() {
 
   if (report.filesNeedingMigration > 0 && !write) {
     console.log(
-      `\n[OCF Migrator] WARNING: Legacy files detected. Re-run with '--write' to execute migrations.`,
+      `\n[AKCP Migrator] WARNING: Legacy files detected. Re-run with '--write' to execute migrations.`,
     );
   }
 
@@ -54,6 +54,6 @@ async function main() {
 }
 
 main().catch((err) => {
-  console.error("[OCF Migrator] Unhandled exception:", err);
+  console.error("[AKCP Migrator] Unhandled exception:", err);
   process.exit(1);
 });

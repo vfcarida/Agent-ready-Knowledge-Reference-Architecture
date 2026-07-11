@@ -98,8 +98,8 @@ export default function App() {
             Welcome to Agent Knowledge Compiler and Control Plane
           </h2>
           <p className="text-zinc-400 text-sm max-w-lg mb-10 leading-relaxed">
-            A privacy-first career manager. All your experience, skills, and
-            vacancy applications live locally on your machine in Markdown files.
+            The open-source compiler and control plane for turning organizational
+            knowledge into versioned, governed, cost-efficient, agent-consumable artifacts.
           </p>
 
           {/* Cards for features */}
@@ -107,12 +107,12 @@ export default function App() {
             <div className="glass-panel p-6 rounded-2xl">
               <ShieldCheck className="w-8 h-8 text-neon-blue mb-3" />
               <h4 className="font-semibold text-zinc-100 mb-1">
-                Privacy-by-Design
+                Zero-Trust Governance
               </h4>
               <p className="text-xs text-zinc-400 leading-relaxed">
-                Zero remote database hosting. No personal identifiable
-                information (PII) gets sent to external servers. You own your
-                career data.
+                Strict boundaries for agentic execution. Machine-readable policy
+                cards and HITL (Human-In-The-Loop) gateways ensure absolute control
+                over agent side-effects.
               </p>
             </div>
 

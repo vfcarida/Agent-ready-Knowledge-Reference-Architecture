@@ -1,16 +1,16 @@
 import { describe, it, expect } from "vitest";
-import { ContextPacker } from "@ocf/core";
-import type { OKFDocument } from "@ocf/core";
+import { ContextPacker } from "@akcp/core";
+import type { OKFDocument } from "@akcp/core";
 import {
   localDeveloperPolicy,
   regulatedEnterprisePolicy,
   PolicyEngine,
-} from "@ocf/core";
-import type { CapabilityManifest } from "@ocf/core";
+} from "@akcp/core";
+import type { CapabilityManifest } from "@akcp/core";
 
 const mockCapabilities: CapabilityManifest[] = [
   {
-    id: "ocf.auto.prepare",
+    id: "akcp.auto.prepare",
     name: "prepare_application",
     kind: "tool",
     version: "1.0.0",
@@ -20,7 +20,7 @@ const mockCapabilities: CapabilityManifest[] = [
     requiredApproval: false,
   },
   {
-    id: "ocf.auto.confirm",
+    id: "akcp.auto.confirm",
     name: "confirm_application_submission",
     kind: "tool",
     version: "1.0.0",

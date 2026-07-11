@@ -19,9 +19,9 @@ A feature, name, or variable is marked as deprecated if it is currently supporte
 
 ### Environment Variables
 
-- **Legacy:** `OCF_*` (e.g., `OCF_BUNDLE_PATH`)
+- **Legacy:** `AKCP_*` (e.g., `AKCP_BUNDLE_PATH`)
 - **Status:** Deprecated Fallback.
-- **Action:** If `AKCP_*` is not found, the system checks for `OCF_*`. If found, it emits a console warning and uses the value.
+- **Action:** If `AKCP_*` is not found, the system checks for `AKCP_*`. If found, it emits a console warning and uses the value.
 - **Removal Date:** Next major release (v1.0.0).
 
 ### MCP URIs
@@ -33,6 +33,6 @@ A feature, name, or variable is marked as deprecated if it is currently supporte
 
 ### NPM Packages
 
-- **Legacy:** `@ocf/*`
+- **Legacy:** `@akcp/*`
 - **Status:** Maintained (Strategy B).
-- **Action:** The physical package names remain `@ocf/*` in `package.json` to prevent massive breakage, but all public-facing documentation must use `@akcp/*`. Internal aliases will be provided in the future for seamless migration.
+- **Action:** The physical package names remain `@akcp/*` in `package.json` to prevent massive breakage, but all public-facing documentation must use `@akcp/*`. Internal aliases will be provided in the future for seamless migration.

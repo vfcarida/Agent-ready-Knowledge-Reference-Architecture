@@ -12,9 +12,9 @@ Initially, the Model Context Protocol (MCP) server was a monolithic package expo
 
 We decouple the server into two specialised MCP servers:
 
-1.  `@ocf/mcp-profile-server`: Exposes read-only OKF files and lifecycle schemas.
-2.  `@ocf/mcp-automation-server`: Exposes high-risk browser automation drivers.
-    The original `@ocf/mcp-server` remains as a compatibility layer.
+1.  `@akcp/mcp-profile-server`: Exposes read-only OKF files and lifecycle schemas.
+2.  `@akcp/mcp-automation-server`: Exposes high-risk browser automation drivers.
+    The original `@akcp/mcp-server` remains as a compatibility layer.
 
 ## Consequences
 

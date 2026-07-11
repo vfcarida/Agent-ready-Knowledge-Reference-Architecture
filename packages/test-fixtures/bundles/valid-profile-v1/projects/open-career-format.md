@@ -1,5 +1,5 @@
 ---
-schemaVersion: ocf.profile/v1
+schemaVersion: akcp.profile/v1
 type: Project
 title: Agent Knowledge Compiler and Control Plane
 description: An enterprise-grade reference architecture for building akcp knowledge bases.

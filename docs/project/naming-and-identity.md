@@ -32,14 +32,14 @@ Examples: `AKCP_BUNDLE_PATH`, `AKCP_IR_PATH`, `AKCP_CONFIG_PATH`, `AKCP_RUNTIME_
 ## Packages
 
 The ultimate target for NPM packages is `@akcp/*`.
-Currently, for compatibility (Strategy B), the `@ocf/*` packages are maintained under their legacy names in npm, but are documented publicly as `@akcp/*`.
+Currently, for compatibility (Strategy B), the `@akcp/*` packages are maintained under their legacy names in npm, but are documented publicly as `@akcp/*`.
 
 ## Legacy and Forbidden Terms
 
 The following terms are considered legacy and must not be used in new documentation or code:
 
-- Open Career Format
-- Open Career Format Orchestrator
+- Agent Knowledge Compiler and Control Plane
+- Agent Knowledge Compiler and Control Plane
 - OCF
 - Agent-ready Knowledge Reference Architecture
 - Agent-ready

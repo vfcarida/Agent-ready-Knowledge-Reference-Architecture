@@ -1,6 +1,6 @@
 # OCF Metrics Dictionary
 
-The following metrics are exposed via the `@ocf/core` OpenTelemetry Meter:
+The following metrics are exposed via the `@akcp/core` OpenTelemetry Meter:
 
 ## Counters
 

@@ -1,0 +1,36 @@
+{
+  "policyCardVersion": "akcp.policy/v1",
+  "id": "support.refund.v1",
+  "title": "Refund Policy Runtime Controls",
+  "domain": "customer-support",
+  "appliesTo": [
+    "preview_support_action",
+    "request_support_action_approval",
+    "draft_support_reply"
+  ],
+  "riskLevel": "high",
+  "constraints": [
+    {
+      "id": "refund.requires_approval",
+      "description": "Refund actions require human approval before execution.",
+      "enforcement": "block_without_approval"
+    },
+    {
+      "id": "refund.max_amount",
+      "description": "Refunds above configured limit require manager escalation.",
+      "enforcement": "escalate"
+    }
+  ],
+  "evidenceRequirements": [
+    "policyCitation",
+    "ticketId",
+    "orderId",
+    "payloadHash",
+    "approvalRecord"
+  ],
+  "audit": {
+    "logLevel": "structured",
+    "redactPii": true,
+    "retentionDays": 30
+  }
+}

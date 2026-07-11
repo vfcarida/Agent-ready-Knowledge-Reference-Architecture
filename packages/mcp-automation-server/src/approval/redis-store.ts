@@ -4,7 +4,7 @@ import type { IApprovalStore, PendingApproval, AuditLog } from "./types.js";
 
 export class RedisApprovalStore implements IApprovalStore {
   private redis: Redis;
-  private prefix = "ocf:approval:";
+  private prefix = "akcp:approval:";
 
   constructor(redisUrl?: string) {
     this.redis = new Redis(

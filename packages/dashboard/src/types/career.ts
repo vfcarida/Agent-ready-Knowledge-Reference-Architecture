@@ -1,4 +1,4 @@
-import type { OKFFrontmatter } from "@ocf/core";
+import type { OKFFrontmatter } from "@akcp/core";
 
 export interface OKFDoc {
   frontmatter: OKFFrontmatter;

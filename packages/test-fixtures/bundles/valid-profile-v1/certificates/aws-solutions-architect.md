@@ -1,5 +1,5 @@
 ---
-schemaVersion: ocf.profile/v1
+schemaVersion: akcp.profile/v1
 type: Certificate
 title: AWS Certified Solutions Architect - Associate
 description: Cloud architecture and deployment certification.

@@ -10,4 +10,4 @@ Unit tests do not capture the non-deterministic reality of LLM outputs. We need 
 
 ## Status
 
-Implemented minimal harness in `@ocf/evals`.
+Implemented minimal harness in `@akcp/evals`.

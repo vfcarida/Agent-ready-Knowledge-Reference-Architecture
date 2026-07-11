@@ -43,10 +43,10 @@ importers:
 
   packages/cli:
     dependencies:
-      "@ocf/conformance":
+      "@akcp/conformance":
         specifier: workspace:*
         version: link:../conformance
-      "@ocf/core":
+      "@akcp/core":
         specifier: workspace:*
         version: link:../core
       chalk:
@@ -65,7 +65,7 @@ importers:
 
   packages/conformance:
     dependencies:
-      "@ocf/core":
+      "@akcp/core":
         specifier: workspace:*
         version: link:../core
       zod:
@@ -124,7 +124,7 @@ importers:
       "@modelcontextprotocol/sdk":
         specifier: "catalog:"
         version: 1.29.0(zod@3.25.76)
-      "@ocf/core":
+      "@akcp/core":
         specifier: workspace:*
         version: link:../core
       cors:
@@ -191,13 +191,13 @@ importers:
 
   packages/evals:
     dependencies:
-      "@ocf/core":
+      "@akcp/core":
         specifier: workspace:*
         version: link:../core
-      "@ocf/mcp-automation-server":
+      "@akcp/mcp-automation-server":
         specifier: workspace:*
         version: link:../mcp-automation-server
-      "@ocf/mcp-profile-server":
+      "@akcp/mcp-profile-server":
         specifier: workspace:*
         version: link:../mcp-profile-server
     devDependencies:
@@ -213,7 +213,7 @@ importers:
       "@modelcontextprotocol/sdk":
         specifier: "catalog:"
         version: 1.29.0(zod@3.25.76)
-      "@ocf/core":
+      "@akcp/core":
         specifier: workspace:*
         version: link:../core
       better-sqlite3:
@@ -247,7 +247,7 @@ importers:
       "@modelcontextprotocol/sdk":
         specifier: "catalog:"
         version: 1.29.0(zod@3.25.76)
-      "@ocf/core":
+      "@akcp/core":
         specifier: workspace:*
         version: link:../core
       zod:

@@ -28,7 +28,7 @@ import {
   ContextPacker,
   MCPGateway,
   type GatewayConfig,
-} from "@ocf/core";
+} from "@akcp/core";
 import { profileServerCapabilities } from "./capabilities.js";
 
 export class AKCPProfileServer {
@@ -85,10 +85,10 @@ export class AKCPProfileServer {
       },
     );
 
-    // Resource: ocf://index
+    // Resource: akcp://index
     this.server.resource(
-      "ocf-index",
-      "ocf://index",
+      "akcp-index",
+      "akcp://index",
       {
         mimeType: "text/markdown",
         description:
@@ -99,7 +99,7 @@ export class AKCPProfileServer {
         return {
           contents: [
             {
-              uri: "ocf://index",
+              uri: "akcp://index",
               mimeType: "text/markdown",
               text: doc ? doc.body : "# Bundle Index empty",
             },
@@ -130,10 +130,10 @@ export class AKCPProfileServer {
       },
     );
 
-    // Resource: ocf://log
+    // Resource: akcp://log
     this.server.resource(
-      "ocf-log",
-      "ocf://log",
+      "akcp-log",
+      "akcp://log",
       {
         mimeType: "text/markdown",
         description: "Audit log tracking bundle modifications",
@@ -143,7 +143,7 @@ export class AKCPProfileServer {
         return {
           contents: [
             {
-              uri: "ocf://log",
+              uri: "akcp://log",
               mimeType: "text/markdown",
               text: doc ? doc.body : "# Bundle Log empty",
             },
@@ -178,10 +178,10 @@ export class AKCPProfileServer {
       },
     );
 
-    // Resource template: ocf://documents/{conceptId}
+    // Resource template: akcp://documents/{conceptId}
     this.server.resource(
-      "ocf-document",
-      new ResourceTemplate("ocf://documents/{conceptId}", { list: undefined }),
+      "akcp-document",
+      new ResourceTemplate("akcp://documents/{conceptId}", { list: undefined }),
       async (uri, { conceptId }) => {
         if (typeof conceptId !== "string") {
           throw new Error("conceptId must be a string");

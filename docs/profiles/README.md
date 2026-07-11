@@ -50,4 +50,4 @@ Since profiles define structured metadata, they can evolve. When breaking change
 
 1. Embed a `profileVersion` field inside the `.okf/index.md` frontmatter (e.g., `profileVersion: 1.2.0`).
 2. Have your Agent/CLI read `index.md` first before initializing the Profile Schema.
-3. Migrate older `.okf` files using the `@ocf/core` migration tools to adhere to the latest schema definitions.
+3. Migrate older `.okf` files using the `@akcp/core` migration tools to adhere to the latest schema definitions.

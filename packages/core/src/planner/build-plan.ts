@@ -20,7 +20,7 @@ export interface BuildPlan {
  * The build plan dictates exactly what compile/reconcile will do.
  */
 export function generateBuildPlan(config: AkcpConfig): BuildPlan {
-  const sourcesToRead = config.compile.sources.map((s) => {
+  const sourcesToRead = (config.compile?.sources || []).map((s) => {
     let desc = s.path || s.url || s.type;
     if (s.exclude && s.exclude.length > 0) {
       desc += ` (excluding ${s.exclude.join(", ")})`;
@@ -45,12 +45,12 @@ export function generateBuildPlan(config: AkcpConfig): BuildPlan {
 
   return {
     sourcesToRead,
-    targetsToGenerate: config.compile.targets.map(
+    targetsToGenerate: (config.compile?.targets || []).map(
       (t) => `${t.type} (${t.out})`,
     ),
     budgets: {
-      maxTokens: config.compile.budgets?.maxTokens,
-      maxDocuments: config.compile.budgets?.maxDocuments,
+      maxTokens: config.compile?.budgets?.maxTokens,
+      maxDocuments: config.compile?.budgets?.maxDocuments,
     },
     activePolicies,
     activeEvalGates,

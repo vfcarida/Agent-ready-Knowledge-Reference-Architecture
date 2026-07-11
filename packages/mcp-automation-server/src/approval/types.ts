@@ -5,7 +5,7 @@ export interface ApprovalPayload {
   metadata?: Record<string, unknown>;
 }
 
-export type { PendingApproval, IApprovalStore } from "@ocf/core";
+export type { PendingApproval, IApprovalStore } from "@akcp/core";
 
 export interface AuditLog {
   id?: number | string;

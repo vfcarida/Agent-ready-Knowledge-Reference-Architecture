@@ -9,7 +9,7 @@
 /**
  * Base class for all MCP server related errors.
  */
-export class OCFMCPError extends Error {
+export class AKCPMCPError extends Error {
   public readonly code: string;
   public readonly details?: Record<string, unknown>;
 
@@ -19,7 +19,7 @@ export class OCFMCPError extends Error {
     details?: Record<string, unknown>,
   ) {
     super(message);
-    this.name = "OCFMCPError";
+    this.name = "AKCPMCPError";
     this.code = code;
     this.details = details;
     Object.setPrototypeOf(this, new.target.prototype);
@@ -38,7 +38,7 @@ export class OCFMCPError extends Error {
 /**
  * Thrown when an MCP tool execution fails.
  */
-export class MCPToolExecutionError extends OCFMCPError {
+export class MCPToolExecutionError extends AKCPMCPError {
   constructor(
     toolName: string,
     message: string,
@@ -56,7 +56,7 @@ export class MCPToolExecutionError extends OCFMCPError {
 /**
  * Thrown when trying to orchestrate an application on an unsupported platform.
  */
-export class PlatformNotSupportedError extends OCFMCPError {
+export class PlatformNotSupportedError extends AKCPMCPError {
   constructor(url: string) {
     super(
       `The job application URL "${url}" is on a platform that is not supported yet. ` +
@@ -71,7 +71,7 @@ export class PlatformNotSupportedError extends OCFMCPError {
 /**
  * Thrown during browser automation when page actions or page object elements fail.
  */
-export class AutomationError extends OCFMCPError {
+export class AutomationError extends AKCPMCPError {
   constructor(
     platform: string,
     step: string,

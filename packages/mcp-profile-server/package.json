@@ -1,5 +1,5 @@
 {
-  "name": "@ocf/mcp-profile-server",
+  "name": "@akcp/mcp-profile-server",
   "version": "0.1.0",
   "private": true,
   "description": "MCP Profile Server manages the candidates OKF bundle files query and lifecycle validations.",
@@ -16,7 +16,7 @@
   "dependencies": {
     "@modelcontextprotocol/sdk": "catalog:",
     "zod": "catalog:",
-    "@ocf/core": "workspace:*"
+    "@akcp/core": "workspace:*"
   },
   "devDependencies": {
     "typescript": "catalog:",

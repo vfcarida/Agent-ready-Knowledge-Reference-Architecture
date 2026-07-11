@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { syncAgentInstructions } from "@ocf/core";
+import { syncAgentInstructions } from "@akcp/core";
 
 describe("Agent Instructions Sync", () => {
   const START_MARKER = "<!-- akcp:start -->";

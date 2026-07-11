@@ -31,10 +31,10 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build Core
-        run: pnpm --filter @ocf/core build
+        run: pnpm --filter @akcp/core build
 
       - name: Build Dashboard Server
-        run: pnpm --filter @ocf/dashboard build
+        run: pnpm --filter @akcp/dashboard build
 
       - name: Run Evals
         run: pnpm evals

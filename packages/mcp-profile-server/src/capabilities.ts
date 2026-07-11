@@ -1,8 +1,8 @@
-import type { CapabilityManifest } from "@ocf/core";
+import type { CapabilityManifest } from "@akcp/core";
 
 export const profileServerCapabilities: CapabilityManifest[] = [
   {
-    id: "ocf.profile.list_documents",
+    id: "akcp.profile.list_documents",
     name: "list_documents",
     kind: "tool",
     version: "1.0.0",
@@ -13,7 +13,7 @@ export const profileServerCapabilities: CapabilityManifest[] = [
     requiredApproval: false,
   },
   {
-    id: "ocf.profile.read_document",
+    id: "akcp.profile.read_document",
     name: "read_document",
     kind: "tool",
     version: "1.0.0",
@@ -24,7 +24,7 @@ export const profileServerCapabilities: CapabilityManifest[] = [
     requiredApproval: false,
   },
   {
-    id: "ocf.profile.create_document",
+    id: "akcp.profile.create_document",
     name: "create_document",
     kind: "tool",
     version: "1.0.0",
@@ -35,7 +35,7 @@ export const profileServerCapabilities: CapabilityManifest[] = [
     requiredApproval: true,
   },
   {
-    id: "ocf.profile.update_document",
+    id: "akcp.profile.update_document",
     name: "update_document",
     kind: "tool",
     version: "1.0.0",
@@ -46,7 +46,7 @@ export const profileServerCapabilities: CapabilityManifest[] = [
     requiredApproval: true,
   },
   {
-    id: "ocf.profile.delete_document",
+    id: "akcp.profile.delete_document",
     name: "delete_document",
     kind: "tool",
     version: "1.0.0",
@@ -57,7 +57,7 @@ export const profileServerCapabilities: CapabilityManifest[] = [
     requiredApproval: true,
   },
   {
-    id: "ocf.profile.validate_bundle",
+    id: "akcp.profile.validate_bundle",
     name: "validate_bundle",
     kind: "tool",
     version: "1.0.0",
@@ -68,7 +68,7 @@ export const profileServerCapabilities: CapabilityManifest[] = [
     requiredApproval: false,
   },
   {
-    id: "ocf.profile.migrate_bundle",
+    id: "akcp.profile.migrate_bundle",
     name: "migrate_bundle",
     kind: "tool",
     version: "1.0.0",
@@ -79,7 +79,7 @@ export const profileServerCapabilities: CapabilityManifest[] = [
     requiredApproval: true,
   },
   {
-    id: "ocf.profile.rebuild_indexes",
+    id: "akcp.profile.rebuild_indexes",
     name: "rebuild_indexes",
     kind: "tool",
     version: "1.0.0",
@@ -90,7 +90,7 @@ export const profileServerCapabilities: CapabilityManifest[] = [
     requiredApproval: true,
   },
   {
-    id: "ocf.profile.build_context_pack",
+    id: "akcp.profile.build_context_pack",
     name: "build_context_pack",
     kind: "tool",
     version: "1.0.0",

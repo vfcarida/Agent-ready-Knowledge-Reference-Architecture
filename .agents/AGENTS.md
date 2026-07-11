@@ -6,7 +6,7 @@
 
 ## 1. Project Purpose
 
-ContextOps Orchestrator - Managing AI Agent Knowledge via Open Career Format (OKF) and Context Packs.
+ContextOps Orchestrator - Managing AI Agent Knowledge via Agent Knowledge Compiler and Control Plane (OKF) and Context Packs.
 
 ## 2. Architecture Boundaries
 

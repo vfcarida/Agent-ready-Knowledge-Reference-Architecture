@@ -12,9 +12,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - OCF Profile v1 schemas mapped over Open Knowledge Format (OKF).
-- Model Context Protocol (MCP) servers (`@ocf/mcp-profile-server`, `@ocf/mcp-automation-server`).
+- Model Context Protocol (MCP) servers (`@akcp/mcp-profile-server`, `@akcp/mcp-automation-server`).
 - Centralized ApprovalStore via `better-sqlite3` providing time-limited (TTL) token validation.
-- CLEAR metrics evaluation engine (`@ocf/evals`).
+- CLEAR metrics evaluation engine (`@akcp/evals`).
 - OpenTelemetry observability metrics, histograms, and tracing spans for MCP tools.
 - CI/CD Workflows for CodeQL, Dependency Review, and Code validation.
 - Structured `ToolSuccess<T>` and `ToolFailure` JSON contracts for all MCP tools.

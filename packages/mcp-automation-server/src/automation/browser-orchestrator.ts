@@ -4,7 +4,7 @@
  */
 
 import { chromium } from "playwright";
-import type { CareerContext } from "@ocf/core";
+import type { CareerContext } from "@akcp/core";
 import type { IApplicationStrategy, ApplicationResult } from "./interfaces.js";
 import { PlatformNotSupportedError } from "../errors.js";
 import { LinkedInStrategy } from "./strategies/linkedin-strategy.js";

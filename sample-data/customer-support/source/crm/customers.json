@@ -1,0 +1,26 @@
+[
+  {
+    "customerId": "cust-001",
+    "customerSegment": "premium",
+    "locale": "en-US",
+    "region": "NA",
+    "accountAgeDays": 365,
+    "entitlements": ["priority_support"],
+    "riskFlags": [],
+    "privacyLevel": "medium",
+    "piiHandling": "redact",
+    "rawEmail": "john.doe@example.com"
+  },
+  {
+    "customerId": "cust-002",
+    "customerSegment": "standard",
+    "locale": "en-US",
+    "region": "NA",
+    "accountAgeDays": 30,
+    "entitlements": [],
+    "riskFlags": ["frequent_returns"],
+    "privacyLevel": "low",
+    "piiHandling": "redact",
+    "rawPhone": "555-1234"
+  }
+]

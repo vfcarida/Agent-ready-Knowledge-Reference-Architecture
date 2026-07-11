@@ -4,7 +4,7 @@ import type { PolicyCard } from "../../policy/types.js";
 
 describe("Policy Evaluation Engine", () => {
   const strictPolicy: PolicyCard = {
-    apiVersion: "policy.ocf.dev/v1alpha1",
+    apiVersion: "policy.akcp.dev/v1alpha1",
     kind: "PolicyCard",
     metadata: { name: "Strict Policy" },
     spec: {
@@ -60,7 +60,7 @@ describe("Policy Evaluation Engine", () => {
   });
 
   const approvalPolicy: PolicyCard = {
-    apiVersion: "policy.ocf.dev/v1alpha1",
+    apiVersion: "policy.akcp.dev/v1alpha1",
     kind: "PolicyCard",
     metadata: { name: "Approval Policy" },
     spec: {

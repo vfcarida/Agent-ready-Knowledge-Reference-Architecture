@@ -1,0 +1,138 @@
+akcpVersion: "0.1"
+project:
+  id: "customer-support-acme-retail"
+  name: "Acme Retail Support"
+  domain: "customer-support"
+  description: "Synthetic enterprise customer support flagship for AKCP."
+  maturity: "beta"
+
+sources:
+  - id: "help-center"
+    type: "markdown-directory"
+    path: "source/help-center"
+    sensitivity: "public"
+  - id: "support-policies"
+    type: "markdown-directory"
+    path: "source/policies"
+    sensitivity: "internal"
+  - id: "macros"
+    type: "markdown-directory"
+    path: "source/macros"
+    sensitivity: "internal"
+  - id: "tickets"
+    type: "jsonl"
+    path: "source/tickets/tickets.jsonl"
+    sensitivity: "confidential"
+    pii: true
+  - id: "crm"
+    type: "json"
+    path: "source/crm/customers.json"
+    sensitivity: "confidential"
+    pii: true
+  - id: "orders"
+    type: "json"
+    path: "source/orders/orders.json"
+    sensitivity: "confidential"
+    pii: true
+
+privacy:
+  defaultPiiMode: "redact"
+  allowedPiiClasses:
+    - "customer_id"
+    - "order_id"
+  blockedPiiClasses:
+    - "email"
+    - "phone"
+    - "address"
+    - "credit_card"
+    - "government_id"
+    - "password"
+  redactionTokenFormat: "<PII:{type}:{stableHash}>"
+  failOnUnredactedHighRiskPii: true
+
+compiler:
+  inputFormat: "okf"
+  intermediateRepresentation: "ak-ir"
+  preserveUnknownKeys: true
+  tolerateUnknownTypes: true
+  generateSemanticGraph: true
+  generateProvenance: true
+  generateArtifactManifest: true
+
+contextBudget:
+  defaultMaxTokens: 8000
+  supportCaseMaxTokens: 4000
+  policyMaxTokens: 2000
+  includeCitations: true
+  includeRedactionReport: true
+
+targets:
+  - id: "support-context-pack"
+    type: "context-pack"
+    path: "dist/context-packs/customer-support.context.md"
+  - id: "support-mcp-resources"
+    type: "mcp-resources"
+    path: "dist/mcp-resources"
+  - id: "support-policy-bundle"
+    type: "policy-bundle"
+    path: "dist/policy-bundle/support-policy-bundle.json"
+  - id: "support-eval-dataset"
+    type: "eval-dataset"
+    path: "dist/eval-datasets/customer-support-evals.jsonl"
+  - id: "support-dashboard-metadata"
+    type: "dashboard-metadata"
+    path: "dist/dashboard/customer-support-dashboard.json"
+
+mcp:
+  resources:
+    - "support://articles"
+    - "support://policies"
+    - "support://macros"
+    - "support://tickets/redacted"
+    - "support://intents"
+    - "support://sla"
+    - "support://escalation-rules"
+    - "support://knowledge-gaps"
+  tools:
+    - "classify_support_intent"
+    - "retrieve_support_context"
+    - "draft_support_reply"
+    - "validate_support_reply"
+    - "redact_support_pii"
+    - "preview_support_action"
+    - "request_support_action_approval"
+    - "record_support_resolution"
+    - "detect_support_knowledge_gap"
+  prompts:
+    - "answer_customer_with_policy_citations"
+    - "summarize_ticket_for_handoff"
+    - "draft_macro_update"
+    - "explain_escalation_reason"
+
+policies:
+  approvalRequiredFor:
+    - "refund"
+    - "cancel_subscription"
+    - "update_shipping_address"
+    - "change_billing_method"
+    - "account_access_change"
+  forbiddenActionsByDefault:
+    - "issue_refund_live"
+    - "change_account_owner_live"
+    - "delete_customer_data_live"
+  escalationRequiredFor:
+    - "privacy_request"
+    - "fraud_risk"
+    - "legal_threat"
+    - "unredacted_high_risk_pii"
+    - "refund_over_limit"
+
+evals:
+  datasets:
+    - "dist/eval-datasets/customer-support-evals.jsonl"
+  requiredScores:
+    intentAccuracy: 0.90
+    policyCompliance: 0.95
+    piiRedactionRecall: 0.98
+    citationCoverage: 0.90
+    unsafeActionBlockRate: 1.00

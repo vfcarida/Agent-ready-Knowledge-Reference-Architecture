@@ -1,6 +1,6 @@
 ---
 type: Skill
-schemaVersion: ocf.profile/v1
+schemaVersion: akcp.profile/v1
 bundleVersion: 1.0.0
 title: TypeScript
 description: Strongly-typed JavaScript superset

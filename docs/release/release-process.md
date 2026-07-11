@@ -13,7 +13,7 @@ While the CI/CD pipeline contains a `.github/workflows/release.yml` file, it cur
 When the project matures to a state where public distribution is required, the following steps must be taken to harden the release pipeline:
 
 1. **Remove `private: true`**:
-   Update `package.json` for target packages (e.g. `@ocf/core`, `@ocf/cli`, `@ocf/mcp-profile-server`, `@ocf/mcp-automation-server`) to remove `"private": true`.
+   Update `package.json` for target packages (e.g. `@akcp/core`, `@akcp/cli`, `@akcp/mcp-profile-server`, `@akcp/mcp-automation-server`) to remove `"private": true`.
 
 2. **Implement Changesets**:
    Adopt a robust versioning tool such as [Changesets](https://github.com/changesets/changesets) to manage SemVer versioning and Changelog generation automatically across the monorepo.

@@ -1,0 +1,22 @@
+[
+  {
+    "orderId": "ord-001",
+    "customerRef": "cust-001",
+    "status": "delivered",
+    "items": ["prod-001"],
+    "totalAmount": 199.99,
+    "currency": "USD",
+    "shippingStatus": "delivered",
+    "eligibleActions": ["refund", "return"]
+  },
+  {
+    "orderId": "ord-002",
+    "customerRef": "cust-002",
+    "status": "shipped",
+    "items": ["prod-002"],
+    "totalAmount": 49.99,
+    "currency": "USD",
+    "shippingStatus": "in_transit",
+    "eligibleActions": ["cancel"]
+  }
+]

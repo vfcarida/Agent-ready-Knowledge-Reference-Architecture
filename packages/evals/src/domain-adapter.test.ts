@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import path from "path";
 import fs from "fs";
 import { fileURLToPath } from "url";
-import { FrontmatterParser } from "@ocf/core";
+import { FrontmatterParser } from "@akcp/core";
 
 describe("Domain Adapters Integration", () => {
   it("validates that software-project sample data parses as OKF", () => {

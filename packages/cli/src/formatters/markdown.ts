@@ -1,4 +1,4 @@
-import type { ScorecardReport } from "@ocf/core";
+import type { ScorecardReport } from "@akcp/core";
 
 export function formatScorecardMarkdown(report: ScorecardReport): string {
   let md = `# Agent Knowledge Readiness Scorecard\n\n`;

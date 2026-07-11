@@ -8,7 +8,7 @@ Please include a summary of the changes and the related issue or specification t
 ## Spec-Driven Development (SDD) Compliance
 
 - [ ] Architectural boundaries respected (no leaked dependencies/side-effects).
-- [ ] Zod schemas updated/created in `@ocf/core` `schemas.ts` if adding career fields.
+- [ ] Zod schemas updated/created in `@akcp/core` `schemas.ts` if adding career fields.
 - [ ] Comprehensive unit, integration, or contract tests added for changes.
 - [ ] Bundle backward compatibility verified and migration path documented.
 - [ ] No mention of AI, LLMs, or agent assistants in the commit messages or code comments.

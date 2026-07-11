@@ -25,9 +25,13 @@ export const TargetConfigSchema = z.object({
       "policy-bundle",
       "eval-dataset",
       "graph-json",
+      "context-pack",
+      "mcp-resources",
+      "dashboard-metadata"
     ])
     .default("ir-json"),
-  out: z.string().min(1),
+  out: z.string().min(1).optional(),
+  path: z.string().min(1).optional()
 });
 
 export const BudgetsConfigSchema = z.object({
@@ -78,12 +82,30 @@ export const ControlPlaneConfigSchema = z.object({
   evalGates: z.array(EvalGateSchema).optional(),
 });
 
+export const PrivacyConfigSchema = z.object({
+  defaultPiiMode: z.enum(["redact", "tokenize", "detect-only"]).default("redact"),
+  allowedPiiClasses: z.array(z.string()).optional(),
+  blockedPiiClasses: z.array(z.string()).optional(),
+  redactionTokenFormat: z.string().optional(),
+  failOnUnredactedHighRiskPii: z.boolean().default(true),
+});
+
 export const AkcpConfigSchema = z
   .object({
-    compile: CompileConfigSchema,
+    akcpVersion: z.string().optional(),
+    project: z.any().optional(),
+    sources: z.array(SourceConfigSchema).optional(),
+    compiler: z.any().optional(),
+    contextBudget: BudgetsConfigSchema.optional(),
+    targets: z.array(TargetConfigSchema).optional(),
+    mcp: McpConfigSchema.optional(),
+    policies: PoliciesConfigSchema.optional(),
+    evals: z.any().optional(),
+    privacy: PrivacyConfigSchema.optional(),
+    compile: CompileConfigSchema.optional(),
     controlPlane: ControlPlaneConfigSchema.optional(),
   })
-  .strict();
+  .catchall(z.any());
 
 export type AkcpConfig = z.infer<typeof AkcpConfigSchema>;
 export type CompileConfig = z.infer<typeof CompileConfigSchema>;

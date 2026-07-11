@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import fs from "node:fs";
 import path from "node:path";
-import { CapabilityManifestSchema } from "@ocf/core";
+import { CapabilityManifestSchema } from "@akcp/core";
 
 describe("Capability Registry", () => {
   const rootDir = path.resolve(__dirname, "../../../");

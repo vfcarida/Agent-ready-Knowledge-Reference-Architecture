@@ -1,6 +1,6 @@
 /**
  * @module migrations/migrate-bundle
- * @description In-place bundle migrator upgrading legacy career records to OCF Profile v1.
+ * @description In-place bundle migrator upgrading legacy career records to AKCP Profile v1.
  */
 
 import path from "node:path";
@@ -25,7 +25,7 @@ export interface MigrationOptions {
 }
 
 /**
- * Migration service to safely upgrade legacy OKF bundles to OCF Profile v1.
+ * Migration service to safely upgrade legacy OKF bundles to AKCP Profile v1.
  */
 export async function migrateBundle(
   fsAdapter: IFileSystemAdapter,
@@ -88,8 +88,8 @@ export async function migrateBundle(
           report.filesNeedingMigration++;
 
           if (write) {
-            // Update frontmatter with OCF profile version v1
-            fm["schemaVersion"] = "ocf.profile/v1";
+            // Update frontmatter with AKCP profile version v1
+            fm["schemaVersion"] = "akcp.profile/v1";
             fm["bundleVersion"] = "1.0.0";
 
             const updatedContent = fmParser.serialize(fm, doc.body);
@@ -121,7 +121,7 @@ export async function migrateBundle(
       }
 
       const timestamp = new Date().toISOString();
-      const actionLine = `| ${timestamp} | MIGRATED | bundle | Migrated ${report.filesMigrated} files to ocf.profile/v1 |`;
+      const actionLine = `| ${timestamp} | MIGRATED | bundle | Migrated ${report.filesMigrated} files to akcp.profile/v1 |`;
 
       // Prepend to table (below header rows)
       const lines = logContent.split("\n");

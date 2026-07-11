@@ -1,4 +1,4 @@
-import type { AgentPolicy } from "@ocf/core";
+import type { AgentPolicy } from "@akcp/core";
 
 export const softwareProjectPolicy: AgentPolicy = {
   policyId: "sw-proj-standard-01",

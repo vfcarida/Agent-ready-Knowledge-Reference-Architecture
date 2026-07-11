@@ -10,7 +10,7 @@ This quickstart demonstrates how to organize, validate, and govern Agent-Ready K
 ## 1. Install the CLI
 
 \`\`\`bash
-npm install -g @ocf/cli
+npm install -g @akcp/cli
 \`\`\`
 _(For local development, you can use `npx akcp` at the root of the repo)_
 

@@ -11,14 +11,14 @@ export class ApprovalStore implements IApprovalStore {
 
   constructor() {
     const defaultDbDir = path.resolve(
-      process.env["OCF_BUNDLE_PATH"] || "./sample-data/.okf",
+      process.env["AKCP_BUNDLE_PATH"] || "./sample-data/.okf",
     );
     if (!fs.existsSync(defaultDbDir)) {
       fs.mkdirSync(defaultDbDir, { recursive: true });
     }
 
     const dbPath =
-      process.env["OCF_DB_PATH"] || path.join(defaultDbDir, "approvals.db");
+      process.env["AKCP_DB_PATH"] || path.join(defaultDbDir, "approvals.db");
     this.db = new Database(dbPath);
     this.initializeDatabase();
   }

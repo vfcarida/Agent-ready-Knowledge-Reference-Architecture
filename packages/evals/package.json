@@ -1,5 +1,5 @@
 {
-  "name": "@ocf/evals",
+  "name": "@akcp/evals",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -10,9 +10,9 @@
     "evals": "node dist/index.js"
   },
   "dependencies": {
-    "@ocf/core": "workspace:*",
-    "@ocf/mcp-profile-server": "workspace:*",
-    "@ocf/mcp-automation-server": "workspace:*"
+    "@akcp/core": "workspace:*",
+    "@akcp/mcp-profile-server": "workspace:*",
+    "@akcp/mcp-automation-server": "workspace:*"
   },
   "devDependencies": {
     "typescript": "catalog:",

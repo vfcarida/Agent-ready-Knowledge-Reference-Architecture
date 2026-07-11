@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { profileServerCapabilities } from "@ocf/mcp-profile-server/dist/capabilities.js";
-import { automationServerCapabilities } from "@ocf/mcp-automation-server/dist/capabilities.js";
+import { profileServerCapabilities } from "@akcp/mcp-profile-server/dist/capabilities.js";
+import { automationServerCapabilities } from "@akcp/mcp-automation-server/dist/capabilities.js";
 
 describe("Tool Description Smell Test", () => {
   const allTools = [

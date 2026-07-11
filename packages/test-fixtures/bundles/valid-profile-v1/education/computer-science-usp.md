@@ -1,5 +1,5 @@
 ---
-schemaVersion: ocf.profile/v1
+schemaVersion: akcp.profile/v1
 type: Education
 title: Bachelor of Computer Science
 description: Four-year undergraduate program focusing on computer science foundations.

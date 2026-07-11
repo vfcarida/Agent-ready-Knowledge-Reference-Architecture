@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { AKCPAutomationServer } from "../server.js";
-import { OKFDocumentService } from "@ocf/core";
+import { OKFDocumentService } from "@akcp/core";
 
 vi.mock("better-sqlite3", () => {
   const transactionFn = vi.fn().mockImplementation((fn: () => void) => {

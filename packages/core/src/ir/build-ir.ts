@@ -12,6 +12,7 @@ import { normalizeRawItem } from "../normalizers/normalize.js";
 import { Freshness } from "../lifecycle/freshness.js";
 import { LifecycleValidator } from "../validation/lifecycle-rules.js";
 import type { ConnectorConfig, RawKnowledgeItem } from "../connectors/types.js";
+import { PiiRedactor, PiiReport } from "../privacy/index.js";
 
 export interface BuildOptions {
   bundleId?: string;
@@ -20,6 +21,7 @@ export interface BuildOptions {
   capabilities?: any[];
   sources?: ConnectorConfig[];
   generateProvenance?: boolean;
+  privacy?: any;
 }
 
 export async function buildKnowledgeIR(
@@ -85,7 +87,12 @@ export async function buildKnowledgeIR(
   let skippedCount = 0;
   const sourceHashes: Record<string, string> = {};
 
-  const concepts: IRConcept[] = allRawItems.map((item) => {
+  const piiRedactor = new PiiRedactor();
+  const piiReport = new PiiReport();
+
+  const concepts: IRConcept[] = [];
+  
+  for (const item of allRawItems) {
     sourceHashes[item.sourceUri] = item.contentHash;
 
     if (
@@ -97,15 +104,56 @@ export async function buildKnowledgeIR(
           c.source.filePath === item.sourceUri ||
           c.source.filePath === item.metadata?.relativePath ||
           c.source.filePath ===
-            item.metadata?.relativePath?.replace(/\\/g, "/"),
+            item.metadata?.relativePath?.replace(/\\/g, "/")
       );
       if (prevConcept) {
         skippedCount++;
-        return prevConcept;
+        concepts.push(prevConcept);
+        continue;
       }
     }
 
-    const concept = normalizeRawItem(item);
+    let concept = normalizeRawItem(item);
+    
+    // PII Redaction
+    if (options.privacy) {
+      const mode = options.privacy.defaultPiiMode || "redact";
+      const redactionResult = await piiRedactor.redact(concept.body, {
+        mode,
+        allowedClasses: options.privacy.allowedPiiClasses,
+        blockedClasses: options.privacy.blockedPiiClasses,
+        tokenFormat: options.privacy.redactionTokenFormat,
+        failOnUnredactedHighRiskPii: options.privacy.failOnUnredactedHighRiskPii
+      });
+
+      if (redactionResult.blocked) {
+        throw new Error(`[PII_ERROR] Build failed: Unredacted high-risk PII detected in ${item.sourceUri}`);
+      }
+
+      concept.body = redactionResult.redactedText;
+      
+      // Also redact frontmatter string values
+      for (const [k, v] of Object.entries(concept.frontmatter)) {
+        if (typeof v === "string") {
+          const fmResult = await piiRedactor.redact(v, {
+            mode,
+            allowedClasses: options.privacy.allowedPiiClasses,
+            blockedClasses: options.privacy.blockedPiiClasses,
+            tokenFormat: options.privacy.redactionTokenFormat,
+            failOnUnredactedHighRiskPii: options.privacy.failOnUnredactedHighRiskPii
+          });
+          if (fmResult.blocked) {
+            throw new Error(`[PII_ERROR] Build failed: Unredacted high-risk PII detected in frontmatter key '${k}' of ${item.sourceUri}`);
+          }
+          concept.frontmatter[k] = fmResult.redactedText;
+        }
+      }
+
+      for (const finding of redactionResult.findings) {
+        piiReport.addFinding(item.sourceUri, finding);
+      }
+    }
+
     incrementalCompiler.updateState(
       item.sourceUri,
       item.contentHash,
@@ -124,8 +172,15 @@ export async function buildKnowledgeIR(
         timestamp: new Date().toISOString(),
       };
     }
-    return concept;
-  });
+    
+    concepts.push(concept);
+  }
+
+  // Save PII report if requested
+  if (options.privacy) {
+    const reportPath = path.resolve(process.cwd(), "dist/privacy/pii-report.json");
+    piiReport.save(reportPath);
+  }
 
   incrementalCompiler.saveState();
 

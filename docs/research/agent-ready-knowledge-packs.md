@@ -85,7 +85,7 @@ AKCP maps directly to the **NIST AI RMF** (Govern, Map, Measure, Manage). We cat
 
 ## 6. Evaluation Methodology and Testable Claims
 
-To prove that AKCP is superior to raw repository ingestion, we propose three falsifiable claims mapped to automated evaluations in our `@ocf/evals` harness.
+To prove that AKCP is superior to raw repository ingestion, we propose three falsifiable claims mapped to automated evaluations in our `@akcp/evals` harness.
 
 ### Claim 1: Context Packs reduce average prompt token cost by >40%.
 
@@ -111,9 +111,9 @@ To prove that AKCP is superior to raw repository ingestion, we propose three fal
 
 The reference implementation of this architecture is the **Agent Knowledge Compiler and Control Plane** repository, which includes:
 
-- `@ocf/core`: OKF validation and schema parsing.
-- `@ocf/mcp-profile-server` & `@ocf/mcp-automation-server`: The MCP delivery mechanism.
-- `@ocf/dashboard`: The React-based Operator Console for Approvals.
+- `@akcp/core`: OKF validation and schema parsing.
+- `@akcp/mcp-profile-server` & `@akcp/mcp-automation-server`: The MCP delivery mechanism.
+- `@akcp/dashboard`: The React-based Operator Console for Approvals.
 
 ---
 

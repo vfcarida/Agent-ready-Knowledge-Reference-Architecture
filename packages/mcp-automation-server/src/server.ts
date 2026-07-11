@@ -20,7 +20,7 @@ import {
   withToolTracing,
   MCPGateway,
   type GatewayConfig,
-} from "@ocf/core";
+} from "@akcp/core";
 import { BrowserOrchestrator } from "./automation/browser-orchestrator.js";
 import { ApprovalStore } from "./approval/approval-store.js";
 import { RedisApprovalStore } from "./approval/redis-store.js";
@@ -549,7 +549,6 @@ export class AKCPAutomationServer {
         const toolName = "list_pending_approvals";
         const toolVersion = "0.1.0";
         mcpToolCallsCounter.add(1);
-
         try {
           const { data, durationMs } = await this.gateway.execute(
             {
@@ -869,6 +868,112 @@ export class AKCPAutomationServer {
         }
       },
     );
+
+    // =====================================
+    // Customer Support Capabilities
+    // =====================================
+    this.server.tool(
+      "request_support_action_approval",
+      automationServerCapabilities.find((c) => c.name === "request_support_action_approval")?.description || "",
+      {
+        ticketId: z.string().describe("Support ticket ID"),
+        actionType: z.string().describe("Type of action (e.g. refund, password_reset)"),
+        reason: z.string().describe("Reason for action"),
+        _agentId: z.string().optional(),
+      },
+      async ({ ticketId, actionType, reason }) => {
+        mcpToolCallsCounter.add(1);
+
+        try {
+          const payload = { ticketId, actionType, reason };
+          const metadata = { platform: "support-crm" };
+          const token = await approvalStore.generateToken("record_support_resolution", payload, metadata);
+
+          return {
+            content: [
+              {
+                type: "text",
+                text: JSON.stringify({ ok: true, approvalToken: token, message: "Action staged for approval." }, null, 2),
+              },
+            ],
+          };
+        } catch (err: any) {
+          mcpToolFailuresCounter.add(1);
+          return { isError: true, content: [{ type: "text", text: err.message }] };
+        }
+      }
+    );
+
+    this.server.tool(
+      "record_support_resolution",
+      automationServerCapabilities.find((c) => c.name === "record_support_resolution")?.description || "",
+      {
+        approvalToken: z.string().describe("The approval token"),
+        ticketId: z.string().describe("Support ticket ID"),
+        actionType: z.string().describe("Type of action (e.g. refund, password_reset)"),
+        reason: z.string().describe("Reason for action"),
+        approverIdentity: z.string().optional(),
+        _agentId: z.string().optional(),
+      },
+      async ({ approvalToken, ticketId, actionType, reason, approverIdentity }) => {
+        const toolName = "record_support_resolution";
+        mcpToolCallsCounter.add(1);
+
+        try {
+          const expectedPayload = { ticketId, actionType, reason };
+          const isValid = await approvalStore.validateAndConsume(approvalToken, toolName, expectedPayload, approverIdentity);
+          if (!isValid) throw new Error("Execution Blocked: Invalid, expired, or tampered approval token.");
+
+          auditLogger.log({
+            requestId: approvalToken,
+            toolName,
+            autonomyLevel: "act-with-approval",
+            approvalRequired: true,
+            sideEffectLevel: "external-submit",
+            status: "success",
+            durationMs: 100,
+          });
+
+          return {
+            content: [
+              {
+                type: "text",
+                text: JSON.stringify({ ok: true, message: `Support action ${actionType} for ticket ${ticketId} resolved.` }, null, 2),
+              },
+            ],
+          };
+        } catch (err: any) {
+          mcpToolFailuresCounter.add(1);
+          return { isError: true, content: [{ type: "text", text: err.message }] };
+        }
+      }
+    );
+
+    // Generic stub for read-only support tools
+    const readOnlySupportTools = [
+      "classify_support_intent",
+      "retrieve_support_context",
+      "draft_support_reply",
+      "validate_support_reply",
+      "redact_support_pii",
+      "preview_support_action",
+      "detect_support_knowledge_gap"
+    ];
+
+    for (const st of readOnlySupportTools) {
+      this.server.tool(
+        st,
+        automationServerCapabilities.find((c) => c.name === st)?.description || "",
+        { _agentId: z.string().optional() },
+        async () => {
+          mcpToolCallsCounter.add(1);
+          return {
+            content: [{ type: "text", text: JSON.stringify({ ok: true, message: `Mock result for ${st}` }, null, 2) }]
+          };
+        }
+      );
+    }
+
   }
 
   private detectPlatform(url: string): string {

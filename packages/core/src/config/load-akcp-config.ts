@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import yaml from "yaml";
 import { z } from "zod";
-import { AkcpConfigSchema, type AkcpConfig } from "./akcp-config-schema.js";
+import { AkcpConfigSchema, CompileConfigSchema, ControlPlaneConfigSchema, type AkcpConfig } from "./akcp-config-schema.js";
 
 export class ConfigLoadError extends Error {
   constructor(message: string) {
@@ -27,7 +27,28 @@ export function loadAkcpConfig(filePath: string): AkcpConfig {
   }
 
   try {
-    return AkcpConfigSchema.parse(parsedYaml);
+    const config = AkcpConfigSchema.parse(parsedYaml);
+    
+    // Normalize root-level definitions to compile/controlPlane
+    if (!config.compile && (config.sources || config.targets)) {
+      config.compile = {
+        sources: config.sources || [],
+        targets: config.targets || [],
+        budgets: config.contextBudget
+      };
+    }
+    if (!config.controlPlane && (config.policies || config.mcp || config.evals)) {
+      config.controlPlane = {
+        policies: config.policies,
+        mcp: config.mcp,
+        evalGates: config.evals?.datasets ? [{ name: "default", strict: true }] : undefined
+      };
+    }
+    
+    if (config.compile) CompileConfigSchema.parse(config.compile);
+    if (config.controlPlane) ControlPlaneConfigSchema.parse(config.controlPlane);
+    
+    return config;
   } catch (error) {
     if (error instanceof z.ZodError) {
       const issues = error.errors

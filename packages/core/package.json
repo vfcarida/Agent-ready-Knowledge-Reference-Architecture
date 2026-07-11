@@ -1,5 +1,5 @@
 {
-  "name": "@ocf/core",
+  "name": "@akcp/core",
   "version": "0.1.0",
   "private": true,
   "description": "OKF (Open Knowledge Format) engine for career data management. Domain layer with file-based repository, frontmatter parsing, and document lifecycle services.",

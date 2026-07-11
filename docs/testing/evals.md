@@ -13,5 +13,5 @@ Because standard unit tests cannot reliably measure the non-deterministic nature
 To execute the test suites against the evaluation datasets:
 
 ```bash
-pnpm -F @ocf/evals run evals
+pnpm -F @akcp/evals run evals
 ```

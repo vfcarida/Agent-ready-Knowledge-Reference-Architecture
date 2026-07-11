@@ -25,7 +25,7 @@ export async function reconcile(
 
   // 1. Check sources existence
   const missingSources: string[] = [];
-  for (const source of config.compile.sources) {
+  for (const source of config.compile?.sources || []) {
     if (source.path) {
       const sourcePath = path.resolve(source.path);
       if (!fs.existsSync(sourcePath)) {
@@ -41,14 +41,15 @@ export async function reconcile(
   }
 
   // 2. Check target output
-  const missingTargets: typeof config.compile.targets = [];
-  if (config.compile.targets) {
-    for (const targetConf of config.compile.targets) {
-      const targetPath = path.resolve(targetConf.out);
+  const missingTargets: any[] = [];
+  if (config.compile?.targets) {
+    for (const targetConf of config.compile?.targets) {
+      const outPath = targetConf.out || targetConf.path || "";
+      const targetPath = path.resolve(outPath);
       if (!fs.existsSync(targetPath)) {
         if (options.dryRun) {
           differences.push(
-            `Target missing: Compiled output '${targetConf.out}' does not exist.`,
+            `Target missing: Compiled output '${outPath}' does not exist.`,
           );
         } else {
           missingTargets.push(targetConf);
@@ -101,7 +102,7 @@ export async function reconcile(
 
     const bundleRoot = path.resolve(".");
     const ir = await buildKnowledgeIR(bundleRoot, {
-      sources: config.compile.sources,
+      sources: config.compile?.sources,
     });
     const manifestBuilder = new ProvenanceManifestBuilder();
 
@@ -119,12 +120,12 @@ export async function reconcile(
     for (const targetConf of missingTargets) {
       const targetImpl = targetInstances[targetConf.type];
       if (targetImpl) {
-        const outPath = path.resolve(targetConf.out);
+        const outPath = path.resolve(targetConf.out || targetConf.path || "");
         fs.mkdirSync(path.dirname(outPath), { recursive: true });
         const output = await targetImpl.compile(ir, targetConf);
         manifestBuilder.addOutput(output);
         fixesPerformed.push(
-          `Compiled missing target: '${targetConf.type}' -> '${targetConf.out}'`,
+          `Compiled missing target: '${targetConf.type}' -> '${targetConf.out || targetConf.path}'`,
         );
       }
     }

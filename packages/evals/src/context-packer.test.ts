@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { ContextPacker } from "@ocf/core";
-import type { OKFDocument } from "@ocf/core";
+import { ContextPacker } from "@akcp/core";
+import type { OKFDocument } from "@akcp/core";
 
 describe("ContextPacker", () => {
   const packer = new ContextPacker();

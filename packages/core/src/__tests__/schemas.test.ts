@@ -5,7 +5,7 @@ describe("EducationFrontmatterSchema", () => {
   it("accepts minimal valid education frontmatter", () => {
     const result = EducationFrontmatterSchema.safeParse({
       type: "Education",
-      schemaVersion: "ocf.profile/v1",
+      schemaVersion: "akcp.profile/v1",
       institution: "USP",
       degree: "BSc",
     });

@@ -4,7 +4,7 @@
  */
 
 import type { Page } from "playwright";
-import type { CareerContext } from "@ocf/core";
+import type { CareerContext } from "@akcp/core";
 
 /**
  * Result of a browser automation attempt.

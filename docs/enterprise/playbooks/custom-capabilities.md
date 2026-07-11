@@ -20,7 +20,7 @@ import {
   withToolTracing,
   createToolSuccess,
   createToolFailure,
-} from "@ocf/core";
+} from "@akcp/core";
 
 export function registerCustomTool(server: McpServer, gateway: MCPGateway) {
   server.tool(

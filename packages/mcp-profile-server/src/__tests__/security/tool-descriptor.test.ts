@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { AKCPProfileServer } from "../../server.js";
-import { OKFDocumentService } from "@ocf/core";
+import { OKFDocumentService } from "@akcp/core";
 
 describe("MCP Tool Descriptors Contract", () => {
   it("should expose the validate_bundle tool", async () => {

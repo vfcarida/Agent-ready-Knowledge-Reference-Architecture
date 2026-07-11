@@ -12,7 +12,7 @@ Monolithic MCP servers mix read-only personal data with write-heavy, stateful au
 
 ## Decision
 
-Split into `@ocf/mcp-profile-server` (read-only, offline, local data) and `@ocf/mcp-automation-server` (stateful, external networks, approvals).
+Split into `@akcp/mcp-profile-server` (read-only, offline, local data) and `@akcp/mcp-automation-server` (stateful, external networks, approvals).
 
 ## Consequences
 

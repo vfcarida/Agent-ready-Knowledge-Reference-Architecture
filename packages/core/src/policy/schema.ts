@@ -7,8 +7,8 @@ export const PolicyMappingSchema = z.object({
 
 export const PolicyCardSchema = z.object({
   apiVersion: z
-    .literal("policy.ocf.dev/v1alpha1")
-    .default("policy.ocf.dev/v1alpha1"),
+    .literal("policy.akcp.dev/v1alpha1")
+    .default("policy.akcp.dev/v1alpha1"),
   kind: z.literal("PolicyCard").default("PolicyCard"),
   metadata: z.object({
     name: z.string(),

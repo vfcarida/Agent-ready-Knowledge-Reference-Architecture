@@ -8,9 +8,9 @@ The Model Context Protocol establishes a local client-server relationship over s
 
 ## 2. Permission Model
 
-All read operations via `@ocf/mcp-profile-server` are inherently safe to execute without side effects but expose Personally Identifiable Information (PII).
-All write operations to the local bundle (e.g. `create_document`, `update_document`) are isolated to the `.okf` directory explicitly configured via `OCF_BUNDLE_PATH`. Path traversal is mitigated by strict internal routing.
-All external execution operations via `@ocf/mcp-automation-server` (e.g., job submission) are blocked by default.
+All read operations via `@akcp/mcp-profile-server` are inherently safe to execute without side effects but expose Personally Identifiable Information (PII).
+All write operations to the local bundle (e.g. `create_document`, `update_document`) are isolated to the `.okf` directory explicitly configured via `AKCP_BUNDLE_PATH`. Path traversal is mitigated by strict internal routing.
+All external execution operations via `@akcp/mcp-automation-server` (e.g., job submission) are blocked by default.
 
 ## 3. Human-In-The-Loop (HITL) Controls
 

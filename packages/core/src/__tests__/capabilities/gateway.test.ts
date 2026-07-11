@@ -4,7 +4,7 @@ import type { PolicyCard } from "../../policy/types.js";
 
 describe("MCPGateway", () => {
   const rawPolicy = {
-    apiVersion: "policy.ocf.dev/v1alpha1",
+    apiVersion: "policy.akcp.dev/v1alpha1",
     kind: "PolicyCard",
     metadata: { name: "test-policy" },
     spec: {

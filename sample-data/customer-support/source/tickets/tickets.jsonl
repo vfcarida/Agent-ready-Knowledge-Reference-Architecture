@@ -1,0 +1,2 @@
+{"ticketId":"1001","channel":"email","status":"pending","priority":"high","customerRef":"cust-001","createdAt":"2023-10-01T10:00:00Z","body":"Hi, my name is John Doe (john.doe@example.com). I need a refund for my last order."}
+{"ticketId":"1002","channel":"chat","status":"open","priority":"normal","customerRef":"cust-002","createdAt":"2023-10-02T11:00:00Z","body":"My phone is 555-1234. When will my package arrive?"}

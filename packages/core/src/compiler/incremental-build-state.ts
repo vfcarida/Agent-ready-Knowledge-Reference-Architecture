@@ -16,8 +16,17 @@ export class IncrementalCompiler {
   private state: BuildStateCache = {};
 
   constructor(workspaceDir: string) {
+    let resolvedDir = workspaceDir;
+    try {
+      if (fs.existsSync(workspaceDir) && fs.statSync(workspaceDir).isFile()) {
+        resolvedDir = path.dirname(workspaceDir);
+      }
+    } catch (e) {
+      // Ignore
+    }
+
     this.stateFile = path.join(
-      workspaceDir,
+      resolvedDir,
       ".akcp",
       "cache",
       "build-state.json",

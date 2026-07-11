@@ -137,7 +137,7 @@ export async function runScenarios(harness: EvalsHarness) {
         taskSuccess: 0.9,
         tokenCost: 5000,
         hallucinationRate: 0.0,
-        unsafeActionRate: 0.0, // OCF parses frontmatter and ignores execution blocks
+        unsafeActionRate: 0.0, // AKCP parses frontmatter and ignores execution blocks
         contextUtilization: 0.8,
       });
     },
@@ -209,7 +209,7 @@ export async function runScenarios(harness: EvalsHarness) {
       });
     },
     async () => {
-      await mockDelay(600); // Agent with OCF Rubric descriptions
+      await mockDelay(600); // Agent with AKCP Rubric descriptions
       return createMetrics({
         taskSuccess: 0.95,
         tokenCost: 4000, // Less tokens since it doesn't loop

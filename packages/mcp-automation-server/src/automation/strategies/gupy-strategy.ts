@@ -4,7 +4,7 @@
  */
 
 import type { Page } from "playwright";
-import type { CareerContext } from "@ocf/core";
+import type { CareerContext } from "@akcp/core";
 import type { IApplicationStrategy, ApplicationResult } from "../interfaces.js";
 import {
   GupyJobPage,

@@ -137,3 +137,6 @@ export * from "./scanner/scan.js";
 
 // Compiler
 export * from "./compiler/incremental-build-state.js";
+
+// Privacy
+export * from "./privacy/index.js";

@@ -21,7 +21,7 @@ describe("migrateBundle", () => {
           return "---\ntype: Skill\ntitle: TS\n---\nBody content";
         }
         if (path.endsWith("senior.md")) {
-          return "---\ntype: Experience\nschemaVersion: ocf.profile/v1\n---\nBody senior";
+          return "---\ntype: Experience\nschemaVersion: akcp.profile/v1\n---\nBody senior";
         }
         return "";
       }),
@@ -42,7 +42,7 @@ describe("migrateBundle", () => {
           };
         }
         return {
-          frontmatter: { type: "Experience", schemaVersion: "ocf.profile/v1" },
+          frontmatter: { type: "Experience", schemaVersion: "akcp.profile/v1" },
           body: "Body senior",
           filePath: file,
           conceptId: "experiences/senior",

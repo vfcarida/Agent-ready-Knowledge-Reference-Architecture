@@ -1,7 +1,7 @@
 export type ConformanceLevel =
   | "none"
   | "OKF-compatible"
-  | "OCF-profile-compatible"
+  | "AKCP-profile-compatible"
   | "AKCP-compiler-compatible"
   | "AKCP-control-plane-compatible";
 

@@ -4,11 +4,11 @@ This is a `pnpm` workspace monorepo.
 
 ## Structure
 
-- `@ocf/core`: Domain logic, OKF parsing, validation, observability.
-- `@ocf/mcp-profile-server`: Read-only MCP server for querying your OKF bundle.
-- `@ocf/mcp-automation-server`: Stateful MCP server for browser automation with HITL.
-- `@ocf/dashboard`: Experimental React dashboard for inspecting bundles.
-- `@ocf/evals`: Evaluation harness.
+- `@akcp/core`: Domain logic, OKF parsing, validation, observability.
+- `@akcp/mcp-profile-server`: Read-only MCP server for querying your OKF bundle.
+- `@akcp/mcp-automation-server`: Stateful MCP server for browser automation with HITL.
+- `@akcp/dashboard`: Experimental React dashboard for inspecting bundles.
+- `@akcp/evals`: Evaluation harness.
 
 ## Scripts
 

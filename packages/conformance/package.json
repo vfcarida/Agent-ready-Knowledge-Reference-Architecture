@@ -1,5 +1,5 @@
 {
-  "name": "@ocf/conformance",
+  "name": "@akcp/conformance",
   "version": "0.1.0",
   "private": true,
   "description": "Conformance suite for OKF and AKCP compatibility certification.",
@@ -20,7 +20,7 @@
     "clean": "node -e \"fs.rmSync('dist', {recursive:true,force:true}); fs.rmSync('*.tsbuildinfo', {force:true})\""
   },
   "dependencies": {
-    "@ocf/core": "workspace:*",
+    "@akcp/core": "workspace:*",
     "zod": "catalog:"
   },
   "devDependencies": {

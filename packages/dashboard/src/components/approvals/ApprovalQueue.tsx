@@ -30,6 +30,25 @@ export function ApprovalQueue() {
   const [error, setError] = useState<string | null>(null);
   const [processing, setProcessing] = useState<string | null>(null);
 
+  // Modal State
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalConfig, setModalConfig] = useState<{
+    title: string;
+    message: React.ReactNode;
+    type: "confirm" | "alert";
+    onConfirm?: () => void;
+  } | null>(null);
+
+  const showAlert = (title: string, message: React.ReactNode) => {
+    setModalConfig({ title, message, type: "alert" });
+    setModalOpen(true);
+  };
+
+  const showConfirm = (title: string, message: React.ReactNode, onConfirm: () => void) => {
+    setModalConfig({ title, message, type: "confirm", onConfirm });
+    setModalOpen(true);
+  };
+
   const fetchApprovals = async () => {
     try {
       const res = await fetch("/api/automation/approvals");
@@ -62,78 +81,93 @@ export function ApprovalQueue() {
 
   const handleApprove = async (token: string, jobUrl?: string) => {
     if (!user) {
-      alert("You must be logged in to approve actions.");
+      showAlert("Authentication Required", "You must be logged in to approve actions.");
       return;
     }
-    setProcessing(token);
-    try {
-      const res = await fetch("/api/automation/approve", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          approvalToken: token,
-          jobUrl,
-          dryRun: false,
-          approverIdentity: user.identity,
-        }),
-      });
-      const data = await res.json();
-      if (data.isError || !res.ok) {
-        alert("Failed to approve: " + (data.content?.[0]?.text || data.error));
-      } else {
-        const parsed = JSON.parse(data.content[0].text);
-        if (parsed.ok === false) {
-          alert("Failed to approve: " + parsed.error?.message);
-        } else {
-          alert("Successfully approved and submitted!");
-          await fetchApprovals();
+    
+    showConfirm(
+      "Authorize Execution",
+      <div className="space-y-2">
+        <p>Are you sure you want to authorize this operation?</p>
+        <p className="text-xs text-zinc-400">The agent will immediately execute this payload.</p>
+      </div>,
+      async () => {
+        setModalOpen(false);
+        setProcessing(token);
+        try {
+          const res = await fetch("/api/automation/approve", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              approvalToken: token,
+              jobUrl,
+              dryRun: false,
+              approverIdentity: user.identity,
+            }),
+          });
+          const data = await res.json();
+          if (data.isError || !res.ok) {
+            showAlert("Approval Failed", data.content?.[0]?.text || data.error);
+          } else {
+            const parsed = JSON.parse(data.content[0].text);
+            if (parsed.ok === false) {
+              showAlert("Approval Failed", parsed.error?.message);
+            } else {
+              showAlert("Success", "Action successfully approved and submitted to the agent.");
+              await fetchApprovals();
+            }
+          }
+        } catch (err: any) {
+          showAlert("Error", err.message);
+        } finally {
+          setProcessing(null);
         }
       }
-    } catch (err: any) {
-      alert("Error: " + err.message);
-    } finally {
-      setProcessing(null);
-    }
+    );
   };
 
   const handleRevoke = async (token: string) => {
-    if (
-      !confirm(
-        "Are you sure you want to revoke this approval token? The agent will not be able to execute this action.",
-      )
-    )
-      return;
     if (!user) {
-      alert("You must be logged in to revoke actions.");
+      showAlert("Authentication Required", "You must be logged in to revoke actions.");
       return;
     }
-
-    setProcessing(token);
-    try {
-      const res = await fetch("/api/automation/revoke", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          approvalToken: token,
-          approverIdentity: user.identity,
-        }),
-      });
-      const data = await res.json();
-      if (data.isError || !res.ok) {
-        alert("Failed to revoke: " + (data.content?.[0]?.text || data.error));
-      } else {
-        const parsed = JSON.parse(data.content[0].text);
-        if (parsed.ok === false) {
-          alert("Failed to revoke: " + parsed.error?.message);
-        } else {
-          await fetchApprovals();
+    
+    showConfirm(
+      "Revoke Token",
+      <div className="space-y-2 text-red-400">
+        <p>Are you sure you want to revoke this approval token?</p>
+        <p className="text-xs">The agent will be denied execution and the token will be invalidated permanently.</p>
+      </div>,
+      async () => {
+        setModalOpen(false);
+        setProcessing(token);
+        try {
+          const res = await fetch("/api/automation/revoke", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              approvalToken: token,
+              approverIdentity: user.identity,
+            }),
+          });
+          const data = await res.json();
+          if (data.isError || !res.ok) {
+            showAlert("Revoke Failed", data.content?.[0]?.text || data.error);
+          } else {
+            const parsed = JSON.parse(data.content[0].text);
+            if (parsed.ok === false) {
+              showAlert("Revoke Failed", parsed.error?.message);
+            } else {
+              await fetchApprovals();
+            }
+          }
+        } catch (err: any) {
+          showAlert("Error", err.message);
+        } finally {
+          setProcessing(null);
         }
       }
-    } catch (err: any) {
-      alert("Error: " + err.message);
-    } finally {
-      setProcessing(null);
-    }
+    );
   };
 
   return (
@@ -296,6 +330,38 @@ export function ApprovalQueue() {
           </div>
         ))}
       </div>
+
+      {modalOpen && modalConfig && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-zinc-900 border border-white/10 rounded-2xl shadow-2xl max-w-md w-full overflow-hidden animate-in zoom-in-95 duration-200">
+            <div className={`p-4 border-b ${modalConfig.type === 'confirm' ? 'border-white/5 bg-zinc-800/50' : 'border-red-500/20 bg-red-500/5'}`}>
+              <h3 className="text-lg font-semibold text-zinc-100 flex items-center gap-2">
+                {modalConfig.type === 'alert' && <AlertTriangle className="w-5 h-5 text-red-400" />}
+                {modalConfig.title}
+              </h3>
+            </div>
+            <div className="p-6 text-zinc-300">
+              {modalConfig.message}
+            </div>
+            <div className="p-4 border-t border-white/5 bg-zinc-950/50 flex justify-end gap-3">
+              <button
+                onClick={() => setModalOpen(false)}
+                className="px-4 py-2 text-sm font-medium text-zinc-300 hover:text-white bg-zinc-800 hover:bg-zinc-700 rounded-lg transition-colors cursor-pointer"
+              >
+                {modalConfig.type === 'confirm' ? 'Cancel' : 'Close'}
+              </button>
+              {modalConfig.type === 'confirm' && (
+                <button
+                  onClick={modalConfig.onConfirm}
+                  className="px-4 py-2 text-sm font-medium text-white bg-neon-indigo hover:bg-neon-purple rounded-lg shadow-lg shadow-neon-indigo/20 transition-colors cursor-pointer"
+                >
+                  Confirm
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

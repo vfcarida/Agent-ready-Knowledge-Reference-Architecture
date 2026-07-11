@@ -34,7 +34,7 @@ AKCP is a **complement**, not a replacement:
 
 ## Versioning
 
-The spec version (`0.1.0-draft`) is independent of implementation package versions (`@ocf/core`, `@ocf/cli`). A spec version is incremented only when normative requirements change. Breaking changes require a major version bump.
+The spec version (`0.1.0-draft`) is independent of implementation package versions (`@akcp/core`, `@akcp/cli`). A spec version is incremented only when normative requirements change. Breaking changes require a major version bump.
 
 ## Governance
 

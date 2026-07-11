@@ -4,7 +4,7 @@ import {
   OKFFileRepository,
   buildKnowledgeIR,
   loadAkcpConfig,
-} from "@ocf/core";
+} from "@akcp/core";
 import type { ConformanceReport, ConformanceDetail } from "./types.js";
 import path from "path";
 
@@ -81,8 +81,8 @@ export class ConformanceRunner {
     }
     report.conformanceLevel = "OKF-compatible";
 
-    // Level 2: OCF-profile-compatible
-    let ocfCompatible = true;
+    // Level 2: AKCP-profile-compatible
+    let akcpCompatible = true;
     try {
       const repo = new OKFFileRepository(fsAdapter, parser, this.bundlePath);
       const docs = await repo.findAll();
@@ -92,19 +92,19 @@ export class ConformanceRunner {
       // To strictly validate profile, we can use the domain/profiles/career schemas, but for now we rely on the parser not throwing OKFValidationError.
       report.passed += docs.length;
     } catch (e: any) {
-      ocfCompatible = false;
+      akcpCompatible = false;
       report.failed++;
       report.details.push({
         type: "error",
         message: `Profile Validation Error: ${e.message}`,
-        ruleId: "OCF-PROFILE-STRICT",
+        ruleId: "AKCP-PROFILE-STRICT",
       });
     }
 
-    if (!ocfCompatible) {
+    if (!akcpCompatible) {
       return report;
     }
-    report.conformanceLevel = "OCF-profile-compatible";
+    report.conformanceLevel = "AKCP-profile-compatible";
 
     // Level 3: AKCP-compiler-compatible
     let compilerCompatible = true;

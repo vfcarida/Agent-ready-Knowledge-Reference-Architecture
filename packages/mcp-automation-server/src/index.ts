@@ -14,7 +14,7 @@ import {
   LogService,
   OKFDocumentService,
   startTelemetry,
-} from "@ocf/core";
+} from "@akcp/core";
 import { AKCPAutomationServer } from "./server.js";
 import fs from "node:fs";
 
@@ -24,18 +24,18 @@ async function main() {
     startTelemetry();
 
     const bundleRootEnv =
-      process.env["AKCP_BUNDLE_PATH"] || process.env["OCF_BUNDLE_PATH"];
-    if (process.env["OCF_BUNDLE_PATH"] && !process.env["AKCP_BUNDLE_PATH"]) {
+      process.env["AKCP_BUNDLE_PATH"] || process.env["AKCP_BUNDLE_PATH"];
+    if (process.env["AKCP_BUNDLE_PATH"] && !process.env["AKCP_BUNDLE_PATH"]) {
       console.warn(
-        "[WARNING] OCF_BUNDLE_PATH is deprecated. Please use AKCP_BUNDLE_PATH.",
+        "[WARNING] AKCP_BUNDLE_PATH is deprecated. Please use AKCP_BUNDLE_PATH.",
       );
     }
     const bundleRoot = path.resolve(bundleRootEnv || "./.okf");
 
-    const irPathEnv = process.env["AKCP_IR_PATH"] || process.env["OCF_IR_PATH"];
-    if (process.env["OCF_IR_PATH"] && !process.env["AKCP_IR_PATH"]) {
+    const irPathEnv = process.env["AKCP_IR_PATH"] || process.env["AKCP_IR_PATH"];
+    if (process.env["AKCP_IR_PATH"] && !process.env["AKCP_IR_PATH"]) {
       console.warn(
-        "[WARNING] OCF_IR_PATH is deprecated. Please use AKCP_IR_PATH.",
+        "[WARNING] AKCP_IR_PATH is deprecated. Please use AKCP_IR_PATH.",
       );
     }
     const irPath = path.resolve(irPathEnv || "./dist/knowledge-ir.json");

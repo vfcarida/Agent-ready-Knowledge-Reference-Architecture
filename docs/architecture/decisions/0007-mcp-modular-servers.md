@@ -12,7 +12,7 @@ A monolithic MCP server mixes safe, read-only data (Profile) with dangerous, sta
 
 ## Decision
 
-Split the monolithic server into `@ocf/mcp-profile-server` and `@ocf/mcp-automation-server`.
+Split the monolithic server into `@akcp/mcp-profile-server` and `@akcp/mcp-automation-server`.
 
 ## Consequences
 
