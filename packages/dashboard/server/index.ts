@@ -235,6 +235,31 @@ app.get("/api/manifest", (req, res) => {
   }
 });
 
+app.get("/api/mcp/tools", (req, res) => {
+  try {
+    const irPath = path.resolve(
+      __dirname,
+      "../../../examples/domains/it-operations/dist/agent-knowledge-ir.json",
+    );
+    // Note: For MVP we fallback to IT operations or Career bundle just to display the tool capabilities
+    const fallbackPath = path.resolve(
+      __dirname,
+      "../../../examples/domains/career/dist/agent-knowledge-ir.json",
+    );
+    
+    let targetPath = fs.existsSync(irPath) ? irPath : fallbackPath;
+
+    if (fs.existsSync(targetPath)) {
+      const data = JSON.parse(fs.readFileSync(targetPath, "utf-8"));
+      res.json({ tools: data.capabilities || [] });
+    } else {
+      res.status(404).json({ error: "No compiled IR found. Compile a domain first." });
+    }
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 app.listen(PORT, async () => {
   console.log(`[BFF] Express server running on port ${PORT}`);
   await startMCPClients();

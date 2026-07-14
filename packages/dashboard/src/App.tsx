@@ -15,6 +15,7 @@ import { AuditLog } from "./components/audit/AuditLog.js";
 import { Documents } from "./components/documents/Documents.js";
 import { ContextPacks } from "./components/packs/ContextPacks.js";
 import { GraphReport } from "./components/packs/GraphReport.js";
+import { MCPCapabilities } from "./components/mcp/MCPCapabilities.js";
 
 export default function App() {
   const [currentTab, setCurrentTab] = useState<string>("health");
@@ -51,9 +52,7 @@ export default function App() {
       case "graph":
         return <GraphReport />;
       case "mcp":
-        return (
-          <div className="text-zinc-400">MCP Capabilities Placeholder</div>
-        );
+        return <MCPCapabilities />;
       case "approvals":
         return <ApprovalQueue />;
       case "audit":
