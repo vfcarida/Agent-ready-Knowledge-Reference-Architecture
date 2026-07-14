@@ -23,13 +23,16 @@ export class AKCPProfileServer {
   private readonly server: McpServer;
   private readonly gateway: MCPGateway;
   private readonly ir: AgentKnowledgeIR;
+  private readonly agentIdentity: string;
 
   constructor(
     ir: AgentKnowledgeIR,
     gatewayConfig: GatewayConfig = { policies: {} },
+    agentIdentity: string = "mcp-client"
   ) {
     this.ir = ir;
     this.gateway = new MCPGateway(gatewayConfig);
+    this.agentIdentity = agentIdentity;
 
     // Create the MCP server instance
     this.server = new McpServer({
@@ -146,7 +149,7 @@ export class AKCPProfileServer {
                   requestId: reqId,
                   toolName: cap.name,
                   sideEffect: mappedSideEffect,
-                  agentId: "mcp-client",
+                  agentId: this.agentIdentity,
                   payload: args,
                 },
                 async () => {

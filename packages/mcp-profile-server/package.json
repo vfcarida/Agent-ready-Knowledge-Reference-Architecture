@@ -10,17 +10,23 @@
     "build": "tsc",
     "typecheck": "tsc --noEmit",
     "start": "node dist/index.js",
+    "start:http": "node dist/http-server.js",
     "dev": "tsx src/index.ts",
+    "dev:http": "tsx src/http-server.ts",
     "clean": "node -e \"fs.rmSync('dist', {recursive:true,force:true}); fs.rmSync('*.tsbuildinfo', {force:true})\""
   },
   "dependencies": {
+    "@akcp/core": "workspace:*",
     "@modelcontextprotocol/sdk": "catalog:",
-    "zod": "catalog:",
-    "@akcp/core": "workspace:*"
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "zod": "catalog:"
   },
   "devDependencies": {
-    "typescript": "catalog:",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
     "@types/node": "catalog:",
-    "tsx": "^4.19.0"
+    "tsx": "^4.19.0",
+    "typescript": "catalog:"
   }
 }
