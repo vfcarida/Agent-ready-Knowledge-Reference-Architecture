@@ -1,0 +1,23 @@
+{
+  "file://C:\\Users\\vinicius\\Documents\\GeminiCode\\Open-Career-Format-Orchestrator\\examples\\domains\\career\\README.md": {
+    "sourceHash": "9498d1fdbc87ba9d8c2bf2fa5e3bf4bd4991a83e580d9ab150c2fbccf8ed27ea",
+    "normalizedHash": "",
+    "artifactHash": "README",
+    "lastCompiledAt": "2026-07-14T16:23:13.758Z",
+    "dependencies": []
+  },
+  "file://C:\\Users\\vinicius\\Documents\\GeminiCode\\Open-Career-Format-Orchestrator\\examples\\domains\\career\\dist\\openwiki\\README.md": {
+    "sourceHash": "ac593f60312d3190a9fe88360c1b8b036d6bff8e677a0be69496301833308c4f",
+    "normalizedHash": "",
+    "artifactHash": "dist\\openwiki\\README",
+    "lastCompiledAt": "2026-07-14T16:23:13.758Z",
+    "dependencies": []
+  },
+  "file://C:\\Users\\vinicius\\Documents\\GeminiCode\\Open-Career-Format-Orchestrator\\examples\\domains\\career\\dist\\openwiki\\index.md": {
+    "sourceHash": "bd480f8b801200f90d7e1d3367df36285598ad6c9acecd59f76870d092b29e9f",
+    "normalizedHash": "",
+    "artifactHash": "dist\\openwiki\\index",
+    "lastCompiledAt": "2026-07-14T16:23:13.759Z",
+    "dependencies": []
+  }
+}

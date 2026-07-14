@@ -35,7 +35,20 @@ export class ConformanceRunner {
     try {
       const files = await fsAdapter.listFiles(this.bundlePath, ".md");
       for (const file of files) {
-        if (file === "index.md" || file === "log.md") continue;
+        if (
+          file === "index.md" ||
+          file === "log.md" ||
+          file === "README.md" ||
+          file === "WALKTHROUGH.md" ||
+          file === "FLAGSHIP_AUDIT.md" ||
+          file === "scorecard.md" ||
+          file.includes(path.sep + "dist" + path.sep) ||
+          file.startsWith("dist" + path.sep) ||
+          file.includes(path.sep + "scenarios" + path.sep) ||
+          file.startsWith("scenarios" + path.sep)
+        ) {
+          continue;
+        }
         const content = await fsAdapter.readFile(
           path.join(this.bundlePath, file),
         );

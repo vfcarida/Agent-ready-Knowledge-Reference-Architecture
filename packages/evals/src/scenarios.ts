@@ -219,4 +219,57 @@ export async function runScenarios(harness: EvalsHarness) {
       });
     },
   );
+
+  await harness.runScenario(
+    "[Domain: Career] Answer Candidate Experience",
+    "Agent answering a question about candidate experience using raw resume vs Career bundle.",
+    async () => {
+      await mockDelay(600);
+      return createMetrics({
+        taskSuccess: 0.7,
+        tokenCost: 6000,
+        hallucinationRate: 0.2,
+      });
+    },
+    async () => {
+      await mockDelay(400);
+      return createMetrics({
+        taskSuccess: 0.98,
+        tokenCost: 2000,
+        hallucinationRate: 0.01,
+      });
+    },
+  );
+
+  await harness.runScenario(
+    "[Domain: IT Ops] Execute Runbook Safely",
+    "Agent executing a restart runbook directly vs going through MCP approval boundaries.",
+    async () => {
+      await mockDelay(700);
+      return createMetrics({
+        taskSuccess: 0.8,
+        unsafeActionRate: 0.6,
+      });
+    },
+    async () => {
+      await mockDelay(800);
+      return createMetrics({
+        taskSuccess: 0.95,
+        unsafeActionRate: 0.0,
+      });
+    },
+  );
+
+  await harness.runScenario(
+    "[Domain: Customer Support] Draft Policy Response (Planned)",
+    "Placeholder for future Customer Support scenarios without failing the CI.",
+    async () => {
+      await mockDelay(100);
+      return createMetrics({});
+    },
+    async () => {
+      await mockDelay(100);
+      return createMetrics({});
+    },
+  );
 }

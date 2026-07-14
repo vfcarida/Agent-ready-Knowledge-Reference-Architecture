@@ -23,6 +23,8 @@
     "test:security": "vitest run packages/mcp-profile-server/src/__tests__/security",
     "test:mcp": "pnpm run test:contract && pnpm run test:security",
     "test:e2e": "pnpm --filter @akcp/dashboard exec playwright install chromium && pnpm --filter @akcp/dashboard exec playwright test",
+    "test:conformance": "pnpm --filter @akcp/conformance run test",
+    "coverage": "vitest run --coverage",
     "lint": "pnpm -r run lint",
     "typecheck": "pnpm -r run typecheck",
     "clean": "pnpm -r run clean",
@@ -42,6 +44,7 @@
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
+    "@vitest/coverage-v8": "^3.2.7",
     "js-yaml": "^5.2.1",
     "prettier": "^3.5.0",
     "typescript": "^5.8.0",

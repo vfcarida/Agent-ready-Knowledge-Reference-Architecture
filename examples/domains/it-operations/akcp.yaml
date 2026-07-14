@@ -10,14 +10,12 @@ compile:
       path: ./policies
 
   targets:
-    - type: ir-json
+    - type: context-pack
       out: dist/agent-knowledge-ir.json
-    - type: mcp-resources-manifest
+    - type: mcp-resources
       out: dist/mcp-resources.json
     - type: eval-dataset
       out: dist/eval-dataset.jsonl
-    - type: okf-bundle
-      out: dist/okf-bundle
     - type: policy-bundle
       out: dist/policies.json
 

@@ -9,7 +9,6 @@ describe("ConformanceRunner", () => {
   it("detects minimal OKF compliance", async () => {
     const runner = new ConformanceRunner(getFixturePath("okf-valid-minimal"));
     const report = await runner.run();
-    // It passes Level 1, 2, and 3 (no akcp.yaml so it fails level 4)
     expect(report.conformanceLevel).toBe("AKCP-compiler-compatible");
     expect(report.passed).toBeGreaterThan(0);
     expect(report.failed).toBe(0);
@@ -42,11 +41,24 @@ describe("ConformanceRunner", () => {
   it("fails level 4 if policy is invalid", async () => {
     const runner = new ConformanceRunner(getFixturePath("akcp-invalid-policy"));
     const report = await runner.run();
-    // Will fail at policy loading but pass up to Level 3
     expect(report.conformanceLevel).toBe("AKCP-compiler-compatible");
     expect(report.failed).toBe(1);
     expect(report.details.some((d) => d.ruleId === "AKCP-CP-CONFIG")).toBe(
       true,
     );
+  });
+
+  it("passes all levels for the Career flagship domain", async () => {
+    const runner = new ConformanceRunner(path.resolve(__dirname, "../../../../examples/domains/career"));
+    const report = await runner.run();
+    expect(report.failed).toBe(0);
+    expect(report.conformanceLevel).toBe("AKCP-control-plane-compatible");
+  });
+
+  it("passes all levels for the IT Operations flagship domain", async () => {
+    const runner = new ConformanceRunner(path.resolve(__dirname, "../../../../examples/domains/it-operations"));
+    const report = await runner.run();
+    expect(report.failed).toBe(0);
+    expect(report.conformanceLevel).toBe("AKCP-control-plane-compatible");
   });
 });

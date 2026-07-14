@@ -1,0 +1,89 @@
+{
+  "buildId": "deterministic_build_id",
+  "compiler": {
+    "name": "akcp",
+    "version": "0.1.0",
+  },
+  "conformance": {
+    "checks": [
+      {
+        "file": "FLAGSHIP_AUDIT.md",
+        "message": "OKF Parse Error: OKF Validation Error: Frontmatter validation failed: type: Required. Ensure the document has valid YAML frontmatter with at least a "type" field. See OKF v0.1 spec §4.1 for required fields.",
+        "ruleId": "OKF-V0.1-3.2",
+        "type": "error",
+      },
+      {
+        "file": "README.md",
+        "message": "OKF Parse Error: OKF Validation Error: Frontmatter validation failed: type: Required. Ensure the document has valid YAML frontmatter with at least a "type" field. See OKF v0.1 spec §4.1 for required fields.",
+        "ruleId": "OKF-V0.1-3.2",
+        "type": "error",
+      },
+      {
+        "file": "WALKTHROUGH.md",
+        "message": "OKF Parse Error: OKF Validation Error: Frontmatter validation failed: type: Required. Ensure the document has valid YAML frontmatter with at least a "type" field. See OKF v0.1 spec §4.1 for required fields.",
+        "ruleId": "OKF-V0.1-3.2",
+        "type": "error",
+      },
+      {
+        "file": "scenarios\high-cpu-incident.md",
+        "message": "OKF Parse Error: OKF Validation Error: Frontmatter validation failed: type: Required. Ensure the document has valid YAML frontmatter with at least a "type" field. See OKF v0.1 spec §4.1 for required fields.",
+        "ruleId": "OKF-V0.1-3.2",
+        "type": "error",
+      },
+      {
+        "file": "scorecard.md",
+        "message": "OKF Parse Error: OKF Validation Error: Frontmatter validation failed: type: Required. Ensure the document has valid YAML frontmatter with at least a "type" field. See OKF v0.1 spec §4.1 for required fields.",
+        "ruleId": "OKF-V0.1-3.2",
+        "type": "error",
+      },
+    ],
+    "level": "none",
+  },
+  "createdAt": "2026-07-14T16:19:18.337Z",
+  "diagnostics": [],
+  "schemaVersion": "akcp.artifact-manifest/v1",
+  "source": {
+    "config": "akcp.yaml",
+    "hash": "none",
+    "root": "C:\Users\vinicius\Documents\GeminiCode\Open-Career-Format-Orchestrator\examples\domains\it-operations",
+  },
+  "targets": [
+    {
+      "hash": "16cc92bdf4eae5caf1571c6a4c5b363820d4efb9fa9b82e873e91d62461b2a4b",
+      "name": "ir-json",
+      "outputs": [
+        "C:\Users\vinicius\Documents\GeminiCode\Open-Career-Format-Orchestrator\examples\domains\it-operations\dist\agent-knowledge-ir.json",
+      ],
+      "sizeBytes": 9382,
+      "status": "success",
+    },
+    {
+      "hash": "57694cd235bcb4824ce48d7b8b55b7b1ffc3c3cd63af173f8ef993f925035eab",
+      "name": "mcp-resources-manifest",
+      "outputs": [
+        "C:\Users\vinicius\Documents\GeminiCode\Open-Career-Format-Orchestrator\examples\domains\it-operations\dist\mcp-resources.json",
+      ],
+      "sizeBytes": 1289,
+      "status": "success",
+    },
+    {
+      "hash": "828df9528f990336bd7ed92a95f685b6782c55c0185b2d7037867bf9a5291c17",
+      "name": "eval-dataset",
+      "outputs": [
+        "C:\Users\vinicius\Documents\GeminiCode\Open-Career-Format-Orchestrator\examples\domains\it-operations\dist\eval-dataset.jsonl",
+      ],
+      "sizeBytes": 748,
+      "status": "success",
+    },
+    {
+      "hash": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "name": "policy-bundle",
+      "outputs": [
+        "C:\Users\vinicius\Documents\GeminiCode\Open-Career-Format-Orchestrator\examples\domains\it-operations\dist\policies.json",
+      ],
+      "sizeBytes": 2,
+      "status": "success",
+    },
+  ],
+  "timestamp": "2026-01-01T00:00:00.000Z",
+}

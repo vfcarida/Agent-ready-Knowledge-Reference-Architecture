@@ -13,13 +13,13 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Enable Corepack
         run: corepack enable
 
       - name: Use Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
         with:
           node-version: 22
           cache: "pnpm"
@@ -45,11 +45,26 @@ jobs:
       - name: Unit Tests
         run: pnpm test -- --run
 
-      - name: Contract Tests
-        run: pnpm test:contract
+      - name: Security and Contract Tests
+        run: pnpm test:mcp
+
+      - name: Conformance Tests
+        run: pnpm test:conformance
+
+      - name: Evals
+        run: pnpm evals
 
       - name: Validate Sample Bundle
         run: pnpm validate:bundle --bundle sample-data/.okf --format json
 
       - name: Migrate Bundle Dry Run
         run: pnpm migrate:bundle --bundle sample-data/.okf --check
+
+      - name: Validate Career Bundle
+        run: pnpm akcp validate --config examples/career/akcp.yaml
+
+      - name: Compile Career Bundle
+        run: pnpm akcp compile --config examples/career/akcp.yaml
+
+      - name: Conformance Run
+        run: pnpm akcp conformance run

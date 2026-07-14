@@ -7,6 +7,8 @@
     "lint": "echo 'no lint needed'",
     "typecheck": "tsc --noEmit",
     "build": "tsc",
+    "test": "echo 'no tests'",
+    "clean": "node -e \"fs.rmSync('dist', {recursive:true,force:true}); fs.rmSync('*.tsbuildinfo', {force:true})\"",
     "evals": "node dist/index.js"
   },
   "dependencies": {

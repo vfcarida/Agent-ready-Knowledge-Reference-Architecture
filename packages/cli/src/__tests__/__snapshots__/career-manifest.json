@@ -1,0 +1,47 @@
+{
+  "buildId": "deterministic_build_id",
+  "compiler": {
+    "name": "akcp",
+    "version": "0.1.0",
+  },
+  "conformance": {
+    "checks": [
+      {
+        "file": "README.md",
+        "message": "OKF Parse Error: OKF Validation Error: Frontmatter validation failed: type: Required. Ensure the document has valid YAML frontmatter with at least a "type" field. See OKF v0.1 spec §4.1 for required fields.",
+        "ruleId": "OKF-V0.1-3.2",
+        "type": "error",
+      },
+    ],
+    "level": "none",
+  },
+  "createdAt": "2026-07-14T16:19:15.853Z",
+  "diagnostics": [],
+  "schemaVersion": "akcp.artifact-manifest/v1",
+  "source": {
+    "config": "akcp.yaml",
+    "hash": "none",
+    "root": "C:\Users\vinicius\Documents\GeminiCode\Open-Career-Format-Orchestrator\examples\domains\career",
+  },
+  "targets": [
+    {
+      "hash": "88141c5a08b3f3edf7c27c033664d9c4ecc8cb04416a282a172a0b1e50717da7",
+      "name": "ir-json",
+      "outputs": [
+        "C:\Users\vinicius\Documents\GeminiCode\Open-Career-Format-Orchestrator\examples\domains\career\dist\context-pack.json",
+      ],
+      "sizeBytes": 1382,
+      "status": "success",
+    },
+    {
+      "hash": "8e5aedbdb01b1ab109689a3109a1eda0a973231157303a170307313c423f3f25",
+      "name": "openwiki",
+      "outputs": [
+        "C:\Users\vinicius\Documents\GeminiCode\Open-Career-Format-Orchestrator\examples\domains\career\dist\openwiki",
+      ],
+      "sizeBytes": 881,
+      "status": "success",
+    },
+  ],
+  "timestamp": "2026-01-01T00:00:00.000Z",
+}
