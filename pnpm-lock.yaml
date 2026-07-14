@@ -257,10 +257,22 @@ importers:
       '@modelcontextprotocol/sdk':
         specifier: 'catalog:'
         version: 1.29.0(zod@3.25.76)
+      cors:
+        specifier: ^2.8.6
+        version: 2.8.6
+      express:
+        specifier: ^5.2.1
+        version: 5.2.1
       zod:
         specifier: 'catalog:'
         version: 3.25.76
     devDependencies:
+      '@types/cors':
+        specifier: ^2.8.19
+        version: 2.8.19
+      '@types/express':
+        specifier: ^5.0.6
+        version: 5.0.6
       '@types/node':
         specifier: 'catalog:'
         version: 22.20.0
