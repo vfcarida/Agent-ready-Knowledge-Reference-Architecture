@@ -26,7 +26,7 @@ These features are implemented, tested, and considered stable as of the current 
 These features are being actively developed and may change.
 
 - **OpenWiki Sync Connector** — Pull fresh docs from OpenWiki/LangChain into OKF bundles.
-- **Dashboard HITL Panel** — Real-time React UI for approving/denying pending agent actions.
+- **Dashboard UI / HITL Panel** — Real-time React UI for approving/denying pending agent actions.
 - **Eval Pipeline** — Automated evaluation of agent grounding against OKF ground truth.
 - **Enterprise Governance Bundles** — Pre-built policy packs for GDPR, HIPAA, SOC2.
 
@@ -40,6 +40,7 @@ These are speculative research directions. No implementation is planned yet.
 - **Federated Knowledge Registries** — Cross-organization knowledge sharing with provenance verification.
 - **Semantic Diff** — Human-readable diff of two AK-IR snapshots for change review.
 - **LLM-Assisted OKF Authoring** — Using agents to suggest OKF frontmatter for new documents.
+- **Customer Support Flagship** — Deep support enterprise integration demonstrating macros, customer history, and PII redaction.
 
 ---
 

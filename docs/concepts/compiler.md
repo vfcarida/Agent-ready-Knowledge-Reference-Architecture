@@ -13,7 +13,7 @@ flowchart TD
     F --> H[Context Packs]
 ```
 
-AKCP transforms OKF knowledge sources into agent-ready artifacts through a deterministic 10-step pipeline.
+AKCP transforms OKF knowledge sources into compiled artifacts through a deterministic 10-step pipeline.
 
 ## 1. Read Sources
 Connectors (e.g., `OKFDirectoryConnector`, `OpenWikiConnector`) read raw files from the configured input locations.
