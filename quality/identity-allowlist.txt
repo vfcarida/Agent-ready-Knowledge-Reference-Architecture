@@ -15,3 +15,6 @@ build-state.json
 
 # Scratch files
 scratch/migrate.ts
+
+# Maturity Status
+docs/status.md
