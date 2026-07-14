@@ -8,6 +8,8 @@ on:
 permissions:
   contents: write
   packages: write
+  id-token: write
+  attestations: write
 
 jobs:
   release:
@@ -20,8 +22,20 @@ jobs:
         with:
           node-version: 22
           cache: pnpm
+          registry-url: 'https://registry.npmjs.org'
       - run: pnpm install --frozen-lockfile --ignore-scripts
       - run: pnpm run build
+
+      - name: Attest Build Provenance
+        uses: actions/attest-build-provenance@v1
+        with:
+          subject-path: 'packages/*/dist/**'
+
+      - name: Publish to NPM
+        run: pnpm -r publish --no-git-checks --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@c062e08bd532815e2082a85e87e3ef29c3e6d191 # v2.0.8
         with:

@@ -30,6 +30,15 @@ jobs:
       - name: Validate YAML
         run: pnpm validate:yaml
 
+      - name: Identity Check
+        run: pnpm check:identity
+
+      - name: Docs Check
+        run: pnpm check:docs
+
+      - name: Links Check
+        run: pnpm check:links
+
       - name: Format Check
         run: pnpm format:check
 
@@ -45,26 +54,29 @@ jobs:
       - name: Unit Tests
         run: pnpm test -- --run
 
-      - name: Security and Contract Tests
-        run: pnpm test:mcp
+      - name: Security Tests
+        run: pnpm test:security
+
+      - name: Contract Tests
+        run: pnpm test:contract
 
       - name: Conformance Tests
         run: pnpm test:conformance
 
-      - name: Evals
-        run: pnpm evals
-
-      - name: Validate Sample Bundle
-        run: pnpm validate:bundle --bundle sample-data/.okf --format json
-
-      - name: Migrate Bundle Dry Run
-        run: pnpm migrate:bundle --bundle sample-data/.okf --check
-
       - name: Validate Career Bundle
-        run: pnpm akcp validate --config examples/career/akcp.yaml
+        run: pnpm akcp validate --config examples/domains/career/akcp.yaml
 
       - name: Compile Career Bundle
-        run: pnpm akcp compile --config examples/career/akcp.yaml
+        run: pnpm akcp compile --config examples/domains/career/akcp.yaml
+
+      - name: Validate IT Ops Bundle
+        run: pnpm akcp validate --config examples/domains/it-operations/akcp.yaml
+
+      - name: Compile IT Ops Bundle
+        run: pnpm akcp compile --config examples/domains/it-operations/akcp.yaml
+
+      - name: Compile Customer Support Bundle
+        run: pnpm akcp compile --config examples/domains/customer-support/akcp.yaml
 
       - name: Conformance Run
         run: pnpm akcp conformance run
