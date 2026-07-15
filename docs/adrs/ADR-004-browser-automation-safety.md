@@ -1,4 +1,4 @@
-# 4. Browser Automation Safety
+# ADR-004: Browser Automation Safety
 
 Date: 2026-07-08
 

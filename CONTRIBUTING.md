@@ -28,6 +28,10 @@ The project is organized into the following workstreams. Pick the one that match
    pnpm -r run test -- --run
    pnpm -r run build
    ```
+4. **Run linting**: Ensure no lint errors before submitting.
+   ```bash
+   pnpm lint
+   ```
 3. **Open an issue first**: For non-trivial changes, open an issue using the appropriate template to discuss your approach before submitting a PR.
 
 ---

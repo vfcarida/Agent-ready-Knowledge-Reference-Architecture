@@ -9,7 +9,6 @@
     "./dist/scenarios.js": "./dist/scenarios.js"
   },
   "scripts": {
-    "lint": "echo 'no lint needed'",
     "typecheck": "tsc --noEmit",
     "build": "tsc",
     "test": "echo 'no tests'",

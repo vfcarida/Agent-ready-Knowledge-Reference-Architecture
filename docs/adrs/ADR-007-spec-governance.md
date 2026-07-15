@@ -1,4 +1,4 @@
-# ADR: Specification Governance Model
+# ADR-007: Specification Governance Model
 
 **Status:** ACCEPTED  
 **Date:** 2026-07-10  

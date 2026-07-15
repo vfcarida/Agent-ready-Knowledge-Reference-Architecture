@@ -6,7 +6,6 @@
   "scripts": {
     "start:mock": "tsx src/mock-server.ts",
     "build": "echo 'no build needed'",
-    "lint": "echo 'no lint needed'",
     "typecheck": "tsc --noEmit",
     "test": "echo 'no tests'",
     "clean": "node -e \"fs.rmSync('dist', {recursive:true,force:true}); fs.rmSync('*.tsbuildinfo', {force:true})\""

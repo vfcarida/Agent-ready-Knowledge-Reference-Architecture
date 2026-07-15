@@ -1,10 +1,10 @@
 import crypto from "node:crypto";
-import type { PiiDetector, PiiFinding } from "./pii-detector.js";
+import type { PiiDetector, PiiMatch } from "./pii-detector.js";
 import { RegexPiiDetector } from "./regex-pii-detector.js";
 
 export interface PiiRedactionResult {
   redactedText: string;
-  findings: PiiFinding[];
+  findings: PiiMatch[];
   blocked: boolean;
 }
 

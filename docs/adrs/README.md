@@ -1,22 +1,20 @@
-# Architectural Decision Records (ADRs)
+# Architectural Decision Records
 
-While the [RFC Process](../governance/rfc-process.md) governs changes to the public standard, protocols, and schemas, Architectural Decision Records (ADRs) are used to document **internal engineering decisions**.
+| # | Decision | Status | Date |
+|---|----------|--------|------|
+| 001 | OKF Profile over OKF | Active | 2026-07-08 |
+| 002 | MCP Server Boundaries | Active | 2026-07-08 |
+| 003 | Human-in-the-Loop Policy | Active | 2026-07-08 |
+| 004 | Browser Automation Safety | Active | 2026-07-08 |
+| 005 | Observability Standard | Active | 2026-07-08 |
+| 006 | Release and Versioning Strategy | Active | 2026-07-08 |
+| 007 | Spec Governance | Active | 2026-07-10 |
 
-## When to use an ADR
+## Deprecated
 
-Write an ADR when making a significant technical choice about the implementation details of the repository, such as:
-
-- Choosing a new testing framework (e.g., migrating to Vitest).
-- Changing the internal project architecture (e.g., moving to a monorepo).
-- Adopting a specific design pattern for the React dashboard.
-
-## ADR Format
-
-ADRs in this project should follow a simplified format:
-
-- **Title:** The decision being made.
-- **Context:** The forces at play and why a decision is needed.
-- **Decision:** The choice we made.
-- **Consequences:** What becomes easier or harder as a result of this choice.
-
-Store new ADRs in this directory as `YYYY-MM-DD-short-title.md`.
+| # | Decision | Status | Date |
+|---|----------|--------|------|
+| 001 | OKF Profile over OKF | Deprecated | 2026-07-08 |
+| 002 | MCP Server Boundaries | Deprecated | 2026-07-08 |
+| 003 | Human-in-the-Loop Policy | Deprecated | 2026-07-08 |
+| 005 | Observability Standard | Deprecated | 2026-07-08 |

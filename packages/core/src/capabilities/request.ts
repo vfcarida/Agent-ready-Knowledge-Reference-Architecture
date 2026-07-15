@@ -5,4 +5,5 @@ export interface CapabilityRequest {
   agentId?: string;
   clientId?: string;
   payload: any;
+  apiKey?: string;
 }

@@ -1,14 +1,22 @@
-# AKCP Specifications
+# Specifications
 
-This directory contains the normative specifications for AKCP. Because AKCP provides a standardized delivery mechanism for autonomous agent context, **the specification must evolve slower and be more stable than the implementation.**
+## Formal Specs (normative)
 
-## Active Specifications
+The canonical, RFC-governed specifications live in [`/spec/`](../../spec/):
 
-- [Versioning Policy](versioning.md) - How SemVer applies to OKF Profiles, Context Packs, and MCP Tools.
-- [Compatibility & Deprecation](compatibility.md) - Rules for breaking changes, additive changes, and end-of-life policies.
+- [Agent Knowledge IR](../../spec/agent-knowledge-ir.md)
+- [AKCP Build Spec](../../spec/akcp-build-spec.md)
+- [Policy Cards](../../spec/policy-cards.md)
+- [Conformance](../../spec/conformance.md)
+- [Artifact Manifest](../../spec/artifact-manifest.md)
 
-## Governance Process
+## Practical Guides (informative)
 
-Changes to these specifications or the introduction of new core features MUST go through the [RFC Process](../governance/rfc-process.md).
+The documents in this directory provide practical usage guides:
 
-Minor internal engineering decisions that do not affect the public protocol or schemas should be documented via [ADRs](../adrs/README.md).
+- [akcp.yaml Configuration](./akcp-yaml.md)
+- [Compile Targets](../reference/compile-targets.md)
+- [Context Budget](./context-budget.md)
+- [MCP Tool Contracts](./mcp-tool-contracts.md)
+- [Compatibility Levels](./compatibility-levels.md)
+- [Versioning](./versioning.md)

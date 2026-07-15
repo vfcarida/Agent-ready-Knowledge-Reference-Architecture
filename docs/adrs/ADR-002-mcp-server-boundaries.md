@@ -1,6 +1,4 @@
-# 2. MCP Server Boundaries
-
-Date: 2026-07-08
+# ADR-002: Modularize MCP Servers by Domain
 
 ## Status
 
@@ -8,12 +6,18 @@ Accepted
 
 ## Context
 
-Monolithic MCP servers mix read-only personal data with write-heavy, stateful automation operations.
+Initially, the Model Context Protocol (MCP) server was a monolithic package exposing both filesystem operations (reading candidate OKF profiles) and browser automation actions (submitting applications via Playwright). This combined architecture introduced tight coupling, elevated security risks (where read-only requests could spawn browser instances), and increased execution overhead.
 
 ## Decision
 
-Split into `@akcp/mcp-profile-server` (read-only, offline, local data) and `@akcp/mcp-automation-server` (stateful, external networks, approvals).
+We decouple the server into two specialised MCP servers:
+
+1.  `@akcp/mcp-profile-server`: Exposes read-only OKF files and lifecycle schemas.
+2.  `@akcp/mcp-automation-server`: Exposes high-risk browser automation drivers.
+    The original `@akcp/mcp-server` remains as a compatibility layer.
 
 ## Consequences
 
-Users can run the Profile server 24/7 with zero risk. The Automation server is only launched when actively applying for jobs.
+- Better security boundaries (isolated credentials).
+- Improved testing and package modularity.
+- Client applications can connect to one or both servers depending on required capabilities.

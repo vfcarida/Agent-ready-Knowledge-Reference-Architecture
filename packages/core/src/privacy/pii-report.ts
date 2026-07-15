@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import type { PiiFinding } from "./pii-detector.js";
+import type { PiiMatch } from "./pii-detector.js";
 
 export interface PiiReportData {
   totalFindings: number;
@@ -11,7 +11,7 @@ export interface PiiReportData {
     type: string;
     start: number;
     end: number;
-    confidence: number;
+    confidence: string;
   }>;
 }
 
@@ -23,7 +23,7 @@ export class PiiReport {
     details: []
   };
 
-  addFinding(file: string, finding: PiiFinding) {
+  addFinding(file: string, finding: PiiMatch) {
     this.data.totalFindings++;
     this.data.findingsByType[finding.type] = (this.data.findingsByType[finding.type] || 0) + 1;
     this.data.details.push({

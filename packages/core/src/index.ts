@@ -102,7 +102,17 @@ export * from "./policy/load.js";
 // Identity & Capabilities
 export * from "./identity/types.js";
 export * from "./capabilities/request.js";
+export * from "./capabilities/gateway.js";
 export * from "./capabilities/approval-store.js";
+export { TokenBucketRateLimiter, type RateLimiterConfig } from "./capabilities/rate-limiter.js";
+export {
+  authenticate,
+  hashApiKey,
+  generateApiKey,
+  type AgentCredential,
+  type AuthConfig,
+  type AuthResult,
+} from "./capabilities/auth.js";
 export * from "./capabilities/gateway.js";
 
 // Migrations
@@ -140,7 +150,12 @@ export * from "./scanner/scan.js";
 
 // Compiler
 export * from "./compiler/incremental-build-state.js";
+export * from "./compiler/pipeline.js";
+export { runCompilerPipeline } from "./compiler/run-pipeline.js";
 
 // Privacy
 export * from "./privacy/index.js";
+export * from "./privacy/pii-detector.js";
+export { RegexPiiDetector } from "./privacy/regex-pii-detector.js";
+export { createPiiDetector } from "./privacy/create-detector.js";
 export * from "./privacy/waf.js";

@@ -211,4 +211,55 @@ describe("Control Plane & Runtime Governance", () => {
     const events = await auditLog.getEvents();
     expect(events.map(e => e.decision)).toContain("expired"); // Maps to invalid/expired
   });
+
+  it("should rate limit excessive requests", async () => {
+    gateway = new MCPGateway({
+      policies: { "agent-1": policyAllowAll },
+      auditLogService: auditLog,
+      rateLimiter: { maxTokens: 3, refillRate: 1 },
+    });
+
+    // First 3 should succeed
+    for (let i = 0; i < 3; i++) {
+      await gateway.execute(
+        { agentId: "agent-1", toolName: "akcp.read_document", sideEffect: "read", payload: {} },
+        async () => "success",
+      );
+    }
+
+    // 4th should be rate limited
+    await expect(
+      gateway.execute(
+        { agentId: "agent-1", toolName: "akcp.read_document", sideEffect: "read", payload: {} },
+        async () => "success",
+      ),
+    ).rejects.toThrow("Rate limit exceeded");
+  });
+});
+
+describe("Authentication", () => {
+  it("should reject unauthenticated requests when auth is configured", async () => {
+    const policyAllowAll = {
+      metadata: { name: "allow-all" },
+      appliesTo: { capabilities: ["*"] },
+      rules: [{ effect: "allow" as const }]
+    };
+
+    const authGateway = new MCPGateway({
+      policies: { "agent-1": policyAllowAll },
+      auth: {
+        requireAuth: true,
+        credentials: [
+          { agentId: "agent-1", apiKey: "hashed_key_here", createdAt: new Date().toISOString() },
+        ],
+      },
+    });
+
+    await expect(
+      authGateway.execute(
+        { requestId: "req-1", agentId: "agent-1", toolName: "akcp.read", sideEffect: "read", payload: {} },
+        async () => "success",
+      ),
+    ).rejects.toThrow("Authentication failed");
+  });
 });

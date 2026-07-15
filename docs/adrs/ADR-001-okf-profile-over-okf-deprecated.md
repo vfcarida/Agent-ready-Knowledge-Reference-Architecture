@@ -1,3 +1,7 @@
+---
+status: deprecated
+superseded-by: ADR-001
+---
 # 1. OKF Profile over OKF
 
 Date: 2026-07-08

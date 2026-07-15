@@ -1,4 +1,4 @@
-# ADR-005: Release and Versioning Strategy
+# ADR-006: Release and Versioning Strategy
 
 ## Status
 

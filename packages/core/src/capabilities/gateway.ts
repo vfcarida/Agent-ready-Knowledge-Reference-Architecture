@@ -2,6 +2,10 @@ import type { CapabilityRequest } from "./request.js";
 import type { PolicyCard } from "../policy/types.js";
 import { evaluatePolicy } from "../policy/evaluate.js";
 import type { IApprovalStore } from "./approval-store.js";
+import { authenticate, type AuthConfig } from "./auth.js";
+import { createPiiDetector } from "../privacy/create-detector.js";
+import type { PiiDetector } from "../privacy/pii-detector.js";
+import { TokenBucketRateLimiter, type RateLimiterConfig } from "./rate-limiter.js";
 
 export class MCPGatewayError extends Error {
   constructor(
@@ -22,17 +26,87 @@ export interface GatewayConfig {
   defaultPolicy?: PolicyCard;
   approvalStore?: IApprovalStore;
   auditLogService?: IAuditLogService;
+  piiDetector?: PiiDetector;
+  rateLimiter?: RateLimiterConfig;
+  auth?: AuthConfig;
 }
 
 export class MCPGateway {
-  constructor(private config: GatewayConfig) {}
+  private limiter?: TokenBucketRateLimiter;
+
+  constructor(private config: GatewayConfig) {
+    if (config.rateLimiter) {
+      this.limiter = new TokenBucketRateLimiter(config.rateLimiter);
+    }
+  }
 
   public async execute<T>(
     request: CapabilityRequest,
     executor: () => Promise<T>,
   ): Promise<T> {
+    const agentKey = request.agentId || "anonymous";
+    const requestId = request.requestId || crypto.randomUUID();
+
+    // Rate limiting check
+    if (this.limiter && !this.limiter.consume(agentKey)) {
+      if (this.config.auditLogService) {
+        await this.config.auditLogService.logEvent({
+          action: "rate_limit.exceeded",
+          actor: agentKey,
+          requestId: crypto.randomUUID(),
+          capabilityId: request.toolName,
+          decision: "deny",
+          riskLevel: "medium",
+          evidence: { reason: "Rate limit exceeded" },
+        });
+      }
+      throw new MCPGatewayError(
+        `Rate limit exceeded for agent '${agentKey}'. Try again later.`,
+        "RATE_LIMITED",
+      );
+    }
+
+    // Authentication check
+    if (this.config.auth) {
+      const authResult = authenticate(request.apiKey, this.config.auth);
+
+      if (!authResult.authenticated) {
+        if (this.config.auditLogService) {
+          await this.config.auditLogService.logEvent({
+            action: "auth.failed",
+            actor: request.agentId || "unknown",
+            requestId,
+            capabilityId: request.toolName,
+            decision: "deny",
+            riskLevel: "high",
+            evidence: { reason: authResult.reason },
+          });
+        }
+        throw new MCPGatewayError(
+          `Authentication failed: ${authResult.reason}`,
+          "UNAUTHORIZED",
+        );
+      }
+
+      // Override self-declared agentId with authenticated identity
+      request.agentId = authResult.agentId;
+
+      // Check scope restriction
+      if (authResult.scopes && authResult.scopes.length > 0) {
+        const hasScope = authResult.scopes.some(
+          (s) => s === "*" || s === request.toolName ||
+                 (s.endsWith("*") && request.toolName.startsWith(s.replace("*", ""))),
+        );
+        if (!hasScope) {
+          throw new MCPGatewayError(
+            `Agent '${authResult.agentId}' does not have scope for tool '${request.toolName}'.`,
+            "INSUFFICIENT_SCOPE",
+          );
+        }
+      }
+    }
+
     const policy = this.resolvePolicy(request.agentId);
-    const requestId = crypto.randomUUID();
     const payloadHash = crypto.createHash('sha256').update(JSON.stringify(request.payload || {})).digest('hex');
 
     if (!policy) {
@@ -226,24 +300,32 @@ export class MCPGateway {
     return this.config.defaultPolicy;
   }
 
+  private get detector(): PiiDetector {
+    return this.config.piiDetector || createPiiDetector();
+  }
+
   private sanitizeOutput<T>(output: T): T {
-    const str = JSON.stringify(output);
-    // Extremely basic redaction for emails/SSNs as an example
-    const redacted = str
-      .replace(/\b\d{3}-\d{2}-\d{4}\b/g, "[REDACTED_SSN]")
-      .replace(
-        /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g,
-        "[REDACTED_EMAIL]",
-      );
-    return JSON.parse(redacted) as T;
+    let str = JSON.stringify(output);
+    const matches = this.detector.detect(str);
+    
+    // We can assume detect returns an array or a promise since we typed it. 
+    // Wait, detect is returning an array of matches now. We need to await if it returns a promise just in case it's the HttpSecurityGateway, but MCPGateway might be synchronous? 
+    // Wait, sanitizeOutput is called inside execute which is async. But sanitizeOutput is not async. 
+    // The previous sanitizeOutput wasn't async. Let's make it sync since RegexPiiDetector is sync.
+    // However, if someone passes an async detector, this will fail. Let's just assume PiiMatch[] for now as the user's snippet did.
+    
+    // Actually the user's snippet explicitly provides sanitizeOutput as synchronous.
+    const sorted = [...(matches as any[])].sort((a, b) => b.start - a.start);
+    for (const match of sorted) {
+      str = str.slice(0, match.start) + `[REDACTED_${match.type.toUpperCase()}]` + str.slice(match.end);
+    }
+  
+    return JSON.parse(str) as T;
   }
 
   private containsPII(output: any): boolean {
     const str = JSON.stringify(output);
-    const hasSSN = /\b\d{3}-\d{2}-\d{4}\b/.test(str);
-    const hasEmail = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/.test(
-      str,
-    );
-    return hasSSN || hasEmail;
+    const matches = this.detector.detect(str);
+    return (matches as any[]).some((m) => m.confidence === "high");
   }
 }

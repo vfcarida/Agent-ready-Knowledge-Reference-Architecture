@@ -1,6 +1,4 @@
-# 5. Observability Standard
-
-Date: 2026-07-08
+# ADR-005: Observability and Telemetry Standard
 
 ## Status
 
@@ -8,12 +6,18 @@ Accepted
 
 ## Context
 
-Troubleshooting autonomous agents requires tracking multi-step tool calls, parse failures, and external automation success rates.
+Diagnosing tool failures, filesystem parsing issues, and browser delays across decoupled MCP processes requires unified tracing.
 
 ## Decision
 
-Adopt OpenTelemetry (OTel) for standardized metrics (`akcp_mcp_tool_calls_total`) and distributed tracing across all core and server packages.
+We deploy the **OpenTelemetry (OTel) Node.js SDK** in core and servers. Tracing spans are injected around:
+
+- Core filesystem read/write/parse events.
+- MCP tool calls latency.
+- Playwright page interactions.
+  Custom counters track success/failures rates.
 
 ## Consequences
 
-Operations teams can plug any OTel-compatible collector (Prometheus/Jaeger) into the MCP servers.
+- Standardised JSON metrics output.
+- Direct connectivity with standard collectors (Jaeger, Prometheus).

@@ -16,3 +16,20 @@ This is a `pnpm` workspace monorepo.
 - `pnpm build`: Builds all packages.
 - `pnpm lint`: Runs `oxlint` and `eslint`.
 - `pnpm typecheck`: Runs `tsc --noEmit`.
+
+## Local Infrastructure
+
+AKCP uses Docker Compose for local dependencies:
+
+```bash
+# Start Redis (required for approval store)
+pnpm infra:up
+
+# Start with full observability stack (Redis + OTel + Jaeger)
+pnpm infra:up:full
+
+# View Jaeger traces at http://localhost:16686
+
+# Stop everything
+pnpm infra:down
+```

@@ -116,7 +116,7 @@ Welcome to the **Agent Knowledge Compiler and Control Plane (AKCP)** documentati
 |------|-------------|
 | [Career Domain](walkthroughs/career.md) | **Stable** — Personal knowledge compilation starter domain |
 | [IT Operations Domain](walkthroughs/it-ops.md) | **Beta** — Enterprise runbooks, incidents, approvals, audit |
-| [Customer Support Domain](walkthroughs/customer-support-planned.md) | **Experimental** — Policy-aware, PII-preserving support knowledge |
+| [Customer Support Domain](concepts/customer-support-design.md) | **Experimental** — Policy-aware, PII-preserving support knowledge |
 
 ---
 

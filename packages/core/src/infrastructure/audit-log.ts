@@ -1,4 +1,4 @@
-export type AuditEventAction = "capability.invoke" | "policy.evaluate" | "approval.request" | "approval.consume" | "approval.expire" | "system.error";
+export type AuditEventAction = "capability.invoke" | "policy.evaluate" | "approval.request" | "approval.consume" | "approval.expire" | "system.error" | "rate_limit.exceeded" | "auth.failed";
 export type AuditEventDecision = "allow" | "deny" | "require_approval" | "error" | "pending" | "consumed" | "expired";
 export type AuditRiskLevel = "low" | "medium" | "high" | "critical";
 
