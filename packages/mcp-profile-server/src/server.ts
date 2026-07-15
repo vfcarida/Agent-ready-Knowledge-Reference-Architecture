@@ -16,7 +16,9 @@ import {
   withToolTracing,
   MCPGateway,
   type GatewayConfig,
-  type AgentKnowledgeIR
+  type AgentKnowledgeIR,
+  LakeraGateway,
+  type ISecurityGateway
 } from "@akcp/core";
 
 export class AKCPProfileServer {
@@ -24,6 +26,7 @@ export class AKCPProfileServer {
   private readonly gateway: MCPGateway;
   private readonly ir: AgentKnowledgeIR;
   private readonly agentIdentity: string;
+  private readonly securityGateway: ISecurityGateway;
 
   constructor(
     ir: AgentKnowledgeIR,
@@ -33,6 +36,7 @@ export class AKCPProfileServer {
     this.ir = ir;
     this.gateway = new MCPGateway(gatewayConfig);
     this.agentIdentity = agentIdentity;
+    this.securityGateway = new LakeraGateway();
 
     // Create the MCP server instance
     this.server = new McpServer({
@@ -110,8 +114,9 @@ export class AKCPProfileServer {
         conceptId: z.string().describe("The conceptId of the document to read"),
         offset: z.number().default(0).describe("Character offset to start reading from"),
         limit: z.number().default(4000).describe("Maximum number of characters to read (chunk size)"),
+        summaryOnly: z.boolean().optional().describe("If true, only returns the summary of the document, if available."),
       },
-      async ({ conceptId, offset, limit }) => {
+      async ({ conceptId, offset, limit, summaryOnly }) => {
         mcpToolCallsCounter.add(1);
         const concept = this.ir.concepts?.find((c) => c.conceptId === conceptId);
         
@@ -123,7 +128,14 @@ export class AKCPProfileServer {
           };
         }
 
-        const fullText = `---\n${JSON.stringify(concept.frontmatter, null, 2)}\n---\n\n${concept.body}`;
+        let fullText = "";
+        
+        if (summaryOnly && concept.frontmatter.summary) {
+          fullText = `---\n${JSON.stringify(concept.frontmatter, null, 2)}\n---\n\n> Summary: ${concept.frontmatter.summary}`;
+        } else {
+          fullText = `---\n${JSON.stringify(concept.frontmatter, null, 2)}\n---\n\n${concept.body}`;
+        }
+        
         const chunk = fullText.slice(offset, offset + limit);
         const hasMore = offset + limit < fullText.length;
 
@@ -180,6 +192,30 @@ export class AKCPProfileServer {
             // Gating based on requiresApproval and sideEffects could happen here
             if (cap.requiresApproval) {
               console.warn(`[SECURITY] Tool ${cap.name} requires human approval! (Simulated)`);
+            }
+
+            // WAF Security Check
+            const wafResult = await this.securityGateway.checkPrompt(JSON.stringify(args));
+            if (wafResult.flagged) {
+              mcpToolFailuresCounter.add(1);
+              return {
+                isError: true,
+                content: [
+                  {
+                    type: "text",
+                    text: JSON.stringify(
+                      createToolFailure(`Security Gateway Blocked Execution: ${wafResult.reason}`, "SECURITY_BLOCK", {
+                        requestId: reqId,
+                        toolName: cap.name,
+                        toolVersion: "1.0.0",
+                        durationMs: 0,
+                      }),
+                      null,
+                      2
+                    )
+                  }
+                ]
+              };
             }
 
             try {

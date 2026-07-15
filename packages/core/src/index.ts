@@ -142,4 +142,5 @@ export * from "./scanner/scan.js";
 export * from "./compiler/incremental-build-state.js";
 
 // Privacy
-export * from "./privacy/index.js";
+export * from "./privacy/regex-pii-detector.js";
+export * from "./privacy/waf.js";
