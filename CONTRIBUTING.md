@@ -23,10 +23,10 @@ The project is organized into the following workstreams. Pick the one that match
 1. **Read the spec**: All contributions touching the compiler or control plane should be grounded in the `spec/` documents.
 2. **Run pre-checks**: Ensure the repository is healthy before making changes.
    ```bash
-   npx pnpm install --frozen-lockfile
-   npx pnpm -r run typecheck
-   npx pnpm -r run test -- --run
-   npx pnpm -r run build
+   pnpm install --frozen-lockfile
+   pnpm -r run typecheck
+   pnpm -r run test -- --run
+   pnpm -r run build
    ```
 3. **Open an issue first**: For non-trivial changes, open an issue using the appropriate template to discuss your approach before submitting a PR.
 
@@ -46,20 +46,21 @@ The project is organized into the following workstreams. Pick the one that match
 
 ```bash
 # Clone the repository
-git clone https://github.com/vfcarida/Agent-Knowledge-Compiler-Control-Plane.git akcp
+git clone https://github.com/vfcarida/Agent-Knowledge-Compiler-and-Control-Plane.git akcp
 cd akcp
 
-# Install all workspace dependencies
-npx pnpm install
+# Enable corepack and install workspace dependencies
+corepack enable
+pnpm install
 
 # Build all packages
-npx pnpm -r run build
+pnpm -r run build
 
 # Run all tests
-npx pnpm -r run test -- --run
+pnpm -r run test -- --run
 
 # Validate an example OKF bundle
-npx akcp validate examples/domains/career --profile career
+pnpm akcp validate --bundle examples/domains/career --profile career
 ```
 
 ---

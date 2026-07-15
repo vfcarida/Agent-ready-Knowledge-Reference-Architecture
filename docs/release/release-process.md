@@ -6,58 +6,26 @@ This document describes the steps required to cut a new AKCP release. Follow thi
 
 ## Pre-Release Checklist
 
-### 1. Branch Health
+### 1. Branch Health & Quality Gates
 
-- [ ] All CI checks pass on `main` (green badge)
+The `pnpm release:check` script is the ultimate gatekeeper for releases. It encompasses all tests, linting, metadata alignment, and identity checks.
+
+```bash
+# Run the final release gate
+pnpm release:check
+```
+
+- [ ] `pnpm release:check` passes successfully.
 - [ ] No open `P0` / `P1` security issues
-- [ ] `pnpm check:metadata` passes (all package properties are AKCP-compliant)
-- [ ] `pnpm check:identity` passes (no legacy OCF references)
-- [ ] `pnpm check:docs` passes (required docs present)
-- [ ] `pnpm check:links` passes (no broken markdown links)
 - [ ] Maturity matrix is correctly applied (e.g. experimental features are marked as such)
 - [ ] Check repository metadata against `docs/release/repository-metadata.md`
 
-### 2. Test Suite
-
-```bash
-# Run full test suite
-pnpm test
-
-# Run security tests
-pnpm test:security
-
-# Run contract tests
-pnpm test:contract
-
-# Run conformance tests
-pnpm test:conformance
-```
-
-- [ ] All unit tests pass
-- [ ] All security tests pass
-- [ ] All contract tests pass
-- [ ] All conformance tests pass
-
-### 3. Flagship Domain Bundles
-
-```bash
-# Validate and compile all flagship domains
-pnpm akcp validate --bundle examples/domains/career --profile career
-pnpm akcp compile --config examples/domains/career/akcp.yaml
-
-pnpm akcp validate --config examples/domains/it-operations/akcp.yaml
-pnpm akcp compile --config examples/domains/it-operations/akcp.yaml
-```
-
-- [ ] Career domain compiles without errors
-- [ ] IT Operations domain compiles without errors
-
-### 4. Secret Scanning
+### 2. Secret Scanning
 
 - [ ] GitHub Advanced Security secret scan shows no leaks
 - [ ] No API keys, tokens, or PII in the release commit
 
-### 5. CHANGELOG
+### 3. CHANGELOG
 
 - [ ] `CHANGELOG.md` `[Unreleased]` section updated with all changes
 - [ ] Breaking changes clearly documented under `### Breaking Changes`

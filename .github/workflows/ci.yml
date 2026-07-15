@@ -27,50 +27,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Validate YAML
-        run: pnpm validate:yaml
-
-      - name: Identity Check
-        run: pnpm check:identity
-
-      - name: Docs Check
-        run: pnpm check:docs
-
-      - name: Links Check
-        run: pnpm check:links
-
-      - name: Format Check
-        run: pnpm format:check
-
-      - name: Lint
-        run: pnpm lint
-
-      - name: Typecheck
-        run: pnpm typecheck
-
       - name: Build
         run: pnpm build
 
-      - name: Quality Gate (Coverage, Security, Contract, Conformance)
-        run: pnpm quality:gate
-
-      - name: Validate Career Bundle
-        run: pnpm akcp validate --config examples/domains/career/akcp.yaml
-
-      - name: Compile Career Bundle
-        run: pnpm akcp compile --config examples/domains/career/akcp.yaml
-
-      - name: Validate IT Ops Bundle
-        run: pnpm akcp validate --config examples/domains/it-operations/akcp.yaml
-
-      - name: Compile IT Ops Bundle
-        run: pnpm akcp compile --config examples/domains/it-operations/akcp.yaml
-
-      - name: Compile Customer Support Bundle
-        run: pnpm akcp compile --config examples/domains/customer-support/akcp.yaml
-
-      - name: Conformance Run
-        run: pnpm akcp conformance run
+      - name: Release Gate
+        run: pnpm release:check
 
       - name: Generate SBOM
         uses: anchore/sbom-action@e22c389904149dbc22b58101806040fa8d37a610 # v0.24.0

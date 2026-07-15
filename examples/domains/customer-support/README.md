@@ -35,7 +35,7 @@ The future Control Plane dashboard for this domain will require:
 
 ## Commands
 
-To compile this domain into an agent-ready Context Pack and MCP manifest:
+To compile this domain into a Context Pack and MCP manifest:
 
 ```bash
 pnpm akcp compile --config examples/domains/customer-support/akcp.yaml

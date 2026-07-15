@@ -29,6 +29,7 @@ These features are being actively developed and may change.
 - **Dashboard UI / HITL Panel** — Real-time React UI for approving/denying pending agent actions.
 - **Eval Pipeline** — Automated evaluation of agent grounding against OKF ground truth.
 - **Enterprise Governance Bundles** — Pre-built policy packs for GDPR, HIPAA, SOC2.
+- **Customer Support Flagship** — Third enterprise domain with AI-assisted ticket resolution, macro suggestions, PII redaction, customer history retrieval, and HITL approval for high-risk actions. Design doc exists; initial domain structure and conformance tests are in place. Status: `Experimental`.
 
 ---
 
@@ -40,7 +41,6 @@ These are speculative research directions. No implementation is planned yet.
 - **Federated Knowledge Registries** — Cross-organization knowledge sharing with provenance verification.
 - **Semantic Diff** — Human-readable diff of two AK-IR snapshots for change review.
 - **LLM-Assisted OKF Authoring** — Using agents to suggest OKF frontmatter for new documents.
-- **Customer Support Flagship** — Deep support enterprise integration demonstrating macros, customer history, and PII redaction.
 
 ---
 

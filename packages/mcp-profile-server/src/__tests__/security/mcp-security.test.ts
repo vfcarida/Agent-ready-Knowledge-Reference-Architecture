@@ -47,7 +47,7 @@ describe("MCP Capability Security & Conformance", () => {
     
     // We expect the server to throw or sanitize if we have a descriptor validator
     // For now, we assert it parses successfully but the risk level remains bound.
-    const profileServer = new AKCPProfileServer(mockIR);
+    new AKCPProfileServer(mockIR);
     
     // The underlying MCP Server should have exactly one tool registered (plus read_document_chunk)
     expect(mockTool).toHaveBeenCalled();
@@ -80,7 +80,7 @@ describe("MCP Capability Security & Conformance", () => {
       ]
     };
     
-    const profileServer = new AKCPProfileServer(mockIR);
+    new AKCPProfileServer(mockIR);
     
     // Our server logic should skip registering resources with path traversal
     const registeredResourceCall = mockResource.mock.calls.find(call => call[0] === "mcp:--system-..-..-etc-passwd" || call[1]?.includes(".."));

@@ -1412,7 +1412,7 @@ _akcp_completion() {
   COMPREPLY=()
   cur="\${COMP_WORDS[COMP_CWORD]}"
   prev="\${COMP_WORDS[COMP_CWORD-1]}"
-  opts="init validate scan compile inspect-artifact verify diff import serve doctor agents config policy plan reconcile graph context lifecycle conformance scorecard plugin privacy"
+  opts="init validate scan compile inspect verify diff import serve doctor agents config policy plan reconcile graph context lifecycle conformance scorecard plugin privacy completion"
   
   if [[ \${COMP_CWORD} -eq 1 ]] ; then
     COMPREPLY=( \$(compgen -W "\${opts}" -- \${cur}) )
@@ -1431,7 +1431,7 @@ _akcp() {
     'validate:Strict offline schema validation of an OKF/Context bundle'
     'scan:Analyze repository and suggest context document structures'
     'compile:Compile Context Packs to specified targets'
-    'inspect-artifact:Inspect an AKCP compile manifest'
+    'inspect:Inspect an AKCP compile manifest'
     'verify:Verify the cryptographic provenance and integrity of a compiled bundle'
     'diff:Show semantic context changes since last build'
     'import:Import from external systems into a Context Pack'

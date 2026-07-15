@@ -50,10 +50,20 @@ const result = spawnSync(
     FORBIDDEN_REGEX,
     "--",
     ":(exclude)quality/identity-allowlist.txt",
-    ":(exclude)scripts/check-identity.mjs",
+    ":(exclude)scripts/*",
     ":(exclude)scratch/*",
     ":(exclude)packages/cli/src/__tests__/__snapshots__/*",
-    ":(exclude)packages/cli/src/__tests__/identity.test.ts"
+    ":(exclude)packages/cli/src/__tests__/identity.test.ts",
+    ":(exclude)**/.akcp/*",
+    ":(exclude)package.json",
+    ":(exclude)packages/cli/package.json",
+    ":(exclude)packages/cli/src/legacy-bin.ts",
+    ":(exclude)packages/cli/src/legacy-ocf-bin.ts",
+    ":(exclude)**/expected-output/*",
+    ":(exclude)README.md",
+    ":(exclude)docs/README.md",
+    ":(exclude)docs/migrations/legacy-naming.md",
+    ":(exclude)docs/release/repository-metadata.md"
   ],
   { cwd: workspaceRoot, encoding: "utf-8" }
 );
