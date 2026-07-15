@@ -38,6 +38,7 @@ describe("Golden Compiler Tests", () => {
     manifest.timestamp = "2026-01-01T00:00:00.000Z";
     manifest.createdAt = "2026-01-01T00:00:00.000Z";
     manifest.buildId = "deterministic_build_id";
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     manifest.targets.forEach((t: any) => {
       t.hash = "deterministic_hash";
     });
@@ -66,6 +67,7 @@ describe("Golden Compiler Tests", () => {
     manifest.timestamp = "2026-01-01T00:00:00.000Z";
     manifest.createdAt = "2026-01-01T00:00:00.000Z";
     manifest.buildId = "deterministic_build_id";
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     manifest.targets.forEach((t: any) => {
       t.hash = "deterministic_hash";
     });

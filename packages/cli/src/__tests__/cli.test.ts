@@ -22,6 +22,7 @@ describe("CLI Smoke Tests", () => {
     try {
       execSync(`node ${cliPath} ${args}`, { encoding: "utf-8", stdio: "pipe", cwd: workspaceRoot });
       throw new Error("Expected command to fail");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       return (e.stderr || "") + (e.stdout || "") + (e.message || "");
     }

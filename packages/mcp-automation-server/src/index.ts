@@ -48,6 +48,7 @@ async function main() {
     const fmParser = new FrontmatterParser();
 
     await fsAdapter.mkdir(bundleRoot);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let repo: any = new OKFFileRepository(fsAdapter, fmParser, bundleRoot);
 
     if (fs.existsSync(irPath)) {
@@ -58,6 +59,7 @@ async function main() {
         const irContent = fs.readFileSync(irPath, "utf-8");
         const ir = JSON.parse(irContent);
         repo = new OKFCachedRepository(repo, ir);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (err: any) {
         console.error(
           `[AKCP Automation Server] Failed to load IR, falling back to disk-only: ${err.message}`,

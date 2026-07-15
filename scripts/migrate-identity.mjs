@@ -61,7 +61,7 @@ walkSync(rootDir, (filePath) => {
     return;
   }
 
-  let original = fs.readFileSync(filePath, 'utf8');
+  const original = fs.readFileSync(filePath, 'utf8');
   let modified = original;
 
   for (const r of replacements) {

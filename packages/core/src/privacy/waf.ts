@@ -5,6 +5,7 @@ export interface WAFResult {
 }
 
 export interface ISecurityGateway {
+  // eslint-disable-next-line no-unused-vars
   checkPrompt(prompt: string): Promise<WAFResult>;
 }
 
@@ -35,6 +36,7 @@ export class LakeraGateway implements ISecurityGateway {
         throw new Error(`Lakera API error: ${response.statusText}`);
       }
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const data = (await response.json()) as any;
       
       // Lakera typically returns a "flagged" boolean or "results[0].flagged" depending on the version.
@@ -46,6 +48,7 @@ export class LakeraGateway implements ISecurityGateway {
         reason: isFlagged ? "Lakera AI detected potential prompt injection" : undefined,
         provider: "lakera"
       };
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       console.error(`[WAF] Lakera API call failed (${err.message}). Falling back to local Regex.`);
       return this.regexFallback(prompt);

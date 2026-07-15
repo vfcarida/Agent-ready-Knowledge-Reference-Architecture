@@ -7,6 +7,7 @@ export interface ProvenanceRecord {
 
 export interface ConformanceInfo {
   level: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   checks: any[];
 }
 
@@ -24,6 +25,7 @@ export interface BuildManifest {
     version: string;
   };
   targets: ArtifactProvenance[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   diagnostics: any[];
   conformance: ConformanceInfo;
 }

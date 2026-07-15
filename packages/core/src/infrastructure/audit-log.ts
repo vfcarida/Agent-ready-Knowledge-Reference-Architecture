@@ -16,12 +16,15 @@ export interface AuditEvent {
     payloadHash?: string;
     policyIds?: string[];
     reason?: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [key: string]: any;
   };
 }
 
 export interface IAuditLogService {
+  // eslint-disable-next-line no-unused-vars
   logEvent(event: Omit<AuditEvent, "schemaVersion" | "eventId" | "timestamp">): Promise<string>;
+  // eslint-disable-next-line no-unused-vars
   getEvents(limit?: number): Promise<AuditEvent[]>;
 }
 

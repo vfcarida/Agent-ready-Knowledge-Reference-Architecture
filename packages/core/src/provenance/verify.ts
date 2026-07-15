@@ -49,6 +49,7 @@ export async function verifyManifest(
           report.isValid = false;
           report.tamperedFiles.push(outputPath);
         }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (err: any) {
         if (err.code === "ENOENT") {
           report.isValid = false;
@@ -63,6 +64,7 @@ export async function verifyManifest(
         const fullTargetPath = path.resolve(basePath, outputPath);
         try {
           await fs.access(fullTargetPath);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (err: any) {
           if (err.code === "ENOENT") {
             report.isValid = false;

@@ -34,6 +34,7 @@ test("legacy-bin emits warning and delegates", () => {
     // This is difficult to capture from stderr via pipe easily with vitest depending on how execSync is configured,
     // but the output will show the command ran successfully via delegation
     expect(output).toContain("Usage: akcp");
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     // If it fails, we at least expect it to contain AKCP usage, but actually we can just check stderr
     expect(err.stderr.toString()).toContain("DEPRECATION WARNING");

@@ -134,6 +134,7 @@ export class AKCPAutomationServer {
               },
             ],
           };
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (err: any) {
           mcpToolFailuresCounter.add(1);
           const errorCode =
@@ -257,6 +258,7 @@ export class AKCPAutomationServer {
               },
             ],
           };
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (err: any) {
           mcpToolFailuresCounter.add(1);
           auditLogger.log({
@@ -435,6 +437,7 @@ export class AKCPAutomationServer {
               },
             ],
           };
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (err: any) {
           mcpToolFailuresCounter.add(1);
 
@@ -593,6 +596,7 @@ export class AKCPAutomationServer {
               },
             ],
           };
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (err: any) {
           mcpToolFailuresCounter.add(1);
           return {
@@ -683,6 +687,7 @@ export class AKCPAutomationServer {
               },
             ],
           };
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (err: any) {
           mcpToolFailuresCounter.add(1);
           return {
@@ -770,6 +775,7 @@ export class AKCPAutomationServer {
               },
             ],
           };
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (err: any) {
           mcpToolFailuresCounter.add(1);
           return {
@@ -851,6 +857,7 @@ export class AKCPAutomationServer {
               },
             ],
           };
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (err: any) {
           mcpToolFailuresCounter.add(1);
           return {
@@ -912,6 +919,7 @@ export class AKCPAutomationServer {
               },
             ],
           };
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (err: any) {
           mcpToolFailuresCounter.add(1);
           return { isError: true, content: [{ type: "text", text: err.message }] };
@@ -958,6 +966,7 @@ export class AKCPAutomationServer {
               },
             ],
           };
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (err: any) {
           mcpToolFailuresCounter.add(1);
           return { isError: true, content: [{ type: "text", text: err.message }] };

@@ -44,6 +44,7 @@ const requireAuth = (req: express.Request, res: express.Response, next: express.
   }
 
   // We consider them authenticated
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (req as any).user = { identity: token };
   next();
 };
@@ -52,12 +53,14 @@ let globalTransport: SSEServerTransport | null = null;
 
 // SSE connection endpoint
 app.get("/sse", requireAuth, async (req, res) => {
+  // eslint-disable-next-line no-console, @typescript-eslint/no-explicit-any
   console.log(`[SSE] New connection from ${req.ip} (User: ${(req as any).user.identity})`);
   globalTransport = new SSEServerTransport("/message", res);
   
   await mcp.connect(globalTransport);
   
   req.on('close', () => {
+    // eslint-disable-next-line no-console
     console.log(`[SSE] Connection closed for ${req.ip}`);
     globalTransport = null;
   });
@@ -71,6 +74,7 @@ app.post("/message", requireAuth, express.json(), async (req, res) => {
   }
   try {
     await globalTransport.handlePostMessage(req, res);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     console.error("[SSE] Error handling message:", err);
     res.status(500).json({ error: "Internal Server Error" });
@@ -80,7 +84,10 @@ app.post("/message", requireAuth, express.json(), async (req, res) => {
 const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 4000;
 
 app.listen(PORT, () => {
+  // eslint-disable-next-line no-console
   console.log(`[AKCP Profile Server - SSE] Listening on port ${PORT}`);
+  // eslint-disable-next-line no-console
   console.log(`[AKCP Profile Server - SSE] Endpoint: http://localhost:${PORT}/sse`);
+  // eslint-disable-next-line no-console
   console.log(`[AKCP Profile Server - SSE] Identity Authorization Required (Bearer Token)`);
 });

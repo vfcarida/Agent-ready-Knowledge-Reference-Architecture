@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import fs from "fs";
 import path from "path";
+// eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
 import crypto from "crypto";
 import { FileAuditLogService } from "../../infrastructure/audit-log.js";
 import type { AuditEvent } from "../../infrastructure/audit-log.js";

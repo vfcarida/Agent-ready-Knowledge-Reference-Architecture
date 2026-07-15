@@ -28,5 +28,8 @@ export default defineConfig({
         lines: 50,
       },
     },
+    benchmark: {
+      reporters: ['default'],
+    },
   },
 });

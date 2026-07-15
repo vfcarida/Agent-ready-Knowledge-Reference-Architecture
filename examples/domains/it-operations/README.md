@@ -1,23 +1,11 @@
 # IT Operations / Incident Response — Enterprise Flagship Domain
 
-**Maturity Status:** Beta | **Type:** Enterprise Flagship
-> **This is the enterprise flagship domain for AKCP.**
->
-> It demonstrates how AKCP's governance, policy-gated approvals, audit evidence, and MCP capabilities function in a real-world operational context: incident triage, safe remediation, escalation, and post-incident learning.
+This domain demonstrates AKCP's full capability set:
 
----
-
-## What This Domain Demonstrates
-
-| Capability                       | Demonstrated By                                    |
-|----------------------------------|----------------------------------------------------|
-| Incident triage via context      | Agent retrieves runbooks via `get_runbook`         |
-| Safe recommendation              | Agent suggests rollback without executing it       |
-| Approval-gated remediation       | `execute_remediation` blocked until ticket approved |
-| Audit trail generation           | Every approval + execution logged in `akcp.audit/v1` |
-| Escalation policy enforcement    | `escalate_incident` requires approval for L2+      |
-| Post-incident knowledge update   | Postmortem document feeds back into the bundle     |
-| Context budget adherence         | Eval scenario validates agent summarizes, not dumps |
+- **Knowledge Compilation**: Runbooks, incident procedures, and postmortems compiled into structured IR
+- **Policy Governance**: Side-effect policies requiring HITL approval for remediation actions
+- **Capability Registry**: Tools for diagnosis, remediation, escalation with strict boundaries
+- **Eval Scenarios**: Test that the agent correctly follows incident response procedures
 
 ---
 

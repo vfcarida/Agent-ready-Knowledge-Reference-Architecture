@@ -27,6 +27,7 @@ const REQUIRED_DOCS = [
   'docs/governance/spec-governance.md'
 ];
 
+// eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
 const ALLOWED_DIRECTORIES = [
   'getting-started',
   'concepts',

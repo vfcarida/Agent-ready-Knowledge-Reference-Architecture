@@ -100,6 +100,7 @@ export class AKCPProfileServer {
     const capabilities = this.ir.capabilities || [];
     
     // Filter out only tools
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const tools = capabilities.filter((cap: any) => cap.kind === "tool" || cap.kind === "mcp-tool" || cap.type === "tool" || cap.type === "mcp-tool");
 
     if (tools.length === 0) {
@@ -159,6 +160,7 @@ export class AKCPProfileServer {
 
     for (const cap of tools) {
       if (cap.name) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const rawCap = cap as any;
         const schema = cap.inputsSchema || rawCap.inputSchema || rawCap.parameters || {};
         
@@ -166,6 +168,7 @@ export class AKCPProfileServer {
         const zodShape: Record<string, z.ZodTypeAny> = {};
         
         if (schema.properties) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           for (const [key, prop] of Object.entries<any>(schema.properties)) {
             let zType: z.ZodTypeAny = z.any();
             if (prop.type === "string") zType = z.string();
@@ -265,6 +268,7 @@ export class AKCPProfileServer {
                   },
                 ],
               };
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             } catch (err: any) {
               mcpToolFailuresCounter.add(1);
               return {

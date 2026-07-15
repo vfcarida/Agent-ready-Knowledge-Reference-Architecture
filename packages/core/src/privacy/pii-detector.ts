@@ -8,6 +8,7 @@ export interface PiiMatch {
 }
 
 export interface PiiDetector {
+  // eslint-disable-next-line no-unused-vars
   detect(text: string): PiiMatch[] | Promise<PiiMatch[]>;
   supportedTypes(): string[];
 }

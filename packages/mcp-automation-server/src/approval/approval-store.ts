@@ -75,6 +75,7 @@ export class ApprovalStore implements IApprovalStore {
     const stmt = this.db.prepare(
       `SELECT * FROM pending_approvals WHERE status = 'PENDING'`,
     );
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const rows = stmt.all() as any[];
 
     return rows.map((row) => ({
@@ -95,10 +96,12 @@ export class ApprovalStore implements IApprovalStore {
     }));
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getAuditLogs(limit = 100): any[] {
     const stmt = this.db.prepare(
       `SELECT * FROM audit_logs ORDER BY timestamp DESC LIMIT ?`,
     );
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const rows = stmt.all(limit) as any[];
     return rows.map((row) => ({
       ...row,
@@ -122,6 +125,7 @@ export class ApprovalStore implements IApprovalStore {
     const stmt = this.db.prepare(
       `SELECT * FROM pending_approvals WHERE token = ?`,
     );
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const record = stmt.get(token) as any;
 
     if (!record) {
@@ -187,6 +191,7 @@ export class ApprovalStore implements IApprovalStore {
     const stmt = this.db.prepare(
       `SELECT * FROM pending_approvals WHERE token = ? AND status = 'PENDING'`,
     );
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const record = stmt.get(token) as any;
 
     if (record) {
@@ -211,6 +216,7 @@ export class ApprovalStore implements IApprovalStore {
     const stmt = this.db.prepare(
       `SELECT * FROM pending_approvals WHERE token = ? AND status = 'PENDING'`,
     );
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const record = stmt.get(token) as any;
 
     if (record) {

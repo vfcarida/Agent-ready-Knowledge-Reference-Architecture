@@ -34,6 +34,9 @@ jobs:
       - name: Test
         run: pnpm test -- --run
 
+      - name: Generate API Docs
+        run: pnpm docs:api
+
       - name: Publish packages
         run: pnpm -r publish --no-git-checks
         env:

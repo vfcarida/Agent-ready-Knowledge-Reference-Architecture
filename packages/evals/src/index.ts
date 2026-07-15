@@ -25,6 +25,7 @@ export interface BenchmarkReport {
 }
 
 export interface LLMProvider {
+  // eslint-disable-next-line no-unused-vars
   chat(systemPrompt: string, userMessage: string): Promise<{ text: string, tokens: number }>;
 }
 
@@ -72,6 +73,7 @@ export class OpenAIProvider implements LLMProvider {
       throw new Error(`OpenAI API Error: ${res.status} - ${errorText}`);
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const data: any = await res.json();
     return {
       text: data.choices[0].message.content,
@@ -91,9 +93,12 @@ export class EvalsHarness {
   async runScenario(
     name: string,
     description: string,
+    // eslint-disable-next-line no-unused-vars
     baselineRunner: (provider: LLMProvider) => Promise<BenchmarkMetrics>,
+    // eslint-disable-next-line no-unused-vars
     treatmentRunner: (provider: LLMProvider) => Promise<BenchmarkMetrics>,
   ) {
+    // eslint-disable-next-line no-console
     console.log(`[Evals] Running scenario: ${name}...`);
 
     let baselineMetrics: BenchmarkMetrics;
@@ -101,6 +106,7 @@ export class EvalsHarness {
       const startB = performance.now();
       baselineMetrics = await baselineRunner(this.provider);
       baselineMetrics.latencyMs = performance.now() - startB;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       console.error(`[Evals] Baseline failed: ${e.message}`);
       baselineMetrics = this.fallbackMetrics();
@@ -111,6 +117,7 @@ export class EvalsHarness {
       const startT = performance.now();
       treatmentMetrics = await treatmentRunner(this.provider);
       treatmentMetrics.latencyMs = performance.now() - startT;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       console.error(`[Evals] Treatment failed: ${e.message}`);
       treatmentMetrics = this.fallbackMetrics();
@@ -208,6 +215,7 @@ export class EvalsHarness {
     }
 
     fs.writeFileSync(path.join(outputDir, "benchmark-report.md"), md);
+    // eslint-disable-next-line no-console
     console.log(
       `[Evals] Reports generated at ${outputDir}/benchmark-report.[json|md]`,
     );

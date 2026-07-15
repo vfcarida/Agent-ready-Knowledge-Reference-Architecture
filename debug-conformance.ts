@@ -4,6 +4,7 @@ import path from "path";
 async function main() {
   const runner = new ConformanceRunner(path.resolve("examples/domains/it-operations"));
   const report = await runner.run();
+  // eslint-disable-next-line no-console
   console.log(JSON.stringify(report, null, 2));
 }
 

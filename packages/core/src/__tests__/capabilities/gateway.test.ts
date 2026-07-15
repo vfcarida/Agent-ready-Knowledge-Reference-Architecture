@@ -166,6 +166,7 @@ describe("MCPGateway", () => {
     });
 
     it("should throw APPROVAL_REQUIRED and generate token if no token is provided", async () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       let error: any;
       try {
         await hitlGateway.execute(

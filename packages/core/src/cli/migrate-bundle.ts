@@ -19,7 +19,9 @@ async function main() {
   const bundlePathEnv = targetArg || process.env["AKCP_BUNDLE_PATH"] || "./.okf";
   const bundlePath = path.resolve(bundlePathEnv);
 
+  // eslint-disable-next-line no-console
   console.log(`[AKCP Migrator] Starting migration pipeline at: ${bundlePath}`);
+  // eslint-disable-next-line no-console
   console.log(`  Flags: write=${write}, backup=${backup}`);
 
   const fsAdapter = new FileSystemAdapter();
@@ -35,16 +37,22 @@ async function main() {
     process.exit(1);
   }
 
+  // eslint-disable-next-line no-console
   console.log(`\n[AKCP Migrator] Run summary:`);
+  // eslint-disable-next-line no-console
   console.log(`  Files checked: ${report.filesChecked}`);
+  // eslint-disable-next-line no-console
   console.log(`  Files needing migration: ${report.filesNeedingMigration}`);
+  // eslint-disable-next-line no-console
   console.log(`  Files migrated: ${report.filesMigrated}`);
 
   if (report.backupPath) {
+    // eslint-disable-next-line no-console
     console.log(`  Backup created at: ${report.backupPath}`);
   }
 
   if (report.filesNeedingMigration > 0 && !write) {
+    // eslint-disable-next-line no-console
     console.log(
       `\n[AKCP Migrator] WARNING: Legacy files detected. Re-run with '--write' to execute migrations.`,
     );

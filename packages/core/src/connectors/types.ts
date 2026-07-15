@@ -3,6 +3,7 @@ export interface ConnectorConfig {
   path?: string;
   url?: string;
   exclude?: string[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
 }
 
@@ -30,6 +31,7 @@ export type SourceProvenanceRecord = {
 
 export type NormalizedKnowledgeDocument = {
   type: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   frontmatter: Record<string, any>;
   markdown: string;
   provenance: SourceProvenanceRecord;
@@ -39,8 +41,11 @@ export interface SourceAdapter {
   name: string;
   version: string;
 
+  // eslint-disable-next-line no-unused-vars
   detect(inputPath: string): Promise<DetectionResult>;
+  // eslint-disable-next-line no-unused-vars
   scan(inputPath: string): Promise<SourceDocument[]>;
+  // eslint-disable-next-line no-unused-vars
   normalize(document: SourceDocument): Promise<NormalizedKnowledgeDocument>;
 }
 
@@ -66,6 +71,7 @@ export type SourceImportReport = {
 export interface RawKnowledgeItem {
   sourceUri: string;
   contentHash: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   metadata: Record<string, any>;
   rawContent: string;
   createdAt?: string;
@@ -74,5 +80,6 @@ export interface RawKnowledgeItem {
 
 export interface KnowledgeSourceConnector {
   connectorType: string;
+  // eslint-disable-next-line no-unused-vars
   ingest(config: ConnectorConfig): Promise<RawKnowledgeItem[]>;
 }

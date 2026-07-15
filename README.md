@@ -1,6 +1,6 @@
 # Agent Knowledge Compiler and Control Plane (AKCP)
 
-[![CI](https://github.com/vfcarida/Agent-Knowledge-Compiler-and-Control-Plane/actions/workflows/ci.yml/badge.svg)](https://github.com/vfcarida/Agent-Knowledge-Compiler-and-Control-Plane/actions/workflows/ci.yml) [![CodeQL](https://github.com/vfcarida/Agent-Knowledge-Compiler-and-Control-Plane/actions/workflows/codeql.yml/badge.svg)](https://github.com/vfcarida/Agent-Knowledge-Compiler-and-Control-Plane/actions/workflows/codeql.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Node.js](https://img.shields.io/badge/node-%3E%3D20-brightgreen)](https://nodejs.org) [![TypeScript](https://img.shields.io/badge/TypeScript-5.8-blue)](https://www.typescriptlang.org/)
+[![CI](https://github.com/vfcarida/Agent-Knowledge-Compiler-and-Control-Plane/actions/workflows/ci.yml/badge.svg)](https://github.com/vfcarida/Agent-Knowledge-Compiler-and-Control-Plane/actions/workflows/ci.yml) [![CodeQL](https://github.com/vfcarida/Agent-Knowledge-Compiler-and-Control-Plane/actions/workflows/codeql.yml/badge.svg)](https://github.com/vfcarida/Agent-Knowledge-Compiler-and-Control-Plane/actions/workflows/codeql.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Node.js](https://img.shields.io/badge/node-20%20%7C%2022-brightgreen)](https://nodejs.org) [![TypeScript](https://img.shields.io/badge/TypeScript-5.8-blue)](https://www.typescriptlang.org/)
 
 Agent Knowledge Compiler and Control Plane (AKCP) is an open-source system for compiling organizational knowledge into governed, versioned, testable, cost-aware, agent-consumable artifacts, and controlling how agents discover, retrieve, and act on that knowledge through MCP-compatible capabilities.
 
@@ -14,15 +14,18 @@ AI agents today suffer from structural hallucination: they lack deterministic gr
 ## What it does
 
 ```bash
-# Input: raw organizational knowledge (markdown, wikis, runbooks)
+# Input: organizational runbooks, incident procedures, SLOs
 examples/domains/it-operations/runbooks/high-cpu.md
+examples/domains/it-operations/policies/execute_remediation.policy.yaml
 
-# Output: governed, versioned, agent-consumable artifacts
+# Compile into governed, agent-consumable artifacts
 pnpm akcp compile --config examples/domains/it-operations/akcp.yaml
-# → dist/knowledge-ir.json      (normalized intermediate representation)
-# → dist/mcp-resources.json     (MCP-compatible resource manifest)
-# → dist/policy-bundle.json     (governance constraints)
-# → dist/eval-dataset.json      (test scenarios)
+
+# Output:
+# → dist/knowledge-ir.json        (normalized runbook IR)
+# → dist/mcp-resources.json       (MCP tools: diagnose, remediate, escalate)
+# → dist/policy-bundle.json       (HITL requirements, side-effect rules)
+# → dist/eval-dataset.json        (incident response scenarios)
 ```
 
 ## Architecture at a glance
@@ -62,8 +65,9 @@ cd akcp
 corepack enable
 pnpm install --frozen-lockfile
 
-# 3. Validate an example bundle
-pnpm akcp validate --bundle examples/domains/career --profile career
+# 3. Validate and compile an IT-Ops example bundle
+pnpm akcp validate --bundle examples/domains/it-operations --profile it-operations
+pnpm akcp compile --config examples/domains/it-operations/akcp.yaml
 ```
 
 ## Documentation

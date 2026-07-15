@@ -21,7 +21,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
         with:
-          node-version: 20
+          node-version: 22
           cache: "pnpm"
 
       - name: Install dependencies
@@ -52,7 +52,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
         with:
-          node-version: 20
+          node-version: 22
           cache: "pnpm"
 
       - name: Lint
@@ -86,33 +86,38 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
         with:
-          node-version: 20
+          node-version: 22
           cache: "pnpm"
 
       - name: Typecheck
         run: pnpm run typecheck
 
   unit-tests:
-    needs: install
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20, 22]
+      fail-fast: false
     steps:
-      - name: Restore workspace
-        uses: actions/cache/restore@v4
-        with:
-          path: .
-          key: workspace-${{ github.sha }}
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Enable Corepack
         run: corepack enable
 
-      - name: Use Node.js
+      - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
         with:
-          node-version: 20
+          node-version: ${{ matrix.node-version }}
           cache: "pnpm"
 
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm build
+
       - name: Unit Tests
-        run: pnpm run test
+        run: pnpm test -- --run
 
       - name: Coverage Check
         run: pnpm coverage
@@ -133,7 +138,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
         with:
-          node-version: 20
+          node-version: 22
           cache: "pnpm"
 
       - name: Security and Contract Tests
@@ -172,8 +177,14 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
         with:
-          node-version: 20
+          node-version: 22
           cache: "pnpm"
 
-      - name: Examples Validate
-        run: pnpm run examples:validate
+      - name: Validate IT Operations Bundle
+        run: pnpm akcp validate --bundle examples/domains/it-operations --profile it-operations
+
+      - name: Compile IT Operations Bundle
+        run: pnpm akcp compile --config examples/domains/it-operations/akcp.yaml
+
+      - name: Validate Career Bundle
+        run: pnpm akcp validate --bundle examples/domains/career --profile career

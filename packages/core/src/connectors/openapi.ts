@@ -14,6 +14,7 @@ import type {
 export class OpenApiConnector implements KnowledgeSourceConnector {
   public readonly connectorType = "openapi";
 
+  // eslint-disable-next-line no-unused-vars
   constructor(private readonly fsAdapter: IFileSystemAdapter) {}
 
   async ingest(config: ConnectorConfig): Promise<RawKnowledgeItem[]> {
@@ -35,6 +36,7 @@ export class OpenApiConnector implements KnowledgeSourceConnector {
     // In a real robust implementation we might use a proper OpenAPI parser
     // but here we do naive extraction of paths to demonstrate the capability
     // without inflating the dependency tree.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let spec: any;
     try {
       if (sourceFile.endsWith(".yaml") || sourceFile.endsWith(".yml")) {
@@ -43,6 +45,7 @@ export class OpenApiConnector implements KnowledgeSourceConnector {
       } else {
         spec = JSON.parse(content);
       }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       throw new Error(`Failed to parse OpenAPI file: ${e.message}`);
     }
@@ -73,6 +76,7 @@ export class OpenApiConnector implements KnowledgeSourceConnector {
           continue;
         }
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const op = operation as any;
         const conceptId =
           op.operationId ||

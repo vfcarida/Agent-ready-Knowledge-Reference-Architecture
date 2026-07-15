@@ -5,17 +5,21 @@ import type {
   IIndexService,
   ILogService,
 } from "../domain/interfaces.js";
+// eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
 import type { OKFDocument, LogEntry } from "../domain/types.js";
 import { OKFDocumentService } from "../services/okf-document-service.js";
 
 describe("OKFDocumentService", () => {
   let mockRepository: {
+    // eslint-disable-next-line no-unused-vars
     [K in keyof IOKFRepository]: ReturnType<typeof vi.fn>;
   };
   let mockIndexService: {
+    // eslint-disable-next-line no-unused-vars
     [K in keyof IIndexService]: ReturnType<typeof vi.fn>;
   };
   let mockLogService: {
+    // eslint-disable-next-line no-unused-vars
     [K in keyof ILogService]: ReturnType<typeof vi.fn>;
   };
   let service: OKFDocumentService;

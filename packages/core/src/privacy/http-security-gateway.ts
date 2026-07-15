@@ -41,6 +41,7 @@ export class HttpSecurityGateway {
         throw new Error(`Security Gateway returned ${response.status}: ${response.statusText}`);
       }
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const data = (await response.json()) as any;
       
       return {
@@ -48,6 +49,7 @@ export class HttpSecurityGateway {
         findings: data.findings || [],
         blocked: data.blocked || false,
       };
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       // If the gateway fails, fail closed if we are in block mode, or throw error.
       console.warn(`[WARN] Security Gateway call failed: ${err.message}`);

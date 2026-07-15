@@ -7,6 +7,7 @@ import { hashFile } from "../../provenance/hash.js";
 
 describe("Provenance Verification", () => {
   const testDir = path.resolve(process.cwd(), "dist/test-provenance");
+  // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
   const manifestPath = path.join(testDir, "akcp-manifest.json");
   const mockArtifactPath = path.join(testDir, "mock-target.txt");
 
@@ -37,6 +38,7 @@ describe("Provenance Verification", () => {
       bundleId: "test_bundle",
       timestamp: new Date().toISOString(),
       concepts: [],
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any;
 
     await builder.writeManifest(
@@ -74,6 +76,7 @@ describe("Provenance Verification", () => {
       bundleId: "test_bundle",
       timestamp: new Date().toISOString(),
       concepts: [],
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any;
 
     await builder.writeManifest(
@@ -115,6 +118,7 @@ describe("Provenance Verification", () => {
       bundleId: "test_bundle",
       timestamp: new Date().toISOString(),
       concepts: [],
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any;
 
     await builder.writeManifest(

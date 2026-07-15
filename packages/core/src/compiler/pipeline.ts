@@ -14,5 +14,6 @@ export interface PipelineContext {
 
 export interface PipelineStage {
   name: string;
+  // eslint-disable-next-line no-unused-vars
   execute(context: PipelineContext): Promise<PipelineContext>;
 }

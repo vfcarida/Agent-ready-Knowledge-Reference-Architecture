@@ -26,7 +26,8 @@ for (const file of mdFiles) {
 
   const content = fs.readFileSync(filePath, "utf-8");
   let match;
-  let lineNumber = 1;
+  // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+  const lineNumber = 1;
   const lines = content.split("\n");
 
   for (let i = 0; i < lines.length; i++) {

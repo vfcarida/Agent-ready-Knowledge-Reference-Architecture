@@ -29,8 +29,9 @@ export class OpenWikiDocsTarget implements CompileTarget {
 
       // Restore frontmatter to ensure OpenWiki interoperability
       const frontmatter = concept.frontmatter || { type: concept.type || "Document" };
-      let bodyWithHeading = `# ${concept.conceptId}\n\n${concept.body}`;
+      const bodyWithHeading = `# ${concept.conceptId}\n\n${concept.body}`;
       
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const content = parser.serialize(frontmatter as any, bodyWithHeading);
 
       await fs.writeFile(filePath, content, "utf-8");

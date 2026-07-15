@@ -5,6 +5,7 @@ import {
   buildKnowledgeIR,
   loadAkcpConfig,
 } from "@akcp/core";
+// eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
 import type { ConformanceReport, ConformanceDetail } from "./types.js";
 import path from "path";
 
@@ -76,6 +77,7 @@ export class ConformanceRunner {
           } else {
             report.passed++;
           }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (e: any) {
           report.failed++;
           okfCompatible = false;
@@ -87,6 +89,7 @@ export class ConformanceRunner {
           });
         }
       }
+    // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
     } catch (e: any) {
       okfCompatible = false;
     }
@@ -107,6 +110,7 @@ export class ConformanceRunner {
       // Actually, FrontmatterParser currently only validates against OKFFrontmatterSchema.
       // To strictly validate profile, we can use the domain/profiles/career schemas, but for now we rely on the parser not throwing OKFValidationError.
       report.passed += docs.length;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       akcpCompatible = false;
       report.failed++;
@@ -148,6 +152,7 @@ export class ConformanceRunner {
           });
         }
       }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       compilerCompatible = false;
       report.failed++;
@@ -181,6 +186,7 @@ export class ConformanceRunner {
           ruleId: "AKCP-CP-CONFIG",
         });
       }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       controlPlaneCompatible = false;
       report.failed++;

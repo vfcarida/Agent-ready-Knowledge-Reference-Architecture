@@ -34,4 +34,10 @@ export default tseslint.config(
       "no-unsafe-optional-chaining": "warn"
     },
   },
+  {
+    files: ["scripts/**", "packages/cli/**"],
+    rules: {
+      "no-console": "off",
+    },
+  },
 );

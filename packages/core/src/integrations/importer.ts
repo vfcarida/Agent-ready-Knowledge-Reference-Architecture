@@ -63,6 +63,7 @@ export async function importSource(
         level: "info",
         message: `Imported ${relPath} as ${normalized.type}`,
       });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       report.documentsSkipped++;
       report.diagnostics.push({

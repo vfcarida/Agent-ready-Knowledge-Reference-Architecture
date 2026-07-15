@@ -38,8 +38,29 @@ export type {
 } from "./domain/interfaces.js";
 
 // IR
+/**
+ * The compiled Agent Knowledge Intermediate Representation.
+ */
+export type { AgentKnowledgeIR } from "./ir/types.js";
 export * from "./ir/types.js";
 export * from "./ir/schema.js";
+/**
+ * Builds the Agent Knowledge IR from a bundle path.
+ * This is the main entry point for the compiler pipeline.
+ *
+ * @param bundlePath - Path to the OKF bundle directory
+ * @param options - Build configuration options
+ * @returns The compiled AgentKnowledgeIR
+ *
+ * @example
+ * ```typescript
+ * const ir = await buildKnowledgeIR("./my-bundle", {
+ *   targets: ["mcp-profile-server"],
+ *   generateProvenance: true,
+ * });
+ * ```
+ */
+export { buildKnowledgeIR } from "./ir/build-ir.js";
 export * from "./ir/build-ir.js";
 
 // Targets
@@ -80,6 +101,10 @@ export { OkfAdapter } from "./connectors/okf-adapter.js";
 export { normalizeRawItem } from "./normalizers/normalize.js";
 
 // Services
+/**
+ * Core service for parsing, validating, and managing OKF documents.
+ * Handles lifecycle, privacy, and dependency resolution.
+ */
 export { OKFDocumentService } from "./services/okf-document-service.js";
 export { IndexService } from "./services/index-service.js";
 export { LogService } from "./services/log-service.js";
@@ -89,21 +114,43 @@ export { OKFDocumentFactory } from "./factories/okf-document-factory.js";
 
 // Context Budgeting
 export * from "./domain/context-pack.js";
+/**
+ * Assembles and compresses context packs based on relevance scores and budget constraints.
+ */
 export { ContextPacker } from "./services/context-packer.js";
 
 // Policy & Governance
 export * from "./domain/policy.js"; // Deprecated old policy
 export * from "./policy/schema.js";
+/**
+ * Defines a Policy Card for agent governance.
+ */
+export type { PolicyCard } from "./policy/types.js";
 export * from "./policy/types.js";
+/**
+ * Evaluates whether an agent capability request is permitted by a policy.
+ */
+export { evaluatePolicy } from "./policy/evaluate.js";
 export * from "./policy/evaluate.js";
 export * from "./policy/explain.js";
 export * from "./policy/load.js";
 
 // Identity & Capabilities
 export * from "./identity/types.js";
+/**
+ * Represents a request from an agent to execute an MCP capability.
+ */
+export type { CapabilityRequest } from "./capabilities/request.js";
 export * from "./capabilities/request.js";
+/**
+ * The primary gateway for agent capability execution, enforcing policies, rate limits, and approvals.
+ */
+export { MCPGateway } from "./capabilities/gateway.js";
 export * from "./capabilities/gateway.js";
 export * from "./capabilities/approval-store.js";
+/**
+ * Token bucket rate limiter for controlling agent MCP capability usage.
+ */
 export { TokenBucketRateLimiter, type RateLimiterConfig } from "./capabilities/rate-limiter.js";
 export {
   authenticate,
@@ -153,9 +200,22 @@ export * from "./compiler/incremental-build-state.js";
 export * from "./compiler/pipeline.js";
 export { runCompilerPipeline } from "./compiler/run-pipeline.js";
 
+// Result type
+export * from "./domain/result.js";
+
+// Compiler (Result-based API)
+export { compile, type CompileResult, type CompilerWarning, type CompileStats } from "./compiler/compile.js";
+export type { CompilerError } from "./compiler/errors.js";
+
 // Privacy
 export * from "./privacy/index.js";
 export * from "./privacy/pii-detector.js";
+/**
+ * Local regular expression-based PII detector.
+ */
 export { RegexPiiDetector } from "./privacy/regex-pii-detector.js";
+/**
+ * Factory for creating PII detectors based on the provided configuration.
+ */
 export { createPiiDetector } from "./privacy/create-detector.js";
 export * from "./privacy/waf.js";

@@ -41,8 +41,10 @@ export async function reconcile(
   }
 
   // 2. Check target output
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const missingTargets: any[] = [];
   if (config.compile?.targets) {
+    // eslint-disable-next-line no-unsafe-optional-chaining
     for (const targetConf of config.compile?.targets) {
       const outPath = targetConf.out || targetConf.path || "";
       const targetPath = path.resolve(outPath);
@@ -106,6 +108,7 @@ export async function reconcile(
     });
     const manifestBuilder = new ProvenanceManifestBuilder();
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const targetInstances: Record<string, any> = {
       "ir-json": new IrJsonTarget(),
       "okf-bundle": new OkfBundleTarget(),

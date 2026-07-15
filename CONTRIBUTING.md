@@ -64,7 +64,7 @@ pnpm -r run build
 pnpm -r run test -- --run
 
 # Validate an example OKF bundle
-pnpm akcp validate --bundle examples/domains/career --profile career
+pnpm akcp validate --bundle examples/domains/it-operations --profile it-operations
 ```
 
 ---

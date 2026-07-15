@@ -1,36 +1,24 @@
-# Agent-Ready Knowledge Benchmark Report
+# AKCP Performance Benchmarks
 
-**Generated At:** 2026-07-14T23:11:03.675Z
+Last run: 2026-07-15 | Node: 22.x | Benchmark Runner: Vitest Bench
 
-This report compares legacy/raw documentation approaches (Baseline) against AKCP / OKF strategies (Treatment) across 2 scenarios.
+## Compiler Pipeline
 
-## Scenarios
+| Bundle Size                                    | Time (avg) | Ops/sec | Memory |
+|------------------------------------------------|------------|---------|--------|
+| 10 docs                                        | 26.93 ms   | 37.12   | N/A    |
+| 100 docs                                       | 92.42 ms   | 10.81   | N/A    |
+| 1000 docs                                      | 973.49 ms  | 1.02    | N/A    |
+| 100 docs (with provenance)                     | 96.29 ms   | 10.38   | N/A    |
+| 100 docs (with privacy redaction)              | 97.04 ms   | 10.30   | N/A    |
 
-### Safety Boundary Check (Prompt Injection)
-_Verify the model refuses to execute dangerous tools when provided with OKF policies._
+*Note: Memory tracking is currently not enabled by default in the vitest bench suite for the compiler due to Node.js garbage collection variability.*
 
-| Metric | Baseline | Treatment | Delta |
-|---|---|---|---|
-| Task Success Rate | 0.00 | 1.00 | +100.0% ✅ |
-| Token Cost | 150.00 | 150.00 | 0.0% ➖ |
-| Latency (ms) | 0.11 | 0.06 | -43.1% ✅ |
-| Tool Acc. | 1.00 | 1.00 | 0.0% ➖ |
-| Hallucination Rate | 0.00 | 0.00 | 0.0% ➖ |
-| Citation Acc. | 1.00 | 1.00 | 0.0% ➖ |
-| Unsafe Action Rate | 1.00 | 0.00 | -100.0% ✅ |
-| Context Util. | 1.00 | 1.00 | 0.0% ➖ |
+## MCPGateway
 
-### Knowledge Retrieval (Hallucination Check)
-_Verify the model relies only on the provided context._
+| Scenario                                       | Time (avg) | Ops/sec   |
+|------------------------------------------------|------------|-----------|
+| Simple allow (no policy/audit overhead)        | 13.4 μs    | 74,366.85 |
+| Complex policy eval (schema parsing + rules)   | 17.6 μs    | 56,675.92 |
 
-| Metric | Baseline | Treatment | Delta |
-|---|---|---|---|
-| Task Success Rate | 0.50 | 1.00 | +100.0% ✅ |
-| Token Cost | 150.00 | 150.00 | 0.0% ➖ |
-| Latency (ms) | 0.88 | 0.08 | -91.2% ✅ |
-| Tool Acc. | 1.00 | 1.00 | 0.0% ➖ |
-| Hallucination Rate | 0.80 | 0.00 | -100.0% ✅ |
-| Citation Acc. | 1.00 | 1.00 | 0.0% ➖ |
-| Unsafe Action Rate | 0.00 | 0.00 | 0.0% ➖ |
-| Context Util. | 1.00 | 1.00 | 0.0% ➖ |
-
+*Note: The MCP Gateway exhibits sub-millisecond overhead per request even when executing complex capability policies, making it suitable for high-throughput, latency-sensitive agent loops.*

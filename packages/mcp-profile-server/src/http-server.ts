@@ -52,6 +52,7 @@ async function main() {
     let transport: SSEServerTransport | null = null;
 
     app.get("/mcp/sse", async (_req, res) => {
+      // eslint-disable-next-line no-console
       console.log("[AKCP Profile Server] New SSE connection established");
       transport = new SSEServerTransport("/mcp/messages", res);
       
@@ -71,8 +72,10 @@ async function main() {
 
     const PORT = process.env.PORT || 3001;
     app.listen(PORT, () => {
+      // eslint-disable-next-line no-console
       console.log(`[AKCP Profile Server] HTTP/SSE Server listening on port ${PORT}`);
       if (expectedToken) {
+        // eslint-disable-next-line no-console
         console.log(`[AKCP Profile Server] Auth enabled. Requires Bearer token.`);
       } else {
         console.warn(`[AKCP Profile Server] WARNING: No AKCP_AUTH_TOKEN set. Running without authentication.`);

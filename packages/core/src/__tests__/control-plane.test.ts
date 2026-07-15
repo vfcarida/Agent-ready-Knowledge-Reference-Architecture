@@ -3,6 +3,7 @@ import { MCPGateway } from "../capabilities/gateway.js";
 import { InMemoryAuditLogService } from "../infrastructure/audit-log.js";
 import type { IApprovalStore, PendingApproval } from "../capabilities/approval-store.js";
 import type { PolicyCard } from "../policy/types.js";
+// eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
 import crypto from "crypto";
 
 class MockApprovalStore implements IApprovalStore {
@@ -40,6 +41,7 @@ class MockApprovalStore implements IApprovalStore {
     return this.approvals;
   }
   
+  // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
   async getAuditLogs(limit?: number): Promise<any[]> {
     return [];
   }
@@ -54,6 +56,7 @@ class MockApprovalStore implements IApprovalStore {
     return false;
   }
 
+  // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
   async validateAndConsume(token: string, capabilityId: string, payloadHash: string, actorIdentity?: string): Promise<boolean> {
     const app = this.approvals.find(a => a.token === token);
     if (app && app.status === "APPROVED" && app.capabilityId === capabilityId && app.payloadHash === payloadHash) {
@@ -64,6 +67,7 @@ class MockApprovalStore implements IApprovalStore {
     return false;
   }
 
+  // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
   async revokeToken(token: string, actorIdentity?: string): Promise<boolean> {
     const app = this.approvals.find(a => a.token === token);
     if (app && app.status === "PENDING") {
@@ -152,6 +156,7 @@ describe("Control Plane & Runtime Governance", () => {
         async () => "success"
       );
       expect.fail("Should have thrown APPROVAL_REQUIRED");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       expect(err.code).toBe("APPROVAL_REQUIRED");
       generatedToken = err.data.approvalToken;
@@ -193,6 +198,7 @@ describe("Control Plane & Runtime Governance", () => {
         async () => "success"
       );
       expect.fail("Should have thrown APPROVAL_REQUIRED");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       generatedToken = err.data.approvalToken;
     }

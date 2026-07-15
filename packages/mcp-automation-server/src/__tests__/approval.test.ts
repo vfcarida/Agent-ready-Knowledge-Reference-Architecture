@@ -39,6 +39,7 @@ vi.mock("better-sqlite3", () => {
   };
 });
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function hashPayload(payload: any): string {
   return createHash("sha256").update(JSON.stringify(payload)).digest("hex");
 }

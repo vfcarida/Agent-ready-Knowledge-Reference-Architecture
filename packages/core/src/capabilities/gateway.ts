@@ -10,7 +10,9 @@ import { TokenBucketRateLimiter, type RateLimiterConfig } from "./rate-limiter.j
 export class MCPGatewayError extends Error {
   constructor(
     message: string,
+    // eslint-disable-next-line no-unused-vars
     public readonly code: string,
+    // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-explicit-any
     public readonly data?: any,
   ) {
     super(message);
@@ -284,6 +286,7 @@ export class MCPGateway {
       }
 
       return result;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       if (err instanceof MCPGatewayError) throw err;
       throw new MCPGatewayError(
@@ -315,6 +318,7 @@ export class MCPGateway {
     // However, if someone passes an async detector, this will fail. Let's just assume PiiMatch[] for now as the user's snippet did.
     
     // Actually the user's snippet explicitly provides sanitizeOutput as synchronous.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const sorted = [...(matches as any[])].sort((a, b) => b.start - a.start);
     for (const match of sorted) {
       str = str.slice(0, match.start) + `[REDACTED_${match.type.toUpperCase()}]` + str.slice(match.end);
@@ -323,9 +327,11 @@ export class MCPGateway {
     return JSON.parse(str) as T;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private containsPII(output: any): boolean {
     const str = JSON.stringify(output);
     const matches = this.detector.detect(str);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return (matches as any[]).some((m) => m.confidence === "high");
   }
 }

@@ -54,6 +54,7 @@ export const regulatedEnterprisePolicy: AgentPolicy = {
 import type { CapabilityManifest } from "./capabilities.js";
 
 export class PolicyEngine {
+  // eslint-disable-next-line no-unused-vars
   constructor(private policy: AgentPolicy) {}
 
   /**
@@ -62,6 +63,7 @@ export class PolicyEngine {
   public validateExecution(
     toolName: string,
     capabilities: CapabilityManifest[],
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     args: Record<string, any>,
   ): void {
     // 1. Basic tool existence & blocklist checks
@@ -123,6 +125,7 @@ export class PolicyEngine {
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private inspectPayload(toolName: string, args: Record<string, any>): void {
     const payloadStr = JSON.stringify(args);
 

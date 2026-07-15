@@ -11,6 +11,7 @@ Welcome to the **Agent Knowledge Compiler and Control Plane (AKCP)** documentati
 | Page | Description |
 |------|-------------|
 | [Quickstart](getting-started/quickstart.md) | Install, build, and run your first compilation in under 10 minutes |
+| [API Reference](docs/api/) | Auto-generated TypeDoc reference (run `pnpm docs:api` locally) |
 | [Troubleshooting](getting-started/troubleshooting.md) | Common setup errors and how to resolve them |
 | [Development Setup](getting-started/development.md) | Configure a local contributor environment |
 | [Examples Overview](getting-started/examples.md) | Browse all flagship domain examples |
@@ -114,8 +115,8 @@ Welcome to the **Agent Knowledge Compiler and Control Plane (AKCP)** documentati
 
 | Page | Description |
 |------|-------------|
-| [Career Domain](walkthroughs/career.md) | **Stable** — Personal knowledge compilation starter domain |
-| [IT Operations Domain](walkthroughs/it-ops.md) | **Beta** — Enterprise runbooks, incidents, approvals, audit |
+| [IT Operations Domain](walkthroughs/it-ops.md) | **Beta (Flagship)** — Enterprise runbooks, incidents, approvals, audit |
+| [Career Domain](walkthroughs/career.md) | **Stable (Starter)** — Personal knowledge compilation starter domain |
 | [Customer Support Domain](concepts/customer-support-design.md) | **Experimental** — Policy-aware, PII-preserving support knowledge |
 
 ---

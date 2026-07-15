@@ -16,6 +16,7 @@ describe("HttpSecurityGateway", () => {
     global.fetch = vi.fn().mockResolvedValue({
       ok: true,
       json: async () => mockResponse,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
 
     const gateway = new HttpSecurityGateway("http://localhost:8080/redact", "<REDACTED_{class}>");
@@ -35,6 +36,7 @@ describe("HttpSecurityGateway", () => {
       ok: false,
       status: 500,
       statusText: "Internal Server Error",
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
 
     const gateway = new HttpSecurityGateway("http://localhost:8080/redact");

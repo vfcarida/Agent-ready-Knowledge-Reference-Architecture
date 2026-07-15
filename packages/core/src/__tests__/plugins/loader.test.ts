@@ -26,6 +26,7 @@ describe("PluginLoader", () => {
     try {
       await PluginLoader.loadPlugin(exampleDir, ["network:outbound"]);
       expect.fail("Should have thrown security error");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       expect(err).toBeInstanceOf(PluginSecurityError);
       expect(err.message).toContain("network:outbound");
@@ -44,6 +45,7 @@ describe("PluginLoader", () => {
         "fs:read",
       ]);
       expect(manifest.name).toBe("example-markdown-connector");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       // This will fail if the module can't be imported, which is fine, we mainly test the security check here.
       if (err instanceof PluginSecurityError) {

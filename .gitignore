@@ -38,3 +38,6 @@ playwright-report/
 # Docker
 Docker
 docker/data/
+
+# Documentation
+docs/api/

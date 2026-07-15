@@ -12,6 +12,7 @@ interface PromptInjectionPayload {
   expectedBehavior: string;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function runPromptInjectionScenarios(harness: any) {
   const datasetPath = path.resolve(
     __dirname,

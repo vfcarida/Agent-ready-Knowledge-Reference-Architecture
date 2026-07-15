@@ -1,6 +1,7 @@
 import type { Capability } from "../ir/types.js";
 
 export class CapabilityValidatorError extends Error {
+  // eslint-disable-next-line no-unused-vars
   constructor(message: string, public readonly capabilityId: string) {
     super(message);
     this.name = "CapabilityValidatorError";

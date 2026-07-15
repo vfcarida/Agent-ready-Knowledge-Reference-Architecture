@@ -56,6 +56,7 @@ export async function runCompilerPipeline(
 
   LifecycleValidator.validate(ir);
   if (ir.capabilities && ir.capabilities.length > 0) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     CapabilityValidator.validate(ir.capabilities as any);
   }
 
