@@ -8,12 +8,15 @@ This document describes the controls that secure the AKCP release pipeline and h
 
 ### 1. Pinned GitHub Actions (SHA-locked)
 
-All GitHub Actions in AKCP workflows are pinned to specific commit SHAs rather than mutable version tags. This prevents upstream hijacking of workflow dependencies.
+All GitHub Actions in this repository are pinned by commit SHA, not by mutable tag.
+This prevents supply-chain attacks where a compromised action tag is redirected to
+malicious code.
 
-```yaml
-# Example — pinned to exact SHA, not a floating tag
-uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-```
+When updating actions:
+1. Find the new SHA from the action's releases page
+2. Update the SHA in the workflow file
+3. Keep the version comment up to date (e.g., `# v4.2.3`)
+4. Dependabot will also propose SHA updates weekly
 
 ### 2. Frozen Lockfile
 
