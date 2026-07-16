@@ -32,7 +32,7 @@
     "quality:gate": "pnpm run test && pnpm run test:coverage && pnpm run test:contract && pnpm run test:security && pnpm run test:conformance",
     "smoke:quickstart": "node packages/cli/dist/index.js validate --bundle examples/domains/it-operations --profile it-operations && node packages/cli/dist/index.js compile --config examples/domains/it-operations/akcp.yaml",
     "examples:validate": "node packages/cli/dist/index.js validate --bundle examples/domains/career --profile career && node packages/cli/dist/index.js validate --bundle examples/domains/it-operations --profile it-operations && node packages/cli/dist/index.js validate --bundle examples/domains/customer-support --profile customer-support",
-    "release:check": "pnpm install --frozen-lockfile && pnpm run lint && pnpm run typecheck && pnpm run quality:gate && pnpm run check:metadata && pnpm run check:identity && pnpm run check:docs && pnpm run check:links && pnpm run examples:validate",
+    "release:check": "bash scripts/pre-release-check.sh",
     "coverage": "vitest run --coverage --config vitest.config.ts",
     "lint": "eslint . --max-warnings 0",
     "lint:fix": "eslint . --fix",
