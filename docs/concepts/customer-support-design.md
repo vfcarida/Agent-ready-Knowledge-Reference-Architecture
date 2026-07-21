@@ -1,11 +1,25 @@
 # Customer Support (Alpha Flagship)
 
 > **Status:** Alpha
-> **Note:** This domain is currently in the design phase. It serves as a readiness placeholder to demonstrate the future capabilities of AKCP. It is not yet entirely implemented.
+>
+> This domain compiles and validates. It serves as the third enterprise flagship for policy-aware, privacy-preserving support knowledge compilation. Core structure is functional; content depth and CRM integrations remain skeletal.
 
-## What it will demonstrate
+## What it demonstrates
 
-Customer Support is the future enterprise flagship for policy-aware, privacy-preserving support knowledge compilation. It will show how AKCP handles tickets, macros, policies, customer history, PII redaction, escalation, and quality evaluation in a strict, high-volume environment.
+Customer Support shows how AKCP handles tickets, macros, policies, customer history, PII redaction, escalation, and quality evaluation in a strict, high-volume environment. The current Alpha provides:
+
+- **Working compilation**: `akcp compile` produces a full context pack, MCP manifest, and OpenWiki docs.
+- **Policy-gated actions**: HITL approval required for `issue_refund` and `delete_customer_data`.
+- **PII redaction config**: SSN, credit card, auth tokens, email, and phone redacted at the Control Plane level.
+- **Structured evals**: 5 evaluation scenarios covering policy adherence, PII redaction, source grounding, and escalation.
+
+## Current Limitations (Alpha)
+
+- [ ] Knowledge sources are skeletal (6 synthetic fixtures — not production-grade content)
+- [ ] Policies defined but not battle-tested with real agent traffic
+- [ ] Evals exist but coverage is limited to 5 basic scenarios
+- [ ] No real CRM/ticketing integration — all sources are static stubs
+- [ ] Dangerous capabilities (`issue_refund`, `delete_account`) are unimplemented skeletons
 
 ## Why it matters
 
@@ -17,34 +31,32 @@ Customer Support is a high-value enterprise use case because it requires complex
 - **IT Operations:** An internal enterprise domain focused on high-risk technical approvals, runbook adherence, and incident telemetry.
 - **Customer Support:** An external-facing enterprise domain focused on privacy (PII redaction), multi-tenant isolation, policy-constrained responses, and CRM integrations. It introduces high variability in user input (customer tickets) and requires strict boundaries around what the agent is authorized to promise.
 
-## Future Domain Model
+## Domain Model
 
-The following concepts are planned for the Customer Support domain:
-- `Customer`
-- `Ticket`
-- `Conversation`
-- `Macro`
-- `HelpArticle`
-- `Policy`
-- `EscalationRule`
-- `SLA`
-- `ProductArea`
-- `Resolution`
-- `SentimentSignal`
-- `PIIEntity`
-- `SupportQualityEvaluation`
+The following concept types are implemented in the current Alpha sources:
 
-## Required Controls (Future Safety Model)
+- `SupportArticle`, `SupportTicket`, `CustomerProfile`, `EscalationPath`, `SLA`, `ProductIssue`
 
-To safely deploy Customer Support agents, AKCP will enforce the following controls:
-- **PII redaction:** Automatic scrubbing of sensitive customer data from LLM contexts.
-- **Policy-constrained responses:** Ensuring agents cannot hallucinate refund policies or SLA commitments.
-- **Escalation when confidence is low:** Mandatory fallback to human agents.
-- **Human review for sensitive cases:** Pre-execution approvals for high-impact macros (e.g., account deletion, large refunds).
-- **No hallucinated policy commitments:** Strict adherence to the provided context pack.
-- **Audit evidence:** Full traceability of the agent's context and tool usage for every customer interaction.
-- **CRM connector boundaries:** Least-privilege access to external CRM systems.
-- **Tenant isolation in enterprise settings:** Ensuring data from one customer cannot leak into another's context.
+Planned for future milestones:
+
+- `Conversation`, `Macro`, `SentimentSignal`, `SupportQualityEvaluation`, `ResolutionNote`
+
+## Required Controls (Implemented)
+
+- **PII redaction:** Configured at `controlPlane.disableInLogs` level (SSN, credit card, email, phone, auth tokens).
+- **Policy-constrained responses:** `read_support_knowledge`, `draft_response`, `summarize_ticket` policies defined.
+- **Escalation when confidence is low:** `escalate_to_human` policy defined.
+- **Human review for sensitive cases:** `issue_refund` and `delete_customer_data` require HITL approval.
+
+## Next Milestone
+
+To advance to **Beta**, this domain needs:
+
+- Production-depth knowledge sources (real policy content, not synthetic)
+- At least 20 eval scenarios covering edge cases
+- At least one real CRM connector (Zendesk, Freshdesk, or similar)
+- Expanded capability implementations beyond the current stubs
 
 ---
+
 _For the roadmap and implementation phases, please refer to the [Product Roadmap](../governance/roadmap.md)._
